@@ -1,0 +1,26 @@
+.carousel{
+    padding-top: 2%;
+    height: 80%;
+    width: auto;
+    margin-left: auto;
+    background-color: white;
+}
+
+.carouselDiv {
+    padding-top: 5%;
+    background-color: white;
+    padding-bottom: 5%;
+    border-width: thin;
+    border-radius: 20px;
+    border-color: #efe7ff;
+}
+
+.carousel .slide {
+    border-radius: 25px;
+    border-color: #efe7ff;
+    background-color: white;
+}
+.carouselItem{
+    padding: 20%;
+    color: pink;
+}

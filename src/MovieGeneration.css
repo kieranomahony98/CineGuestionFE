@@ -1,8 +1,9 @@
 .carousel{
     padding-top: 2%;
-    height: 80%;
-    width: auto;
-    margin-left: auto;
+    height: 100%;
+    max-height: 500px;
+    width: 100%;
+    margin-right: 5%;
     background-color: white;
 }
 
@@ -14,13 +15,43 @@
     border-radius: 20px;
     border-color: #efe7ff;
 }
+.wrapper {
+    margin-left: 40%;
+    position: relative;
+
+}
+.formItem {
+    
+    background-color: white;
+    border: none;
+    margin: auto;
+
+}
+.table{
+    display: table;
+}
+.row {
+    display: table-row;
+  }
 
 .carousel .slide {
     border-radius: 25px;
     border-color: #efe7ff;
     background-color: white;
 }
-.carouselItem{
-    padding: 20%;
+.formItem{
+    /* padding-left: 20px;
     color: pink;
+    position: relative;
+    vertical-align: middle;
+    bottom: 1px; */
+    display: table-cell;
+    padding-right: 1em;
+}
+.carouselItem{
+    display: table-cell;
+    padding-right: 1em;
+}
+.btnGenerate{
+    margin-bottom: 50px;
 }

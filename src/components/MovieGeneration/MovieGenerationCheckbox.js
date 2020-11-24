@@ -3,7 +3,8 @@ import { InputGroup, InputGroupAddon, InputGroupText, Input, FormGroup } from 'r
 import MovieGenerationModel from '../../data/MovieGeneration';
 const MovieGenerationCheckbox = ({
     formItem,
-    characteristic
+    characteristic,
+
 }) => {
 
     // const formItems = () => {
@@ -20,16 +21,20 @@ const MovieGenerationCheckbox = ({
     //     })
     // }
     const addToObject = (genreId) => {
-        MovieGenerationModel.with_genres.push(genreId);
+
+        MovieGenerationModel.with_genres = !MovieGenerationModel.with_genres ? `${genreId}` : `${MovieGenerationModel.with_genres},${genreId}`;
+
+        console.log(MovieGenerationModel);
     }
     return (
-        <InputGroup>
-            <InputGroupAddon addonType="prepend">
-                <InputGroupText> {formItem.name}
-                    <Input addon type="checkbox" characteristic={characteristic} value={formItem.value.toString()} aria-label="Check for following Text input" className="carouselItem" onClick={() => addToObject(formItem.value)} />
-                </InputGroupText>
-            </InputGroupAddon>
-        </InputGroup>
+        <InputGroupAddon addonType="prepend" style={{ backgroundColor: 'white' }}>
+            <div className="form">
+                <label className="formItem"> {formItem.name}
+                </label>
+                <span className="carouselItem"> <Input addon type="checkbox" characteristic={characteristic} value={formItem.value.toString()} aria-label="Check for following Text input" className="inputItem" onClick={() => addToObject(formItem.value)} />
+                </span>
+            </div>
+        </InputGroupAddon>
 
     );
 }

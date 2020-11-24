@@ -8,7 +8,7 @@ import { ReactComponent as FacebookIcon } from "images/facebook-icon.svg";
 import { ReactComponent as TwitterIcon } from "images/twitter-icon.svg";
 import { ReactComponent as YoutubeIcon } from "images/youtube-icon.svg";
 
-const Container = tw.div`relative bg-gray-900 text-gray-100 -mx-8 -mb-8 px-8`;
+const C = tw.div`relative bg-gray-900 text-gray-100 -mx-8 -mb-8 px-8`;
 const Content = tw.div`max-w-screen-xl mx-auto pt-16 pb-8`
 const FiveColumns = tw.div`flex flex-wrap justify-between`;
 
@@ -42,7 +42,7 @@ const CompanyInfo = tw.div``
 const Divider = tw.div`my-8 border-b-2 border-gray-800`
 export default () => {
   return (
-    <Container>
+    <C>
       <Content>
         <FiveColumns>
           <CompanyColumn>
@@ -136,12 +136,12 @@ export default () => {
             </LinkList>
           </Column>
         </FiveColumns>
-        <Divider/>
+        <Divider />
         <CopyrightAndCompanyInfoRow>
           <CopyrightNotice>&copy; Copyright 2020, Treact Inc.</CopyrightNotice>
           <CompanyInfo>An Internet Company.</CompanyInfo>
         </CopyrightAndCompanyInfoRow>
       </Content>
-    </Container>
+    </C>
   );
 };

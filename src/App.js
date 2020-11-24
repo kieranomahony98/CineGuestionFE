@@ -3,7 +3,6 @@ import "styles/globalStyles.css";
 import React from "react";
 import { css } from "styled-components/macro"; //eslint-disable-line
 
-
 /* Use AnimationRevealPage as a wrapper component for your pages if you are custom building it */
 // import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 
@@ -37,10 +36,6 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 // import Pricing from "components/pricing/ThreePlansWithHalfPrimaryBackground.js";
 // import Pricing from "components/pricing/TwoPlansWithDurationSwitcher.js";
 
-// import SliderCard from "components/cards/ThreeColSlider.js";
-// import TrendingCard from "components/cards/TwoTrendingPreviewCardsWithImage.js";
-// import Portfolio from "components/cards/PortfolioTwoCardsWithImage.js";
-// import TabGrid from "components/cards/TabCardGrid.js";
 
 // import Blog from "components/blogs/ThreeColSimpleWithImage.js";
 // import Blog from "components/blogs/ThreeColSimpleWithImageAndDashedBorder.js";
@@ -58,8 +53,7 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 // import FAQ from "components/faqs/TwoColumnPrimaryBackground.js";
 
 // import ContactUsForm from "components/forms/SimpleContactUs.js";
-import ContactUsForm from "components/forms/TwoColContactUsWithIllustration.js";
-import SubscribeNewsLetterForm from "components/forms/SimpleSubscribeNewsletter.js";
+
 //
 // import GetStarted from "components/cta/GetStarted.js";
 // import GetStarted from "components/cta/GetStartedLight.js";
@@ -109,9 +103,7 @@ export default function App() {
         <Route path="/Generate">
           <MovieGeneration />
         </Route>
-        <Route path="/test">
-          <ContactUsForm />
-        </Route>
+
       </Switch>
     </Router>
   );

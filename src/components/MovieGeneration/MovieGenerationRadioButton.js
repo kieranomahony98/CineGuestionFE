@@ -1,9 +1,10 @@
 import React from 'react';
-import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
+import { InputGroup, InputGroupAddon, InputGroupText, Input, Row } from 'reactstrap';
 import MovieGenerationModel from '../../data/MovieGeneration';
 const MovieGenerationCheckbox = ({
     formItem,
-    characteristic
+    characteristic,
+    className
 }) => {
 
     // const formItems = () => {
@@ -25,13 +26,16 @@ const MovieGenerationCheckbox = ({
     };
 
     return (
-        <InputGroupAddon addonType="prepend">
-            <InputGroupText> {formItem.name}
-                <Input addon type="radio" name={characteristic} value={formItem.value.toString()} aria-label="Check for following Text input" className="carouselItem" onClick={() => addToObject(formItem.value)} />
-            </InputGroupText>
-        </InputGroupAddon>
-
-
+        <Row>
+            <InputGroupAddon addonType="prepend">
+                <div className="form">
+                    <label> {formItem.name}</label>
+                    {/* <span> */}
+                    <Input addon type="radio" className={className} name={characteristic} value={formItem.value.toString()} aria-label="Check for following Text input" className="carouselItem" onClick={() => addToObject(formItem.value)} />
+                    {/* </span> */}
+                </div>
+            </InputGroupAddon>
+        </Row>
     );
 }
 

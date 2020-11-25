@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import MovieGenerationCheckbox from './MovieGenerationCheckbox';
 import { Carousel } from 'react-responsive-carousel'
 import MovieGenerationRadioButton from './MovieGenerationRadioButton';
-import MovieCard from '../cards/Moviecard';
-import { Button, InputGroup, Container, Row, Col } from 'reactstrap';
-import MovieGenerationModel from '../../data/MovieGeneration';
+import { Button, Container, Row, Col, Table } from 'reactstrap';
 import movieGenerationQuestions from '../../data/MovieGenerationQuestions';
 import Loader from 'react-loader-spinner';
-import axios from 'axios'
+import MovieCard from '../cards/Moviecard';
+import MovieRequests from './MovieRequests'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import "../../MovieGeneration.css";
@@ -15,11 +14,6 @@ import "../../MovieGeneration.css";
 let movieCards;
 let modalHead, modalBody;
 const route = 'https://image.tmdb.org/t/p/original';
-const config = {
-    headers: {
-        'Content-Type': 'application/json'
-    }
-}
 
 const MovieGenerationCarousel = ({
 }) => {
@@ -31,27 +25,26 @@ const MovieGenerationCarousel = ({
     const toggle = () => {
         setModal(!openModal);
     }
-    function requestMovies() {
+    async function requestMovies() {
         setCarouselVisible(false);
         setSpinnerVisibility(true);
-        const body = JSON.stringify(MovieGenerationModel);
-        axios.post('/api/movies/movieGeneration', body, config)
-            .then((req, res) => {
-                if (req.status === 200) {
-                    movieCards = JSON.parse(JSON.stringify(req.data)).movies.map((movie) => {
-                        return (
-                            <Col key={movie.movieId} onClick={() => {
-                                movieModal(movie);
-                            }} sm="4">
-                                <MovieCard img={movie.movieImagePath} title={movie.movieTitle} description={movie.movieDescription} rating={movie.moviePopularity} key={movie.movieTitle} />
-                            </Col>
-                        );
-                    });
-                }
-                setSpinnerVisibility(false);
+        movieCards = await MovieRequests()
+            .then((moviesDom) => {
+                return moviesDom.map((movie) => {
+                    return (
+                        <Col key={movie.movieId} onClick={() => {
+                            movieModal(movie);
+                        }} sm="4">
+                            <MovieCard img={movie.movieImagePath} title={movie.movieTitle} description={movie.movieDescription} rating={movie.moviePopularity} key={movie.movieTitle} />
+                        </Col>
+                    );
+                });
             }).catch((err) => {
                 throw err;
             });
+
+        setSpinnerVisibility(false);
+
     }
 
     function movieModal(movie) {
@@ -84,7 +77,15 @@ const MovieGenerationCarousel = ({
         return (
             <div key='carouselItem' className="carouselDiv">
                 <div className="wrapper">
-                    {slide}
+                    <Table>
+                        <thead>
+                            <tr>Genre</tr>
+                            <tr>Selections</tr>
+                        </thead>
+                        <tbody>
+                            {slide}
+                        </tbody>
+                    </Table>
                 </div>
             </div>
         )
@@ -99,11 +100,12 @@ const MovieGenerationCarousel = ({
             </Col>
         );
     };
+
     const showSpinner = () => {
         return (
             <Row style={{ visibility: (spinnerVisibility) ? 'visible' : 'hidden' }}>
                 <Col>
-                    <Loader type="BallTriangle" color="#00BFFF" height={80} width={80} />
+                    <Loader type="BallTriangle" color="#00BFFF" height={80} width={80} className="spinner" />
                 </Col>
             </Row>
         );
@@ -129,15 +131,10 @@ const MovieGenerationCarousel = ({
             </div>
             <Row>
                 {(carouselVisible) ? <Button color="success" className="btnGenerate" onClick={requestMovies}>Generate Movies</Button> : ''}
-
             </Row>
-
         </Container >
     );
 }
-
-
-
 
 export default MovieGenerationCarousel;
 

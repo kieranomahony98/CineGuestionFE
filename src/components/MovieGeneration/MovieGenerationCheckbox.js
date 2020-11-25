@@ -6,36 +6,26 @@ const MovieGenerationCheckbox = ({
     characteristic,
 
 }) => {
-
-    // const formItems = () => {
-    //     formItemsList.map((item) => {
-    //         <FormGroup>
-    //             <InputGroup>
-    //                 <InputGroupAddon addonType="prepend">
-    //                     <InputGroupText> item.name
-    //                         <Input addon type="checkbox" value={item.value.toString()} aria-label="Check for following Text input" />
-    //                     </InputGroupText>
-    //                 </InputGroupAddon>
-    //             </InputGroup>
-    //         </FormGroup>
-    //     })
-    // }
     const addToObject = (genreId) => {
-
-        MovieGenerationModel.with_genres = !MovieGenerationModel.with_genres ? `${genreId}` : `${MovieGenerationModel.with_genres},${genreId}`;
-
-        console.log(MovieGenerationModel);
+        if (characteristic === 'with_genres') {
+            MovieGenerationModel.with_genres = !MovieGenerationModel.with_genres ? `${genreId}` : `${MovieGenerationModel.with_genres},${genreId}`;
+        } else {
+            MovieGenerationModel.with_keywords = `${genreId}`
+        }
     }
     return (
-        <InputGroupAddon addonType="prepend" style={{ backgroundColor: 'white' }}>
-            <div className="form">
-                <label className="formItem"> {formItem.name}
-                </label>
-                <span className="carouselItem"> <Input addon type="checkbox" characteristic={characteristic} value={formItem.value.toString()} aria-label="Check for following Text input" className="inputItem" onClick={() => addToObject(formItem.value)} />
-                </span>
-            </div>
-        </InputGroupAddon>
-
+        <tr>
+            <InputGroupAddon addonType="prepend" style={{ backgroundColor: 'white' }}>
+                <div className="mb-3 form">
+                    <td>
+                        <label className="formItem"> {formItem.name} </label>
+                    </td>
+                    <td>
+                        <Input addon type="checkbox" characteristic={characteristic} value={formItem.value.toString()} aria-label="Check for following Text input" className="inputItem" onClick={() => addToObject(formItem.value)} />
+                    </td>
+                </div>
+            </InputGroupAddon>
+        </tr>
     );
 }
 

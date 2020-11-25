@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-
+import LoginModal from '../auth/LoginModal'
+import RegisterModal from '../auth/RegisterModal';
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.js";
 
 import logo from "../../images/logo.svg";
@@ -76,10 +77,10 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
       <NavLink href="/#">Blog</NavLink>
       <NavLink href="/#">Pricing</NavLink>
       <NavLink href="/#">Contact Us</NavLink>
-      <NavLink href="/#" tw="lg:ml-12!">
-        Login
-      </NavLink>
-      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/#">Sign Up</PrimaryLink>
+      <LoginModal />
+      <RegisterModal />
+
+
     </NavLinks>
   ];
 
@@ -113,6 +114,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
         </NavToggle>
       </MobileNavLinksContainer>
     </Header>
+
   );
 };
 

@@ -1,7 +1,9 @@
 import "tailwindcss/dist/base.css";
 import "styles/globalStyles.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { css } from "styled-components/macro"; //eslint-disable-line
+import { Provider } from 'react-redux'
+import store from './store';
 
 /* Use AnimationRevealPage as a wrapper component for your pages if you are custom building it */
 // import AnimationRevealPage from "helpers/AnimationRevealPage.js";
@@ -88,24 +90,31 @@ import ComponentRenderer from "ComponentRenderer.js";
 import MainLandingPage from "MainLandingPage.js";
 import MovieGeneration from './pages/MovieGeneration';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { loadUser } from "actions/authActions";
 
 export default function App() {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  })
   // return <AnimationRevealPage disabled></AnimationRevealPage>;
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/">
-          <SaaSProductLandingPage />
-        </Route>
-        <Route path="/login">
-          <LoginPage />
-        </Route>
-        <Route path="/Generate">
-          <MovieGeneration />
-        </Route>
+    <Provider store={store}>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <SaaSProductLandingPage />
+          </Route>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/Generate">
+            <MovieGeneration />
+          </Route>
 
-      </Switch>
-    </Router>
+        </Switch>
+      </Router>
+    </Provider>
+
   );
 }
 

@@ -6,7 +6,9 @@
     margin-right: 5%;
     background-color: white;
 }
-
+.spinner{
+    margin: auto;
+}
 .carouselDiv {
     padding-top: 5%;
     background-color: white;
@@ -20,19 +22,12 @@
     position: relative;
 
 }
-.formItem {
-    
-    background-color: white;
-    border: none;
-    margin: auto;
-
-}
-.table{
+/* .table{
     display: table;
 }
 .row {
     display: table-row;
-  }
+  } */
 
 .carousel .slide {
     border-radius: 25px;
@@ -46,12 +41,20 @@
     vertical-align: middle;
     bottom: 1px; */
     display: table-cell;
-    padding-right: 1em;
+    padding: .5erm;
 }
-.carouselItem{
+/* .inputItem{
+    display: table-cell;
+    
+} */
+/* .carouselItem{
     display: table-cell;
     padding-right: 1em;
-}
+} */
 .btnGenerate{
     margin-bottom: 50px;
 }
+td:nth-child(1) {
+    width: 10%
+}
+

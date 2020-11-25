@@ -1,21 +1,23 @@
+import React from 'react';
 import axios from 'axios';
+import MovieGenerationModel from '../../data/MovieGeneration';
 
-export default function requestMovies(MovieGenerationModel) {
+async function requestMovies() {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
 
     const body = JSON.stringify(MovieGenerationModel);
-    axios.post('/api/movies/movieGeneration', body,)
+    return axios.post('/api/movies/movieGeneration', body, config)
         .then((req, res) => {
             if (req.status === 200) {
-                movieCards = JSON.parse(JSON.stringify(req.data)).movies.map((movie) => {
-                    return (
-                        <Col key={movie.movieId} sm="4">
-                            <MovieCard img={movie.movieImagePath} title={movie.movieTitle} key={movie.movieTitle} />
-                        </Col>
-                    );
-                });
+                return JSON.parse(JSON.stringify(req.data)).movies;
             }
-            setSpinnerVisibility(false);
         }).catch((err) => {
             throw err;
         });
 }
+
+export default requestMovies;

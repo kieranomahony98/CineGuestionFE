@@ -10,13 +10,14 @@ const route = 'https://image.tmdb.org/t/p/original';
 const MovieCard = (
     {
         title,
-        img
+        img,
+        onClick
     }
 ) => {
 
 
     return (
-        <Card className="MovieItem">
+        <Card className="MovieItem" onClick={onClick}>
             <CardImg src={`${route}${img}`} className="MovieItem-img" />
             <CardBody>
                 <CardTitle tag="p" className="movieTitle text-center">{title}</CardTitle>

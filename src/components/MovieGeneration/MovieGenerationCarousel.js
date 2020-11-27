@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import MovieGenerationCheckbox from './MovieGenerationCheckbox';
+import React, { useState } from 'react';
 import { Carousel } from 'react-responsive-carousel'
 import MovieGenerationRadioButton from './MovieGenerationRadioButton';
 import { Button, Container, Row, Col, Table } from 'reactstrap';
@@ -8,8 +8,12 @@ import Loader from 'react-loader-spinner';
 import MovieCard from '../cards/Moviecard';
 import MovieRequests from './MovieRequests'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import tw from "twin.macro";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+
 import "../../MovieGeneration.css";
+
+const HighlightedText = tw.span`text-primary-500`;
 
 let movieCards;
 let modalHead, modalBody;
@@ -23,7 +27,7 @@ const MovieGenerationCarousel = ({
     const [openModal, setModal] = useState(false);
 
     const toggle = () => {
-        setModal(!openModal);
+        setModal(() => !openModal);
     }
     async function requestMovies() {
         setCarouselVisible(false);
@@ -32,10 +36,13 @@ const MovieGenerationCarousel = ({
             .then((moviesDom) => {
                 return moviesDom.map((movie) => {
                     return (
-                        <Col key={movie.movieId} onClick={() => {
-                            movieModal(movie);
-                        }} sm="4">
-                            <MovieCard img={movie.movieImagePath} title={movie.movieTitle} description={movie.movieDescription} rating={movie.moviePopularity} key={movie.movieTitle} />
+                        <Col key={movie.movieId} sm="4">
+                            <MovieCard img={movie.movieImagePath}
+                                title={movie.movieTitle}
+                                key={movie.movieTitle}
+                                onClick={() => {
+                                    movieModal(movie);
+                                }} />
                         </Col>
                     );
                 });
@@ -44,19 +51,25 @@ const MovieGenerationCarousel = ({
             });
 
         setSpinnerVisibility(false);
-
     }
 
     function movieModal(movie) {
         setModal(false);
-        const { movieImagePath, movieTitle, movieDescription, moviePopularity } = movie;
-        modalHead = <ModalHeader toggle={toggle}>{movieTitle}</ModalHeader>
-        modalBody = <ModalBody>
-            <img src={`${route}${movieImagePath}`} style={{ maxHeight: '200px', maxWidth: '200px' }} />
-            <p>Movie description: {movieDescription}</p>
-            <p>User rating: {moviePopularity}</p>
-        </ModalBody>
-        setModal(true);
+        const { movieImagePath, movieTitle, movieDescription, moviePopularity, movieReleaseYear, movieGenres } = movie;
+        modalHead = <ModalHeader className="modalH" cssModule={{ 'modal-title': 'w-100 text-center' }}>{movieTitle}</ModalHeader>
+        modalBody =
+            <ModalBody className="modalBody">
+                <div className="modalImage mb-3">
+                    <img src={`${route}${movieImagePath}`} style={{ maxHeight: '200px', maxWidth: '200px' }} className="modalImage" />
+                </div>
+                <div className="modalDesc">
+                    <p className="mb-2"><HighlightedText><b>Movie description: </b></HighlightedText> {movieDescription}</p>
+                    <p className="mb-2"><HighlightedText><b>User rating: </b></HighlightedText>{moviePopularity}</p>
+                    <p className="mb-2"><HighlightedText><b>Release Year: </b> </HighlightedText>{movieReleaseYear}</p>
+                    <p className="mb-2"><HighlightedText><b>Included Genres:</b> </HighlightedText> {movieGenres}</p>
+                </div>
+            </ModalBody>
+        setModal(() => true);
     }
 
     let slides = movieGenerationQuestions.map((movieSlide) => {
@@ -78,10 +91,6 @@ const MovieGenerationCarousel = ({
             <div key='carouselItem' className="carouselDiv">
                 <div className="wrapper">
                     <Table>
-                        <thead>
-                            <tr>Genre</tr>
-                            <tr>Selections</tr>
-                        </thead>
                         <tbody>
                             {slide}
                         </tbody>
@@ -94,7 +103,7 @@ const MovieGenerationCarousel = ({
     const showCarousel = () => {
         return (
             <Col>
-                <Carousel className="carousel" showThumbs={false}>
+                <Carousel className="carousel" showThumbs={false} >
                     {slides}
                 </Carousel>
             </Col>
@@ -123,7 +132,7 @@ const MovieGenerationCarousel = ({
             <div className="table">
                 <Row>
                     {(carouselVisible) ? showCarousel() : (spinnerVisibility) ? showSpinner() : showMovies()}
-                    <Modal isOpen={openModal} modalTransition={{ timeout: 500 }} toggle={toggle}>
+                    <Modal isOpen={openModal} modalTransition={{ timeout: 500 }} toggle={toggle} className="modalFull">
                         {modalHead}
                         {modalBody}
                     </Modal>

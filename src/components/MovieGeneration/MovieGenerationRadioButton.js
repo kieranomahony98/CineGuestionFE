@@ -12,14 +12,19 @@ const MovieGenerationCheckbox = ({
     };
 
     return (
-        <Row>
-            <InputGroupAddon addonType="prepend">
-                <div className="mb-3 form">
+        <tr>
+            <div className="mb-3 form">
+                <td>
                     <label> {formItem.name}</label>
-                    <Input addon type="radio" className={className} name={characteristic} value={formItem.value.toString()} aria-label="Check for following Text input" className="carouselItem" onClick={() => addToObject(formItem.value)} />
-                </div>
-            </InputGroupAddon>
-        </Row>
+                </td>
+                <td>
+                    <Input addon type="radio" className={className} name={characteristic}
+                        value={formItem.value.toString()} aria-label="Check for following Text input"
+                        className="carouselItem" onClick={() => addToObject(formItem.value)} />
+                </td>
+            </div>
+        </tr>
+
     );
 }
 

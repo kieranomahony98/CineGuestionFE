@@ -3,13 +3,14 @@
     height: 100%;
     max-height: 500px;
     width: 100%;
-    margin-right: 5%;
     background-color: white;
+    margin:auto;
 }
 .spinner{
     margin: auto;
 }
 .carouselDiv {
+    width: 100%;
     padding-top: 5%;
     background-color: white;
     padding-bottom: 5%;
@@ -18,10 +19,14 @@
     border-color: #efe7ff;
 }
 .wrapper {
-    margin-left: 40%;
-    position: relative;
-
+ 
+    display: inline-block;
 }
+/* .control-arrow .control-prev{
+    border-radius: 20px;
+    background-color: black;
+} */
+
 /* .table{
     display: table;
 }
@@ -51,10 +56,23 @@
     display: table-cell;
     padding-right: 1em;
 } */
+
+.modalH{
+    text-align: center;
+}
+.modalImage img{
+    margin:auto;
+}
+
+.modalDesc{
+    font-family: 'Inter' serif;
+    font-weight: 400;
+    color: grey;
+}
 .btnGenerate{
     margin-bottom: 50px;
 }
 td:nth-child(1) {
-    width: 10%
+    width: 100%
 }
 

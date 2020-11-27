@@ -14,18 +14,20 @@ const MovieGenerationCheckbox = ({
         }
     }
     return (
+
         <tr>
-            <InputGroupAddon addonType="prepend" style={{ backgroundColor: 'white' }}>
-                <div className="mb-3 form">
-                    <td>
-                        <label className="formItem"> {formItem.name} </label>
-                    </td>
-                    <td>
-                        <Input addon type="checkbox" characteristic={characteristic} value={formItem.value.toString()} aria-label="Check for following Text input" className="inputItem" onClick={() => addToObject(formItem.value)} />
-                    </td>
-                </div>
-            </InputGroupAddon>
-        </tr>
+            <div className="mb-3 form">
+                <td>
+                    <label className="formItem"> {formItem.name} </label>
+                </td>
+                <td>
+                    <Input addon type="checkbox" characteristic={characteristic}
+                        value={formItem.value.toString()} aria-label="Check for following Text input"
+                        className="inputItem" onClick={() => addToObject(formItem.value)} />
+                </td>
+            </div>
+        </tr >
+
     );
 }
 

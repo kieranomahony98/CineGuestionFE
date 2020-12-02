@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGUOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, } from '../actions/types';
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, } from '../actions/types';
 import { returnErrors, clearErrors } from './errorActions';
 
 //Check token & load user
@@ -25,13 +25,10 @@ export const loadUser = () => (dispatch, getState) => {
         .then((res) => {
             dispatch({ type: USER_LOADED, payload: res.data });
         }).catch((err) => {
-            {
-                dispatch(returnErrors(err.response.data, err.response.status))
-                dispatch({
-                    type: AUTH_ERROR
-                });
-
-            }
+            dispatch(returnErrors(err.response.data, err.response.status))
+            dispatch({
+                type: AUTH_ERROR
+            });
         })
 }
 export const login = ({ email, password }) => dispatch => {
@@ -92,3 +89,7 @@ export const tokenConfig = getState => {
         }
     }
 };
+
+export const logout = () => dispatch => {
+    dispatch({ type: LOGOUT_SUCCESS });
+}

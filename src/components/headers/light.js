@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -6,10 +6,13 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import LoginModal from '../auth/LoginModal'
 import RegisterModal from '../auth/RegisterModal';
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.js";
-
+import DowndownMenu from '../../dropdown/DropdownMenu';
 import logo from "../../images/logo.svg";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
+import { useSelector } from "react-redux";
+import "../../homepage.css";
+import useOnClickOutside from 'use-onclickoutside';
 
 const Header = tw.header`
   flex justify-between items-center
@@ -24,7 +27,7 @@ export const NavLinks = tw.div`inline-block`;
 export const NavLink = tw.a`
   text-lg my-2 lg:text-sm lg:mx-6 lg:my-0
   font-semibold tracking-wide transition duration-300
-  pb-1 border-b-2 border-transparent hover:border-primary-500 
+  pb-1 border-b-2 border-transparent
 `;
 
 export const PrimaryLink = tw(NavLink)`
@@ -71,16 +74,22 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
    * changing the defaultLinks variable below below.
    * If you manipulate links here, all the styling on the links is already done for you. If you pass links yourself though, you are responsible for styling the links or use the helper styled components that are defined here (NavLink)
    */
+  const { isAuthenticated } = useSelector(state => state.auth);
+
+
+  let isAuthenticatedNavLink = [];
+  if (isAuthenticated) {
+    isAuthenticatedNavLink.push(<DowndownMenu />);
+  } else {
+    isAuthenticatedNavLink.push(<LoginModal key="login" />, <RegisterModal key="register" />);
+  }
   const defaultLinks = [
     <NavLinks key={1}>
       <NavLink href="/#">About</NavLink>
       <NavLink href="/#">Blog</NavLink>
       <NavLink href="/#">Pricing</NavLink>
       <NavLink href="/#">Contact Us</NavLink>
-      <LoginModal />
-      <RegisterModal />
-
-
+      {isAuthenticatedNavLink}
     </NavLinks>
   ];
 

@@ -1,13 +1,18 @@
 import { PrimaryLink } from 'components/headers/light';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { login } from '../../actions/authActions';
-
+import loginValidation from '../../validation/loginValidation';
+import { NavLink } from '../headers/light';
 const LoginModal = () => {
     const dispatch = useDispatch();
+
     const [modal, setModal] = useState(false);
+    const [errors, setErrors] = useState({
+        name: '',
+        password: ''
+    });
     const [user, setUser] = useState({
         email: '',
         password: ''
@@ -27,13 +32,20 @@ const LoginModal = () => {
             email,
             password
         }
-        dispatch(login(loginUser));
-
-        if (modal) {
-            if (isAuthenticated) {
-                setModal(() => !modal);
+        const { loginErrors, isValid } = loginValidation(loginUser);
+        if (isValid) {
+            dispatch(login(loginUser));
+            if (modal) {
+                if (isAuthenticated) {
+                    setModal(() => !modal);
+                }
             }
+            setErrors(() => ({ ...errors, email: '', password: '' }));
+        } else {
+            setErrors(() => ({ ...errors, ...loginErrors }));
         }
+
+
     }
 
     const onChange = (e) => {
@@ -43,7 +55,7 @@ const LoginModal = () => {
     }
     return (
         <>
-            <NavLink onClick={toggle} to="#" tw="lg:ml-12!">
+            <NavLink onClick={toggle} to="#">
                 Login
             </NavLink>
             <Modal isOpen={modal} toggle={toggle}>

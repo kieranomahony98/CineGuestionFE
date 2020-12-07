@@ -1,17 +1,19 @@
-import MovieGenerationCheckbox from './MovieGenerationCheckbox';
 import React, { useState } from 'react';
+import MovieGenerationCheckbox from './MovieGenerationCheckbox';
 import { Carousel } from 'react-responsive-carousel'
 import MovieGenerationRadioButton from './MovieGenerationRadioButton';
 import { Button, Container, Row, Col, Table } from 'reactstrap';
 import movieGenerationQuestions from '../../data/MovieGenerationQuestions';
 import Loader from 'react-loader-spinner';
-import MovieCard from '../cards/Moviecard';
-import MovieRequests from './MovieRequests'
+// import MovieCard from '../cards/Moviecard';
+import MovieCard from '../../cards/card';
+import MovieRequests from '../../data/MovieRequests';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import tw from "twin.macro";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 import "../../MovieGeneration.css";
+import { useSelector } from 'react-redux';
 
 const HighlightedText = tw.span`text-primary-500`;
 
@@ -20,19 +22,27 @@ let modalHead, modalBody;
 const route = 'https://image.tmdb.org/t/p/original';
 
 const MovieGenerationCarousel = ({
+    movies
 }) => {
 
     const [carouselVisible, setCarouselVisible] = useState(true);
     const [spinnerVisibility, setSpinnerVisibility] = useState(false);
     const [openModal, setModal] = useState(false);
+    const { token } = useSelector(state => state.auth);
 
     const toggle = () => {
         setModal(() => !openModal);
     }
+
+    if (movies) {
+        setCarouselVisible(false);
+        setSpinnerVisibility(false);
+    }
+
     async function requestMovies() {
         setCarouselVisible(false);
         setSpinnerVisibility(true);
-        movieCards = await MovieRequests()
+        movieCards = await MovieRequests(token)
             .then((moviesDom) => {
                 return moviesDom.map((movie) => {
                     return (
@@ -40,6 +50,8 @@ const MovieGenerationCarousel = ({
                             <MovieCard img={movie.movieImagePath}
                                 title={movie.movieTitle}
                                 key={movie.movieTitle}
+                                desc={movie.movieDescription}
+                                rating={movie.moviePopularity}
                                 onClick={() => {
                                     movieModal(movie);
                                 }} />
@@ -49,7 +61,6 @@ const MovieGenerationCarousel = ({
             }).catch((err) => {
                 throw err;
             });
-
         setSpinnerVisibility(false);
     }
 

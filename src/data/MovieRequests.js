@@ -1,15 +1,19 @@
-import React from 'react';
 import axios from 'axios';
-import MovieGenerationModel from '../../data/MovieGeneration';
+import MovieGenerationModel from './MovieGenerationModel';
 
-async function requestMovies() {
+async function requestMovies(token = null) {
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     }
 
-    const body = JSON.stringify(MovieGenerationModel);
+    const body = JSON.stringify(
+        {
+            MovieGenerationModel,
+            'x-auth-token': token
+        }
+    );
     return axios.post('/api/movies/movieGeneration', body, config)
         .then((req, res) => {
             if (req.status === 200) {

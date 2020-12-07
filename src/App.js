@@ -1,9 +1,10 @@
 import "tailwindcss/dist/base.css";
 import "styles/globalStyles.css";
-import React, { useEffect } from "react";
+import React, { useEffect, } from "react";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import { Provider } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 import store from './store';
+import ViewCurations from './pages/ViewCurations';
 
 /* Use AnimationRevealPage as a wrapper component for your pages if you are custom building it */
 // import AnimationRevealPage from "helpers/AnimationRevealPage.js";
@@ -69,7 +70,7 @@ import store from './store';
 
 /* Ready Made Pages (from demos folder) */
 // import EventLandingPage from "demos/EventLandingPage.js";
-// import HotelTravelLandingPage from "demos/HotelTravelLandingPage.js";
+// import HotelTravelLandingPage from "./demos/HotelTravelLandingPage";
 // import AgencyLandingPage from "demos/AgencyLandingPage.js";
 import SaaSProductLandingPage from "demos/SaaSProductLandingPage.js";
 // import RestaurantLandingPage from "demos/RestaurantLandingPage.js";
@@ -89,13 +90,18 @@ import LoginPage from "pages/Login.js";
 import ComponentRenderer from "ComponentRenderer.js";
 import MainLandingPage from "MainLandingPage.js";
 import MovieGeneration from './pages/MovieGeneration';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { loadUser } from "actions/authActions";
 
 export default function App() {
   useEffect(() => {
     store.dispatch(loadUser());
-  })
+  });
+
+  const authentication = () => {
+    return store.getState().auth.isAuthenticated;
+
+  }
   // return <AnimationRevealPage disabled></AnimationRevealPage>;
   return (
     <Provider store={store}>
@@ -110,7 +116,9 @@ export default function App() {
           <Route path="/Generate">
             <MovieGeneration />
           </Route>
-
+          <Route path="/myGenerations">
+            {(authentication) ? <ViewCurations /> : <Redirect to='/' />}
+          </Route>
         </Switch>
       </Router>
     </Provider>

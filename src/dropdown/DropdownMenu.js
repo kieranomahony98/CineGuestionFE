@@ -36,7 +36,6 @@ const DowndownMenu = () => {
     const userLogout = () => {
         dispatch(logout());
     }
-
     return (
         <div ref={dropDownRef} style={{ marginTop: '-2px' }}>
             <UncontrolledDropdown nav isOpen={dropdown} onClick={toggle}>

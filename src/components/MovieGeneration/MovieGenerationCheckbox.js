@@ -1,6 +1,6 @@
 import React from 'react';
 import { InputGroup, InputGroupAddon, InputGroupText, Input, FormGroup } from 'reactstrap';
-import MovieGenerationModel from '../../data/MovieGeneration';
+import MovieGenerationModel from '../../data/MovieGenerationModel';
 const MovieGenerationCheckbox = ({
     formItem,
     characteristic,

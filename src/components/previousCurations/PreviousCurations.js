@@ -48,7 +48,8 @@ const PreviousCurations = () => {
             );
         });
         console.log(curations);
-        setGenerations(() => true);
+        setGenerations(!generations);
+        console.log(generations);
     }
     let movieCards;
     function setSpecificCuration(movie) {
@@ -79,20 +80,31 @@ const PreviousCurations = () => {
 
     }
 
-    // function getRender(){
-    //     if(generations) return curations;
-    //     if(showMovies) return movieCards;
-    //     return userMovies()
-    //         .then((movies) => movie);
-    // }
+    function getRender() {
+        if (generations) return curations;
+        if (showMovies) return movieCards;
+
+    }
+
+    const showSpinner = () => {
+        userMovies();
+        return (
+            <Row>
+                <Col>
+                    <Loader type="BallTriangle" color="#00BFFF" height={80} width={80} className="spinner" />
+                </Col>
+            </Row>
+        );
+    };
+
     return (
-        <Row>
-            {(generations) ? curations : userMovies}
+        <Container>
+            {(generations) ? curations : (showMovies) ? movieCards : showSpinner()}
             {/* <Modal isOpen={openModal} modalTransition={{ timeout: 500 }} toggle={toggle} className="modalFull">
                 {modalHead}
                 {modalBody}
             </Modal> */}
-        </Row>
+        </Container>
 
     );
 }

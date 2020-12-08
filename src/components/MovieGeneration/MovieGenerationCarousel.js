@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import MovieGenerationCheckbox from './MovieGenerationCheckbox';
 import { Carousel } from 'react-responsive-carousel'
 import MovieGenerationRadioButton from './MovieGenerationRadioButton';
-import { Button, Container, Row, Col, Table } from 'reactstrap';
+import { Button, Container, Row, Col, Table, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import movieGenerationQuestions from '../../data/MovieGenerationQuestions';
 import Loader from 'react-loader-spinner';
 // import MovieCard from '../cards/Moviecard';
 import MovieCard from '../../cards/card';
 import MovieRequests from '../../data/MovieRequests';
-import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+// import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import tw from "twin.macro";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-
+import MoviesCard from '../../helpers/PreviousCurationsCard';
 import "../../MovieGeneration.css";
 import { useSelector } from 'react-redux';
-
+import MovieModal from '../modal/movieModal';
 const HighlightedText = tw.span`text-primary-500`;
 
 let movieCards;
@@ -22,41 +22,22 @@ let modalHead, modalBody;
 const route = 'https://image.tmdb.org/t/p/original';
 
 const MovieGenerationCarousel = ({
-    movies
+
 }) => {
 
     const [carouselVisible, setCarouselVisible] = useState(true);
     const [spinnerVisibility, setSpinnerVisibility] = useState(false);
     const [openModal, setModal] = useState(false);
     const { token } = useSelector(state => state.auth);
-
-    const toggle = () => {
-        setModal(() => !openModal);
-    }
-
-    if (movies) {
-        setCarouselVisible(false);
-        setSpinnerVisibility(false);
-    }
-
+    const toggle = () => setModal(!openModal);
     async function requestMovies() {
         setCarouselVisible(false);
         setSpinnerVisibility(true);
         movieCards = await MovieRequests(token)
             .then((moviesDom) => {
                 return moviesDom.map((movie) => {
-                    return (
-                        <Col key={movie.movieId} sm="4">
-                            <MovieCard img={movie.movieImagePath}
-                                title={movie.movieTitle}
-                                key={movie.movieTitle}
-                                desc={movie.movieDescription}
-                                rating={movie.moviePopularity}
-                                onClick={() => {
-                                    movieModal(movie);
-                                }} />
-                        </Col>
-                    );
+                    const { movieImagePath, movieTitle, movieDescription, moviePopularity, movieReleaseYear, movieGenres } = movie;
+                    return <MovieCard title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => movieModal(movie)} />
                 });
             }).catch((err) => {
                 throw err;
@@ -65,7 +46,8 @@ const MovieGenerationCarousel = ({
     }
 
     function movieModal(movie) {
-        setModal(false);
+
+        setModal(() => false);
         const { movieImagePath, movieTitle, movieDescription, moviePopularity, movieReleaseYear, movieGenres } = movie;
         modalHead = <ModalHeader className="modalH" cssModule={{ 'modal-title': 'w-100 text-center' }}>{movieTitle}</ModalHeader>
         modalBody =
@@ -82,6 +64,8 @@ const MovieGenerationCarousel = ({
             </ModalBody>
         setModal(() => true);
     }
+    let popUpModal
+
 
     let slides = movieGenerationQuestions.map((movieSlide) => {
         return (
@@ -130,6 +114,7 @@ const MovieGenerationCarousel = ({
             </Row>
         );
     };
+
     const showMovies = () => {
         return (
             <Row xs="3">

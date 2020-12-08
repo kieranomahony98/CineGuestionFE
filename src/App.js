@@ -5,7 +5,7 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import { Provider, useSelector } from 'react-redux'
 import store from './store';
 import ViewCurations from './pages/ViewCurations';
-
+import SingleCurationPage from "./pages/SingleCurationPage";
 /* Use AnimationRevealPage as a wrapper component for your pages if you are custom building it */
 // import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 
@@ -119,7 +119,12 @@ export default function App() {
           <Route path="/myGenerations">
             {(authentication) ? <ViewCurations /> : <Redirect to='/' />}
           </Route>
+          <Route path="/previous/curations/specific">
+            {(authentication) ? <SingleCurationPage /> : <Redirect to="/" />}
+
+          </Route>
         </Switch>
+
       </Router>
     </Provider>
 

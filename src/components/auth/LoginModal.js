@@ -53,6 +53,7 @@ const LoginModal = () => {
         const value = e.target.value;
         setUser(user => ({ ...user, [id]: value }));
     }
+
     return (
         <>
             <NavLink onClick={toggle} to="#">

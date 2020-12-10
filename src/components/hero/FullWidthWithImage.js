@@ -1,10 +1,11 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { css } from "styled-components/macro"; //eslint-disable-line
-
 import Header, { LogoLink, NavLinks, NavLink as NavLinkBase } from "../headers/light.js";
-
+import LoginModal from "components/auth/LoginModal.js";
+import DowndownMenu from '../../dropdown/DropdownMenu';
+import { useSelector } from "react-redux";
+import RegisterModal from "components/auth/RegisterModal.js";
 const StyledHeader = styled(Header)`
   ${tw`justify-between`}
   ${LogoLink} {
@@ -19,8 +20,9 @@ const NavLink = tw(NavLinkBase)`
 const Container = tw.div`relative -mx-8 -mt-8`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row bg-gray-100`;
 const LeftColumn = tw.div`ml-8 mr-8 xl:pl-10 py-8`;
+//image licesning is free to use source:
 const RightColumn = styled.div`
-  background-image: url("https://images.unsplash.com/photo-1551918120-9739cb430c6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&width=1440&height=1024&q=75");
+  background-image: url("https://images.unsplash.com/photo-1580247817119-c6cb496270a4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80");
   ${tw`bg-green-500 bg-cover bg-center xl:ml-24 h-96 lg:h-auto lg:w-1/2 lg:flex-1`}
 `;
 
@@ -41,29 +43,45 @@ const Actions = styled.div`
   }
 `;
 
-export default ({
-  navLinks = [
+
+let primaryActionUrl = "#";
+let primaryActionText;
+
+const HomePageWithImage = () => {
+  const isAuthenticatedNavLink = [];
+  const { isAuthenticated } = useSelector(state => state.auth);
+  if (isAuthenticated) {
+    isAuthenticatedNavLink.push(<DowndownMenu />);
+    primaryActionText = "Get Generating!";
+    primaryActionUrl = "/Generate";
+  } else {
+    isAuthenticatedNavLink.push(<LoginModal key="login" />);
+    primaryActionText = <RegisterModal key="register" />;
+  }
+
+  const navLinks = [
     <NavLinks key={1}>
-      <NavLink href="#">About</NavLink>
-      <NavLink href="#">Blog</NavLink>
-      <NavLink href="#">Pricing</NavLink>
-      <NavLink href="#">Login</NavLink>
+      <NavLink href="#">Trending</NavLink>
+      <NavLink href="#">Community</NavLink>
+      <NavLink href="#">Generate</NavLink>
+      {isAuthenticatedNavLink}
     </NavLinks>
-  ],
-  heading = (
+  ];
+  const heading = (
     <>
-      Find Perfect Hotels
+      Find Perfect Movies
       <wbr />
       <br />
-      <span tw="text-primary-500">anywhere you go.</span>
+      anywhere you go,
+      <wbr />
+      <br />
+      <span tw="text-primary-500">To satisfy everyone you're with</span>
     </>
-  ),
-  description = "We've been in the hotels business across the world for 5 years now. We assure you that you will always enjoy your stay with us.",
-  primaryActionUrl = "#",
-  primaryActionText = "Sign Up",
-  secondaryActionUrl = "#",
-  secondaryActionText = "Search Hotels"
-}) => {
+  );
+  const description = "CineGuestion is a new approach to recommending movies, we believe you should have the power to decide what you watch";
+
+  const secondaryActionUrl = "/Generate";
+  const secondaryActionText = "Find Movies";
   return (
     <Container>
       <TwoColumn>
@@ -86,4 +104,5 @@ export default ({
       </TwoColumn>
     </Container>
   );
-};
+}
+export default HomePageWithImage;

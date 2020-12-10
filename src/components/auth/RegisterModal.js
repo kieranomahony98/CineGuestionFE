@@ -4,7 +4,7 @@ import { connect, useSelector, useDispatch } from 'react-redux';
 import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, Alert } from 'reactstrap';
 import { register } from '../../actions/authActions';
 import registerValidation from '../../validation/registerValidation';
-
+import "../../css/authModals.css"
 const RegisterModal = () => {
     const dispatch = useDispatch();
 
@@ -49,12 +49,15 @@ const RegisterModal = () => {
         } else {
             setErrors(errors => ({ ...errors, ...registerErrors }));
         }
-
-
     }
 
     // const
     const toggle = () => {
+        setErrors(errors => ({
+            ...errors, name: '',
+            email: '',
+            password: '',
+        }));
         setModal(() => !modal);
     };
 
@@ -65,7 +68,7 @@ const RegisterModal = () => {
     };
     return (
         <>
-            <PrimaryLink to="#" onClick={toggle} style={{ marginTop: '-10px' }}>
+            <PrimaryLink to="#" onClick={toggle} style={{ marginTop: '-10px' }} className="authModal">
                 Register
             </PrimaryLink>
             <Modal isOpen={modal} toggle={toggle}>

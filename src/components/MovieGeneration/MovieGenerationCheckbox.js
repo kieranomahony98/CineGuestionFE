@@ -4,15 +4,10 @@ import MovieGenerationModel from '../../data/MovieGenerationModel';
 const MovieGenerationCheckbox = ({
     formItem,
     characteristic,
+    onClick
 
 }) => {
-    const addToObject = (genreId) => {
-        if (characteristic === 'with_genres') {
-            MovieGenerationModel.with_genres = !MovieGenerationModel.with_genres ? `${genreId}` : `${MovieGenerationModel.with_genres},${genreId}`;
-        } else {
-            MovieGenerationModel.with_keywords = `${genreId}`
-        }
-    }
+
     return (
         <tr>
             <td>
@@ -21,7 +16,7 @@ const MovieGenerationCheckbox = ({
             <td>
                 <Input addon type="checkbox" characteristic={characteristic}
                     value={formItem.value.toString()} aria-label="Check for following Text input"
-                    className="inputItem" onClick={() => addToObject(formItem.value)} />
+                    className="inputItem" onClick={onClick} />
             </td>
         </tr >
 

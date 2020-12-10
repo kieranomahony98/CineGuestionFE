@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 import { DropdownToggle, DropdownMenu, DropdownItem, Dropdown, UncontrolledDropdown } from 'reactstrap';
 import { logout } from '../actions/authActions';
 import { NavLink } from '../components/headers/light';
-import '../dropdown.css';
-
+import '../css/dropdown.css';
+const dropDownText = "text-gray-400"
 const DowndownMenu = () => {
     const dispatch = useDispatch();
     const [dropdown, setDropdown] = useState(false);
@@ -34,7 +35,9 @@ const DowndownMenu = () => {
     }, [dropdown]);
 
     const userLogout = () => {
+        console.log("dispatched");
         dispatch(logout());
+        return <Redirect to="/" />
     }
     return (
         <div ref={dropDownRef} style={{ marginTop: '-2px' }}>
@@ -45,9 +48,9 @@ const DowndownMenu = () => {
                 </NavLink>
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem>My Generations</DropdownItem>
-                    <DropdownItem>My Details</DropdownItem>
-                    <DropdownItem onClick={userLogout}>Logout</DropdownItem>
+                    <DropdownItem className={dropDownText} href="/myGenerations">My Generations</DropdownItem>
+                    <DropdownItem className={dropDownText}>My Details</DropdownItem>
+                    <DropdownItem onClick={userLogout} className={dropDownText}>Logout</DropdownItem>
                 </DropdownMenu>
             </UncontrolledDropdown >
         </div>

@@ -4,12 +4,11 @@ import MovieGenerationModel from '../../data/MovieGenerationModel';
 const MovieGenerationCheckbox = ({
     formItem,
     characteristic,
-    className
+    className,
+    onClick
 }) => {
 
-    const addToObject = (value) => {
-        MovieGenerationModel[characteristic] = value;
-    };
+
 
     return (
         <tr>
@@ -19,7 +18,7 @@ const MovieGenerationCheckbox = ({
             <td>
                 <Input addon type="radio" className={className} name={characteristic}
                     value={formItem.value.toString()} aria-label="Check for following Text input"
-                    className="carouselItem" onClick={() => addToObject(formItem.value)} />
+                    className="carouselItem" onClick={onClick} />
             </td>
 
         </tr>

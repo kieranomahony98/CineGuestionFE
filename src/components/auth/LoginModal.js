@@ -5,6 +5,9 @@ import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader } 
 import { login } from '../../actions/authActions';
 import loginValidation from '../../validation/loginValidation';
 import { NavLink } from '../headers/light';
+import "../../css/authModals.css"
+
+
 const LoginModal = () => {
     const dispatch = useDispatch();
 
@@ -20,6 +23,10 @@ const LoginModal = () => {
     const { isAuthenticated } = useSelector(state => state.auth);
 
     const toggle = () => {
+        setErrors(errors => ({
+            ...errors, name: '',
+            password: ''
+        }));
         setModal(!modal);
     }
 
@@ -53,9 +60,10 @@ const LoginModal = () => {
         const value = e.target.value;
         setUser(user => ({ ...user, [id]: value }));
     }
+
     return (
         <>
-            <NavLink onClick={toggle} to="#">
+            <NavLink onClick={toggle} to="#" className="authModal">
                 Login
             </NavLink>
             <Modal isOpen={modal} toggle={toggle}>
@@ -66,10 +74,13 @@ const LoginModal = () => {
                             <div className="mb-3">
                                 <Label for="email"></Label>
                                 <Input type="email" name="email" placeholder="Email..." className="mb-3" onChange={onChange} />
+                                {(errors.email) ? <p className="text-danger">{errors.email}</p> : null}
                             </div>
                             <div>
                                 <Label for="password"></Label>
                                 <Input type="password" name="password" placeholder="Password..." className="mb-3" onChange={onChange} />
+                                {(errors.password) ? <p className="text-danger">{errors.password}</p> : null}
+
                             </div>
                             <Button type="submit" color="dark" style={{ marginTop: '2rem' }} block>Register</Button>
                         </FormGroup>

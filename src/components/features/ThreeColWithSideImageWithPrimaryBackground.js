@@ -72,7 +72,7 @@ export default ({
       title: "Secure",
       description: "We strictly only deal with vendors that provide top notch security infrastructure."
     },
-    { imageSrc: SupportIconImage, title: "24/7 Support" },
+    { imageSrc: SupportIconImage, title: "24/7 " },
     { imageSrc: CustomizeIconImage, title: "Customizable" },
     { imageSrc: ReliableIconImage, title: "Reliable" },
     { imageSrc: FastIconImage, title: "Fast" },

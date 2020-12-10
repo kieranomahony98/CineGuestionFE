@@ -55,23 +55,20 @@ export default ({
     {
       imageSrc: ShieldIconImage,
       title: "Secure",
-      description: "We strictly only deal with vendors that provide top notch security.",
-      url: "https://timerse.com"
+      description: "Sensitive data is fully encrypted within our database.",
     },
     {
       imageSrc: SupportIconImage,
-      title: "24/7 Support",
-      description: "Lorem ipsum donor amet siti ceali placeholder text",
-      url: "https://google.com"
+      title: "Ethics",
+      description: "We dont make user models so all curations are independent",
     },
     {
       imageSrc: CustomizeIconImage,
-      title: "Customizable",
-      description: "Lorem ipsum donor amet siti ceali placeholder text",
-      url: "https://reddit.com"
+      title: "Personalisation",
+      description: "You have full control over the recommendation system",
+
     }
   ],
-  linkText = "Learn More",
   heading = "",
   subheading = "",
   description = "",
@@ -100,12 +97,6 @@ export default ({
                 </span>
                 <span className="title">{card.title}</span>
                 <p className="description">{card.description}</p>
-                {linkText && (
-                  <span className="link">
-                    <span>{linkText}</span>
-                    <ArrowRightIcon className="icon" />
-                  </span>
-                )}
               </Card>
             </Column>
           ))}

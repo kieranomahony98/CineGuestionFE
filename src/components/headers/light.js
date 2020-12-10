@@ -7,12 +7,11 @@ import LoginModal from '../auth/LoginModal'
 import RegisterModal from '../auth/RegisterModal';
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.js";
 import DowndownMenu from '../../dropdown/DropdownMenu';
-import logo from "../../images/logo.svg";
+import logo from "../../images/cineGuestion/logo.png";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 import { useSelector } from "react-redux";
 import "../../homepage.css";
-import useOnClickOutside from 'use-onclickoutside';
 
 const Header = tw.header`
   flex justify-between items-center
@@ -99,7 +98,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
   const defaultLogoLink = (
     <LogoLink href="/">
       <img src={logo} alt="logo" />
-      Treact
+      CineGuestion
     </LogoLink>
   );
 

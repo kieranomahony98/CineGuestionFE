@@ -40,8 +40,8 @@ const Answer = motion.custom(tw.dd`pointer-events-none text-sm sm:text-base lead
 export default ({
   subheading = "",
   heading = "Questions",
-  description = "Here are some frequently asked questions about our hotels from our loving customers. Should you have any other questions, feel free to reach out via the contact form below.",
-  imageSrc = "https://images.unsplash.com/photo-1579427421635-a0015b804b2e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&q=80",
+  description = "Here are some frequently asked questions about our service. Should you have any other questions, feel free to reach out to us.",
+  imageSrc = "https://images.unsplash.com/photo-1563699182-58375278b2b9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80",
   imageContain = false,
   imageShadow = true,
   faqs = null
@@ -52,24 +52,24 @@ export default ({
    */
   const defaultFaqs = [
     {
-      question: "Is lunch provided free of cost ?",
+      question: "How Does CineGuestion work?",
       answer:
-        "Yes, it is, if you have a membership with us. Otherwise it is charged as per the menu. Some limits do apply as to how much items can be included in your lunch. This limit is enough for any one person and merely exists to discourage abusal of the system."
+        "CineGuestion is simple, we ask you to fill out the movie curation survey with everything in it being optional, once submitted we process your request and find the nine best movies that fit your input"
     },
     {
-      question: "Do you have 2 Bedroom suites ?",
+      question: "Do I need an account?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        "No you do not need an account to generate movies, however we recommend making one to avail of all our features"
     },
     {
-      question: "Are Wi-Fi costs included in the price ?",
+      question: "Do I need a subscription ?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        "No, currently CineGuestion is 100% free"
     },
     {
-      question: "Where can I reach you for support ?",
+      question: "Are you affiliated with Netflix ?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        "No we are completely independent from any streaming service"
     }
   ];
 

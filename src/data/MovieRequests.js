@@ -1,7 +1,6 @@
 import axios from 'axios';
-import MovieGenerationModel from './MovieGenerationModel';
 
-async function requestMovies(token = null) {
+async function requestMovies(token = null, MovieGenerationModel) {
     const config = {
         headers: {
             'Content-Type': 'application/json'

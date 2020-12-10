@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import MovieCard from '../cards/card';
+import MovieCard from '../components/cards/card';
 import { Col } from 'reactstrap';
 import MovieModal from '../components/modal/movieModal';
 

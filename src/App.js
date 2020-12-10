@@ -5,7 +5,6 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import { Provider, useSelector } from 'react-redux'
 import store from './store';
 import ViewCurations from './pages/ViewCurations';
-import SingleCurationPage from "./pages/SingleCurationPage";
 import ComponentRenderer from "ComponentRenderer.js";
 import MainLandingPage from "MainLandingPage.js";
 import MovieGeneration from './pages/MovieGeneration';
@@ -38,10 +37,6 @@ export default function App() {
           </Route>
           <Route path="/myGenerations">
             {(authentication) ? <ViewCurations /> : <Redirect to='/' />}
-          </Route>
-          <Route path="/previous/curations/specific">
-            {(authentication) ? <SingleCurationPage /> : <Redirect to="/" />}
-
           </Route>
         </Switch>
 

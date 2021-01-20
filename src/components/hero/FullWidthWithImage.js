@@ -6,6 +6,8 @@ import LoginModal from "components/auth/LoginModal.js";
 import DowndownMenu from '../../dropdown/DropdownMenu';
 import { useSelector } from "react-redux";
 import RegisterModal from "components/auth/RegisterModal.js";
+import { Redirect } from 'react-router-dom';
+
 const StyledHeader = styled(Header)`
   ${tw`justify-between`}
   ${LogoLink} {
@@ -52,18 +54,27 @@ const HomePageWithImage = () => {
   const { isAuthenticated } = useSelector(state => state.auth);
   if (isAuthenticated) {
     isAuthenticatedNavLink.push(<DowndownMenu />);
-    primaryActionText = "Get Generating!";
+    primaryActionText = "View Generations!"
     primaryActionUrl = "/Generate";
   } else {
     isAuthenticatedNavLink.push(<LoginModal key="login" />);
     primaryActionText = <RegisterModal key="register" />;
+    primaryActionUrl = "#";
+
   }
 
+  const handleGenerate = () => {
+    if (isAuthenticated) {
+      return <Redirect to="/myGenerations" />
+    } else {
+      return <Redirect to="/" />
+    }
+  }
   const navLinks = [
     <NavLinks key={1}>
       <NavLink href="#">Trending</NavLink>
       <NavLink href="#">Community</NavLink>
-      <NavLink href="#">Generate</NavLink>
+      <NavLink onClick={handleGenerate}>Generate</NavLink>
       {isAuthenticatedNavLink}
     </NavLinks>
   ];
@@ -72,16 +83,16 @@ const HomePageWithImage = () => {
       Find Perfect Movies
       <wbr />
       <br />
-      anywhere you go,
+      Anywhere you go,
       <wbr />
       <br />
-      <span tw="text-primary-500">To satisfy everyone you're with</span>
+      <span tw="text-primary-500">To satisfy everyone.</span>
     </>
   );
   const description = "CineGuestion is a new approach to recommending movies, we believe you should have the power to decide what you watch";
 
   const secondaryActionUrl = "/Generate";
-  const secondaryActionText = "Find Movies";
+  const secondaryActionText = "Get Generating";
   return (
     <Container>
       <TwoColumn>

@@ -23,5 +23,4 @@ export default function (state = intialState, action) {
         default:
             return state;
     }
-
 }

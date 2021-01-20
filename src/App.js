@@ -6,25 +6,21 @@ import { Provider, useSelector } from 'react-redux'
 import store from './store';
 import ViewCurations from './pages/ViewCurations';
 import ComponentRenderer from "ComponentRenderer.js";
-import MainLandingPage from "MainLandingPage.js";
 import MovieGeneration from './pages/MovieGeneration';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { loadUser } from "actions/authActions";
 import LandingPage from "pages/LandingPage";
+import WeeklyPlaylist from "pages/weeklyPlaylists";
+
 
 export default function App() {
   useEffect(() => {
     store.dispatch(loadUser());
   });
-
-  const authentication = () => {
-    if (store.getState().auth.isAuthenticated) {
-      return true
-    };
+  let isAuthenticated = () => {
+    if (store.getState().auth.token) return true;
     return false;
-
-  }
-  // return <AnimationRevealPage disabled></AnimationRevealPage>;
+  };
   return (
     <Provider store={store}>
       <Router>
@@ -36,7 +32,11 @@ export default function App() {
             <MovieGeneration />
           </Route>
           <Route path="/myGenerations">
-            {(authentication) ? <ViewCurations /> : <Redirect to='/' />}
+            {isAuthenticated() ? <ViewCurations /> : <Redirect to="/Generate" />}
+          </Route>
+          <Route path="/playlists/weekly">
+            {isAuthenticated() ? <WeeklyPlaylist /> : <Redirect to="/" />}
+
           </Route>
         </Switch>
 

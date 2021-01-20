@@ -74,9 +74,7 @@ const MovieGenerationCarousel = ({ }) => {
             }
         }
         if (characteristic === 'with_keywords') {
-            console.log('dsfa');
             if (surveyResults.with_keywords) {
-
                 const keywords = surveyResults.with_keywords.toString();
                 console.log(keywords);
                 value = (keywords.match(new RegExp(`,${value}`, "g"))) ? keywords.replace(new RegExp(`,${value}`, "g"), "") : (keywords.match(new RegExp(`${value},`, "g"))) ? keywords.replace(new RegExp(`${value},`, "g"), "") : (keywords.match(new RegExp(`${value}`, "g"))) ? keywords.replace(new RegExp(`${value},`, "g"), "") : `${keywords},${value}`;
@@ -128,19 +126,16 @@ const MovieGenerationCarousel = ({ }) => {
 
     const showSpinner = () => {
         return (
-            <Row style={{ visibility: (spinnerVisibility) ? 'visible' : 'hidden' }}>
-                <Col>
-                    <Loader type="BallTriangle" color="#00BFFF" height={80} width={80} className="spinner" />
-                </Col>
-            </Row>
+            <div className="d-flex justify-content-center">
+                <Loader type="BallTriangle" color="#00BFFF" height={80} width={80} className="spinner p-2" />
+            </div>
         );
     };
     const handleClick = () => {
-        console.log(MovieGenerationModel);
         setCarouselVisible(carouselVisible => !carouselVisible);
         setSurveyResults(() => ({}));
-
     }
+
     const showMovies = () => {
         return (
             <>
@@ -179,8 +174,6 @@ const MovieGenerationCarousel = ({ }) => {
                 </Row>
             </div>
             <Row>
-                {(carouselVisible) ? <Button className="mr-auto ml-10 btnGenerate btn btn-light mb-10 " onClick={resetSurvey}>Reset Survey</Button> : ''}
-
                 {(carouselVisible) ? <Button className="ml-auto mr-10 btnGenerate btn btn-light mb-10 " onClick={requestMovies}>Generate Movies</Button> : ''}
             </Row>
         </Container >

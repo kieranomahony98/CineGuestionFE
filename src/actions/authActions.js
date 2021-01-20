@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, } from '../actions/types';
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, MOVIES_LOADING, MOVIES_LOADED } from '../actions/types';
 import { returnErrors, clearErrors } from './errorActions';
+import { loadMovies } from './movieActions';
+
 
 //Check token & load user
 export const loadUser = () => (dispatch, getState) => {
@@ -9,28 +11,37 @@ export const loadUser = () => (dispatch, getState) => {
 
     //get token from local storage
     const token = getState().auth.token;
-
     //req headers
     const config = {
         headers: {
             "Content-type": "application/json"
         }
     }
+    const { weeklyPlaylists } = getState().movies;
+    console.log('called');
     //if token add to headers
     if (token) {
         config.headers['x-auth-token'] = token;
-    }
-
-    axios.post('/api/users/user', config)
-        .then((res) => {
-            dispatch({ type: USER_LOADED, payload: res.data });
-        }).catch((err) => {
-            dispatch(returnErrors(err.response.data, err.response.status))
-            dispatch({
-                type: AUTH_ERROR
+        axios.post('/api/users/user', config)
+            .then((res) => {
+                dispatch({ type: USER_LOADED, payload: res.data });
+                if (!weeklyPlaylists) {
+                    dispatch(loadMovies())
+                };
+            }).catch((err) => {
+                dispatch(returnErrors(err.response.data, err.response.status))
+                dispatch({
+                    type: AUTH_ERROR
+                });
             });
-        })
+    } else {
+        dispatch(returnErrors('Token is Null', '401'));
+        dispatch({
+            type: AUTH_ERROR
+        });
+    }
 }
+
 export const login = ({ email, password }) => dispatch => {
     const config = {
         headers: {
@@ -48,6 +59,7 @@ export const login = ({ email, password }) => dispatch => {
                 type: LOGIN_SUCCESS,
                 payload: res.data
             });
+            dispatch(loadMovies());
         }).catch((err) => {
             dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));
             dispatch({
@@ -55,6 +67,7 @@ export const login = ({ email, password }) => dispatch => {
             });
         });
 }
+
 export const register = ({ name, email, password }) => dispatch => {
     const config = {
         headers: {
@@ -62,7 +75,6 @@ export const register = ({ name, email, password }) => dispatch => {
         }
     }
 
-    //data body
     const body = JSON.stringify({ name, email, password });
 
     axios.post('/api/auth/register', body, config)

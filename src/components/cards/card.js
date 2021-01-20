@@ -5,7 +5,7 @@ import { Col } from 'reactstrap';
 const Card = tw.div`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none`;
 const CardImage = styled.div(props => [
   `background-image: url("${props.imageSrc}");`,
-  tw`w-full h-80 sm:h-64 bg-cover bg-center rounded sm:rounded-none sm:rounded-tl-4xl`
+  tw`w-full h-64 sm:h-128 bg-cover bg-center rounded sm:rounded-none sm:rounded-tl-4xl`
 ]);
 
 const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
@@ -35,7 +35,6 @@ const Text = tw.div`ml-2 text-sm font-semibold text-gray-800`;
 const movieCard = ({ title, img, onClick, rating, desc, className }) => {
 
   const imageRoute = `https://image.tmdb.org/t/p/original${img}`;
-
   return (
     <Col className={className}>
       <Card key={title} onClick={onClick}>

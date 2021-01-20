@@ -18,6 +18,8 @@ async function requestMovies(token = null) {
             if (res.status === 200) {
                 console.log(res.data);
                 return JSON.parse(JSON.stringify(res.data));
+            } else {
+                return null;
             }
         }).catch((err) => {
             console.log('Error in getting movies');

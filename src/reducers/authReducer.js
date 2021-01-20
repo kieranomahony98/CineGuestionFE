@@ -1,9 +1,8 @@
-import { act } from 'react-dom/test-utils';
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGUOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS } from '../actions/types';
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGUOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, MOVIES_LOADED } from '../actions/types';
 
 const initialState = {
     token: localStorage.getItem('token'),
-    isAuthenticated: null,
+    isAuthenticated: false,
     isLoading: false,
     user: null,
 };
@@ -24,7 +23,7 @@ export default function (state = initialState, action) {
             }
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
-            localStorage.setItem('token', action.payload.token)
+            localStorage.setItem('token', action.payload.token);
             return {
                 ...state,
                 ...action.payload,
@@ -43,6 +42,11 @@ export default function (state = initialState, action) {
                 isAuthenticated: false,
                 isLoading: false,
                 user: null
+            }
+        case MOVIES_LOADED:
+            return {
+                ...state,
+
             }
         default:
             return state

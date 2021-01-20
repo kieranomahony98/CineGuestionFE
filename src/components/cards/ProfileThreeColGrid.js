@@ -4,11 +4,11 @@ import styled from "styled-components";
 import { css } from "styled-components/macro";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts.js";
 import { SectionHeading, Subheading as SubheadingBase } from "components/misc/Headings";
-import {SectionDescription} from "components/misc/Typography";
-import { ReactComponent as TwitterIcon} from "images/twitter-icon.svg";
-import { ReactComponent as LinkedinIcon} from "images/linkedin-icon.svg";
+import { SectionDescription } from "components/misc/Typography";
+import { ReactComponent as TwitterIcon } from "images/twitter-icon.svg";
+import { ReactComponent as LinkedinIcon } from "images/linkedin-icon.svg";
 import { ReactComponent as GithubIcon } from "images/github-icon.svg";
-
+import weeklyPlaylist from "../../images/cineGuestion/weeklyPlaylists.png"
 const HeadingContainer = tw.div``
 const Heading = tw(SectionHeading)``
 const Subheading = tw(SubheadingBase)`text-center mb-3`
@@ -46,7 +46,7 @@ export default ({
   description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   cards = [
     {
-      imageSrc: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&fit=facearea&facepad=2.95&w=512&h=512&q=80",
+      imageSrc: weeklyPlaylist,
       position: "Founder",
       name: "Adam Cuppy",
       links: [
@@ -166,8 +166,8 @@ export default ({
       <ContentWithPaddingXl>
         <HeadingContainer>
           {subheading && <Subheading>{subheading}</Subheading>}
-          {heading && <Heading>{heading}</Heading> }
-          {description && <Description>{description}</Description> }
+          {heading && <Heading>{heading}</Heading>}
+          {description && <Description>{description}</Description>}
         </HeadingContainer>
         <Cards>
           {cards.map((card, index) => (

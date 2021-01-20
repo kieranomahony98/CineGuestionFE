@@ -14,9 +14,10 @@ async function requestMovies(token = null, MovieGenerationModel) {
         }
     );
     return axios.post('/api/movies/movieGeneration', body, config)
-        .then((req, res) => {
-            if (req.status === 200) {
-                return JSON.parse(JSON.stringify(req.data)).movies;
+        .then((res) => {
+            if (res.status === 200) {
+                console.log(res.data);
+                return JSON.parse(JSON.stringify(res.data)).movies;
             }
         }).catch((err) => {
             throw err;

@@ -82,7 +82,7 @@ const LoginModal = () => {
                                 {(errors.password) ? <p className="text-danger">{errors.password}</p> : null}
 
                             </div>
-                            <Button type="submit" color="dark" style={{ marginTop: '2rem' }} block>Register</Button>
+                            <Button type="submit" color="dark" style={{ marginTop: '2rem' }} block>Login</Button>
                         </FormGroup>
                     </Form>
                 </ModalBody>

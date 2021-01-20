@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
-import { DropdownToggle, DropdownMenu, DropdownItem, Dropdown, UncontrolledDropdown } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
+import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
+import { logOutMovies } from '../actions/movieActions'
 import { logout } from '../actions/authActions';
 import { NavLink } from '../components/headers/light';
 import '../css/dropdown.css';
@@ -16,10 +17,8 @@ const DowndownMenu = () => {
 
     const handleClickOutside = e => {
         if (dropDownRef.current.contains(e.target)) {
-            // inside click
             return;
         }
-        // outside click
         setDropdown(!dropdown);
     };
 
@@ -35,10 +34,11 @@ const DowndownMenu = () => {
     }, [dropdown]);
 
     const userLogout = () => {
-        console.log("dispatched");
         dispatch(logout());
+        dispatch(logOutMovies());
         return <Redirect to="/" />
     }
+
     return (
         <div ref={dropDownRef} style={{ marginTop: '-2px' }}>
             <UncontrolledDropdown nav isOpen={dropdown} onClick={toggle}>

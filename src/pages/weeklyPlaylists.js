@@ -4,19 +4,23 @@ import Footer from "components/footers/MiniCenteredFooter.js";
 import Header from "components/headers/light";
 import Playlists from "components/playlists/playlists"
 import { useSelector } from 'react-redux';
+import { Redirect, useParams } from 'react-router-dom';
 
 const WeeklyPlaylist = () => {
-    const { weeklyPlaylist } = useSelector(state => state.movies);
+    const { type } = useParams();
+    const { [type]: value } = useSelector(state => state.movies);
+    console.log(value);
+    if (!value) {
+        return <Redirect to="/" />
+    }
 
     return (
         <AnimationRevealPage>
             <Header />
-            <Playlists Playlist={weeklyPlaylist} />
+            <Playlists Playlist={value} />
             <Footer />
         </AnimationRevealPage >
     )
 }
-
-
 
 export default WeeklyPlaylist;

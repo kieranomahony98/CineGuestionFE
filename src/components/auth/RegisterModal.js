@@ -1,11 +1,11 @@
 import { PrimaryLink } from 'components/headers/light';
-import React, { useEffect, useState } from 'react'
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, Alert } from 'reactstrap';
+import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, Badge } from 'reactstrap';
 import { register } from '../../actions/authActions';
 import registerValidation from '../../validation/registerValidation';
 import "../../css/authModals.css"
-const RegisterModal = () => {
+const RegisterModal = ({ className }) => {
     const dispatch = useDispatch();
 
     const [modal, setModal] = useState(false);
@@ -24,7 +24,6 @@ const RegisterModal = () => {
 
     const { id, msg } = useSelector(state => state.error);
     const { isAuthenticated } = useSelector(state => state.auth)
-
     const onSubmit = (e) => {
         e.preventDefault();
         const { name, email, password, password2 } = user;
@@ -68,15 +67,14 @@ const RegisterModal = () => {
     };
     return (
         <>
-            <PrimaryLink to="#" onClick={toggle} style={{ marginTop: '-10px' }} className="authModal">
+            <PrimaryLink to="#" onClick={toggle} style={{ marginTop: '-10px' }} className={`authModal ${className}`}>
                 Register
             </PrimaryLink>
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader>Register</ModalHeader>
                 <ModalBody>
-                    {(id === 'REGISTER_FAIL') ? <Alert color="danger">{msg}</Alert> : null}
+                    {(id === 'REGISTER_FAIL') ? <Badge color="warning" style={{ width: "100%" }} className="mb-2">{msg}</Badge> : null}
                     <Form onSubmit={onSubmit}>
-
                         <FormGroup>
                             <Label for="name"></Label>
                             <Input type="text" name="name" placeholder="Full Name..." className="mb-3" onChange={onChange} />

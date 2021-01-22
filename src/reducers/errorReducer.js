@@ -1,9 +1,10 @@
-import { GET_ERRORS, CLEAR_ERRORS } from '../actions/types';
+import { GET_ERRORS, CLEAR_ERRORS, LOGIN_ERROR } from '../actions/types';
 
 const intialState = {
     msg: {},
     status: null,
-    id: null
+    id: null,
+    loginError: null
 };
 
 export default function (state = intialState, action) {
@@ -20,6 +21,11 @@ export default function (state = intialState, action) {
                 status: null,
                 id: null
             };
+        case LOGIN_ERROR:
+            return {
+                ...state,
+                loginError: action.payload.msg
+            }
         default:
             return state;
     }

@@ -1,28 +1,22 @@
 import React from 'react';
-import { InputGroup, InputGroupAddon, InputGroupText, Input, Row } from 'reactstrap';
-import MovieGenerationModel from '../../data/MovieGenerationModel';
+import { Input } from 'reactstrap';
 const MovieGenerationCheckbox = ({
     formItem,
     characteristic,
     className,
-    onClick
+    clickAction
 }) => {
-
-
-
     return (
         <tr>
             <td>
                 <label> {formItem.name}</label>
             </td>
             <td>
-                <Input addon type="radio" className={className} name={characteristic}
+                <Input addon type="radio" className={`carouselItem ${className}`} name={characteristic}
                     value={formItem.value.toString()} aria-label="Check for following Text input"
-                    className="carouselItem" onClick={onClick} />
+                    onClick={clickAction} />
             </td>
-
         </tr>
-
     );
 }
 

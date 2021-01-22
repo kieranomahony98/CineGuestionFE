@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -78,7 +78,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
 
   let isAuthenticatedNavLink = [];
   if (isAuthenticated) {
-    isAuthenticatedNavLink.push(<DowndownMenu />);
+    isAuthenticatedNavLink.push(<DowndownMenu key={"drodown"} />);
   } else {
     isAuthenticatedNavLink.push(<LoginModal key="login" />, <RegisterModal key="register" />);
   }

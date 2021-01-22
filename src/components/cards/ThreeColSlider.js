@@ -4,29 +4,27 @@ import tw from "twin.macro";
 import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
-import { ReactComponent as PriceIcon } from "feather-icons/dist/icons/dollar-sign.svg";
-import { ReactComponent as LocationIcon } from "feather-icons/dist/icons/map-pin.svg";
-import { ReactComponent as StarIcon } from "feather-icons/dist/icons/star.svg";
-import { ReactComponent as ChevronLeftIcon } from "feather-icons/dist/icons/chevron-left.svg";
-import { ReactComponent as ChevronRightIcon } from "feather-icons/dist/icons/chevron-right.svg";
-import weeklyPlaylist from "../../images/cineGuestion/test.png"
+import { ReactComponent as Video } from "feather-icons/dist/icons/video.svg";
+// import { ReactComponent as StarIcon } from "feather-icons/dist/icons/star.svg";
+import weeklyPlaylist from "../../images/cineGuestion/test.png";
+import monthlyPlaylist from "../../images/cineGuestion/monthlyPlaylist.png";
+import allTime from "../../images/cineGuestion/allTime.png";
+import movieIcon from "../../images/cineGuestion/movieIcon.svg";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
 
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
 
 const HeadingWithControl = tw.div`flex flex-col items-center sm:items-stretch sm:flex-row justify-between`;
 const Heading = tw(SectionHeading)``;
-const Controls = tw.div`flex items-center`;
-const ControlButton = styled(PrimaryButtonBase)`
-  ${tw`mt-4 sm:mt-0 first:ml-0 ml-6 rounded-full p-2`}
-  svg {
-    ${tw`w-6 h-6`}
-  }
-`;
-const PrevButton = tw(ControlButton)``;
-const NextButton = tw(ControlButton)``;
+// const ControlButton = styled(PrimaryButtonBase)`
+//   ${tw`mt-4 sm:mt-0 first:ml-0 ml-6 rounded-full p-2`}
+//   svg {
+//     ${tw`w-6 h-6`}
+//   }
+// `;
+// const PrevButton = tw(ControlButton)``;
+// const NextButton = tw(ControlButton)``;
 
 const CardSlider = styled(Slider)`
   ${tw`mt-16`}
@@ -48,13 +46,13 @@ const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
 const TitleReviewContainer = tw.div`flex flex-col sm:flex-row sm:justify-between sm:items-center`;
 const Title = tw.h5`text-2xl font-bold`;
 
-const RatingsInfo = styled.div`
-  ${tw`flex items-center sm:ml-4 mt-2 sm:mt-0`}
-  svg {
-    ${tw`w-6 h-6 text-yellow-500 fill-current`}
-  }
-`;
-const Rating = tw.span`ml-2 font-bold`;
+// const RatingsInfo = styled.div`
+//   ${tw`flex items-center sm:ml-4 mt-2 sm:mt-0`}
+//   svg {
+//     ${tw`w-6 h-6 text-yellow-500 fill-current`}
+//   }
+// `;
+// const Rating = tw.span`ml-2 font-bold`;
 
 const Description = tw.p`text-sm leading-loose mt-2 sm:mt-4`;
 
@@ -99,36 +97,31 @@ export default () => {
       imageSrc: weeklyPlaylist,
       title: "Weekly Playlist",
       description: (isAuthenticated) ? "A carefully curated playlist to help you find new movies based on your previous week of watching. Your playlist will be automatically made every monday night!" : "If you would like to get personalised playlists make sure to register!",
-      locationText: "Why not give it a go!"
+      locationText: "Why not give it a go!",
+      type: "weeklyPlaylist"
 
     },
     {
-      imageSrc: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&h=1024&w=768&q=80",
+      imageSrc: monthlyPlaylist,
       title: "Montly Playlist",
       description: (isAuthenticated) ? "Our carefully curated playlist to help you find new movies based on your previous month of watching. Your playlist will be made every month!" : "If you would like to get personalised playlists make sure to register!",
       locationText: "Why not give it a go!",
+      type: "monthlyPlaylist"
     },
     {
-      imageSrc: "https://images.unsplash.com/photo-1549294413-26f195200c16?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&h=1024&w=768&q=80",
-      title: "Hotel Baja",
-      description: "Lorem ipsum dolor sit amet, consectur dolori adipiscing elit, sed do eiusmod tempor nova incididunt ut labore et dolore magna aliqua.",
-      locationText: "Why not give it a go!"
+      imageSrc: allTime,
+      title: "Complete Playlist",
+      description: (isAuthenticated) ? "Our carefully curated playlist to match who are you, this playlist is based on all your curations with us to help you rekindle some past favourites." : "If you would like to get personalised playlists make sure to register!",
+      locationText: "Why not give it a go!",
+      type: "allTimePlaylist"
     }
   ];
-
-  const onClick = () => {
-    Redirect();
-  };
 
   return (
     <Container>
       <Content>
         <HeadingWithControl>
           <Heading>Generated Playlists</Heading>
-          <Controls>
-            <PrevButton onClick={sliderRef?.slickPrev}><ChevronLeftIcon /></PrevButton>
-            <NextButton onClick={sliderRef?.slickNext}><ChevronRightIcon /></NextButton>
-          </Controls>
         </HeadingWithControl>
         <CardSlider ref={setSliderRef} {...sliderSettings}>
           {cards.map((card, index) => (
@@ -141,14 +134,16 @@ export default () => {
                 <SecondaryInfoContainer>
                   <IconWithText>
                     <IconContainer>
-                      <LocationIcon />
+                      <Video />
                     </IconContainer>
                     <Text>{card.locationText}</Text>
                   </IconWithText>
                 </SecondaryInfoContainer>
                 <Description>{card.description}</Description>
               </TextInfo>
-              <PrimaryButton>View Now!</PrimaryButton>
+              <a href={`/playlists/${card.type}`}>
+                <PrimaryButton>View Now!</PrimaryButton>
+              </a>
             </Card>
           ))}
         </CardSlider>

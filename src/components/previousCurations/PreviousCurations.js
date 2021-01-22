@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import requestMovies from '../../data/PreviousCurationsRequests';
 import Loader from 'react-loader-spinner';
-import { Button, Container, Row, Col, Table, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Container, Row, Col, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import MovieCard from '../cards/card';
 import '../../css/PreviousCurations.css';
 import tw from "twin.macro";
 import { SkipBackward } from 'react-bootstrap-icons';
+
 const HighlightedText = tw.span`text-primary-500`;
 const route = 'https://image.tmdb.org/t/p/original';
 let modalHead, modalBody;
@@ -27,12 +28,10 @@ const PreviousCurations = () => {
         await getMovies(token)
             .then(m => {
                 if (m) {
-                    console.log(m);
-                    setPreviousCurations(m.map((movie) => {
+                    setPreviousCurations(m.map((movie, i) => {
                         const generationDate = movie.movieGenerationDate.split("T")[0];
                         return (
-                            <Row className="curationRow mb-3" onClick={() => setSpecificCuration(movie)}>
-
+                            <Row className="curationRow mb-3" onClick={() => setSpecificCuration(movie)} key={i}>
                                 <Col>
                                     <p className="mr-3">Generation Date: {generationDate}</p>
                                     <p className="mr-3"> Genres: {(movie.movieSearchCriteria.with_genres) ? movie.movieSearchCriteria.with_genres : 'Any'}</p>
@@ -51,7 +50,7 @@ const PreviousCurations = () => {
             .catch((err) => {
                 throw err;
             });
-        setGenerations(generations => true);
+        setGenerations(() => true);
     }
 
     function setSpecificCuration(movie) {
@@ -69,7 +68,7 @@ const PreviousCurations = () => {
         modalHead = <ModalHeader className="modalH" cssModule={{ 'modal-title': 'w-100 text-center' }}>{movieTitle}</ModalHeader>
         modalBody = <ModalBody className="modalBody">
             <div className="modalImage mb-3">
-                <img src={`${route}${movieImagePath}`} style={{ maxHeight: '200px', maxWidth: '200px' }} className="modalImage" />
+                <img src={`${route}${movieImagePath}`} style={{ maxHeight: '200px', maxWidth: '200px' }} className="modalImage" alt={movieTitle} />
             </div>
             <div className="modalDesc">
                 <p className="mb-2"><HighlightedText><b>Movie description: </b></HighlightedText> {movieDescription}</p>

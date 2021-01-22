@@ -2,15 +2,15 @@ import "tailwindcss/dist/base.css";
 import "styles/globalStyles.css";
 import React, { useEffect, } from "react";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import { Provider, useSelector } from 'react-redux'
-import store from './store';
+import { Provider } from 'react-redux'
+import { store, persistor } from './store';
 import ViewCurations from './pages/ViewCurations';
-import ComponentRenderer from "ComponentRenderer.js";
 import MovieGeneration from './pages/MovieGeneration';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { loadUser } from "actions/authActions";
 import LandingPage from "pages/LandingPage";
 import WeeklyPlaylist from "pages/weeklyPlaylists";
+import { PersistGate } from "redux-persist/integration/react";
 
 
 export default function App() {
@@ -21,26 +21,28 @@ export default function App() {
     if (store.getState().auth.token) return true;
     return false;
   };
+
   return (
     <Provider store={store}>
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <LandingPage />
-          </Route>
-          <Route path="/Generate">
-            <MovieGeneration />
-          </Route>
-          <Route path="/myGenerations">
-            {isAuthenticated() ? <ViewCurations /> : <Redirect to="/Generate" />}
-          </Route>
-          <Route path="/playlists/weekly">
-            {isAuthenticated() ? <WeeklyPlaylist /> : <Redirect to="/" />}
+      <PersistGate loading={null} persistor={persistor}>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <LandingPage />
+            </Route>
+            <Route path="/Generate">
+              <MovieGeneration />
+            </Route>
+            <Route path="/myGenerations">
+              {isAuthenticated() ? <ViewCurations /> : <Redirect to="/Generate" />}
+            </Route>
+            <Route path="/playlists/:type" >
+              {isAuthenticated() ? <WeeklyPlaylist /> : <Redirect to="/" />}
+            </Route>
+          </Switch>
 
-          </Route>
-        </Switch>
-
-      </Router>
+        </Router>
+      </PersistGate>
     </Provider>
 
   );

@@ -2,9 +2,10 @@ import { MOVIES_LOADING, MOVIES_LOADED, MOVIES_LOGOUT } from '../actions/types';
 
 const initialState = {
     isLoaded: false,
-    isLoading: true,
+    isLoading: false,
     weeklyPlaylist: null,
-    montlyPlaylist: null
+    montlyPlaylist: null,
+    allTimePlaylists: null
 }
 
 export default function (state = initialState, action) {
@@ -20,7 +21,8 @@ export default function (state = initialState, action) {
                 isLoaded: true,
                 isLoading: false,
                 weeklyPlaylist: action.payload.weeklyPlaylists,
-                montlyPlaylist: action.payload.montlyPlaylists
+                monthlyPlaylist: action.payload.monthlyPlaylists,
+                allTimePlaylist: action.payload.allTimePlaylists
             };
         case MOVIES_LOGOUT:
             return {

@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, MOVIES_LOADING, MOVIES_LOADED } from '../actions/types';
-import { returnErrors, clearErrors } from './errorActions';
-import { loadMovies } from './movieActions';
+import axios from "axios";
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS } from "../actions/types";
+import { returnErrors, clearErrors, loginErrors } from "./errorActions";
+import { loadMovies } from "./movieActions";
 
 
 //Check token & load user
@@ -16,18 +16,17 @@ export const loadUser = () => (dispatch, getState) => {
         headers: {
             "Content-type": "application/json"
         }
-    }
-    const { weeklyPlaylists } = getState().movies;
-    console.log('called');
-    //if token add to headers
+    };
     if (token) {
-        config.headers['x-auth-token'] = token;
-        axios.post('/api/users/user', config)
+        config.headers["x-auth-token"] = token;
+        axios.post("/api/users/user", config)
             .then((res) => {
                 dispatch({ type: USER_LOADED, payload: res.data });
-                if (!weeklyPlaylists) {
-                    dispatch(loadMovies())
-                };
+                if (!getState().movies.isLoaded) {
+                    console.log('hi');
+                    dispatch(loadMovies());
+
+                }
             }).catch((err) => {
                 dispatch(returnErrors(err.response.data, err.response.status))
                 dispatch({
@@ -35,7 +34,7 @@ export const loadUser = () => (dispatch, getState) => {
                 });
             });
     } else {
-        dispatch(returnErrors('Token is Null', '401'));
+        dispatch(returnErrors("Token is Null", "401"));
         dispatch({
             type: AUTH_ERROR
         });
@@ -45,14 +44,13 @@ export const loadUser = () => (dispatch, getState) => {
 export const login = ({ email, password }) => dispatch => {
     const config = {
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         }
     }
-
     //data body
     const body = JSON.stringify({ email, password });
 
-    axios.post('/api/auth/login', body, config)
+    axios.post("/api/auth/login", body, config)
         .then((res) => {
             dispatch(clearErrors());
             dispatch({
@@ -61,23 +59,23 @@ export const login = ({ email, password }) => dispatch => {
             });
             dispatch(loadMovies());
         }).catch((err) => {
-            dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));
+            dispatch(loginErrors(err.response.data, err.response.status));
             dispatch({
                 type: LOGIN_FAIL
             });
         });
 }
 
-export const register = ({ name, email, password }) => dispatch => {
+export const register = ({ name, email, password }) => (dispatch) => {
     const config = {
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         }
     }
 
     const body = JSON.stringify({ name, email, password });
 
-    axios.post('/api/auth/register', body, config)
+    axios.post("/api/auth/register", body, config)
         .then((res) => {
             dispatch(clearErrors());
             dispatch({
@@ -85,22 +83,13 @@ export const register = ({ name, email, password }) => dispatch => {
                 payload: res.data
             });
         }).catch((err) => {
-            dispatch(returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'));
+            dispatch(returnErrors(err.response.data, err.response.status, "REGISTER_FAIL"));
             dispatch({
                 type: REGISTER_FAIL
             });
         });
 }
 
-export const tokenConfig = getState => {
-    const token = getState().auth.token;
-
-    const config = {
-        headers: {
-            'Content-type': 'application/json'
-        }
-    }
-};
 
 export const logout = () => dispatch => {
     dispatch({ type: LOGOUT_SUCCESS });

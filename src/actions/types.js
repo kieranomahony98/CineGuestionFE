@@ -12,3 +12,4 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const MOVIES_LOADING = 'MOVIES_LOADING';
 export const MOVIES_LOADED = 'MOVIES_LOADED';
 export const MOVIES_LOGOUT = 'MOVIES_LOGOUT';
+export const LOGIN_ERROR = 'LOGIN_ERROR'

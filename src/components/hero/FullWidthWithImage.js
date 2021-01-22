@@ -54,11 +54,13 @@ const HomePageWithImage = () => {
   const { isAuthenticated } = useSelector(state => state.auth);
   if (isAuthenticated) {
     isAuthenticatedNavLink.push(<DowndownMenu />);
-    primaryActionText = "View Generations!"
-    primaryActionUrl = "/Generate";
+    primaryActionText = <a href={primaryActionUrl} className="action primaryAction">
+      My Generations!
+    </a>
+    primaryActionUrl = "/myGenerations";
   } else {
     isAuthenticatedNavLink.push(<LoginModal key="login" />);
-    primaryActionText = <RegisterModal key="register" />;
+    primaryActionText = <RegisterModal key="register" className="action primaryAction" />;
     primaryActionUrl = "#";
 
   }
@@ -102,9 +104,7 @@ const HomePageWithImage = () => {
             <Heading>{heading}</Heading>
             <Paragraph>{description}</Paragraph>
             <Actions>
-              <a href={primaryActionUrl} className="action primaryAction">
-                {primaryActionText}
-              </a>
+              {primaryActionText}
               <a href={secondaryActionUrl} className="action secondaryAction">
                 {secondaryActionText}
               </a>

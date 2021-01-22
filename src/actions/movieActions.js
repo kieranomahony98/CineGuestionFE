@@ -19,7 +19,7 @@ export const loadMovies = () => (dispatch, getState) => {
         axios.post('/api/movies/getPlaylists', body, config)
             .then((res) => {
                 if (res.status === 200) {
-                    console.log('hi');
+                    console.log(res.data);
                     dispatch({ type: MOVIES_LOADED, payload: res.data });
                 } else {
                     return null;

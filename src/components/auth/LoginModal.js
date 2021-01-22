@@ -1,11 +1,11 @@
-import { PrimaryLink } from 'components/headers/light';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, Badge } from 'reactstrap';
 import { login } from '../../actions/authActions';
 import loginValidation from '../../validation/loginValidation';
 import { NavLink } from '../headers/light';
 import "../../css/authModals.css"
+import { clearErrors } from 'actions/errorActions';
 
 
 const LoginModal = () => {
@@ -21,12 +21,13 @@ const LoginModal = () => {
         password: ''
     });
     const { isAuthenticated } = useSelector(state => state.auth);
-
+    const { loginError } = useSelector(state => state.error);
     const toggle = () => {
         setErrors(errors => ({
             ...errors, name: '',
             password: ''
         }));
+        dispatch(clearErrors());
         setModal(!modal);
     }
 
@@ -67,11 +68,12 @@ const LoginModal = () => {
                 Login
             </NavLink>
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader>Register</ModalHeader>
+                <ModalHeader>Login</ModalHeader>
                 <ModalBody>
                     <Form onSubmit={onSubmit}>
                         <FormGroup>
                             <div className="mb-3">
+                                {(loginError) ? <Badge color="warning" style={{ width: "100%" }} className="mb-2">{loginError}</Badge> : ''}
                                 <Label for="email"></Label>
                                 <Input type="email" name="email" placeholder="Email..." className="mb-3" onChange={onChange} />
                                 {(errors.email) ? <p className="text-danger">{errors.email}</p> : null}

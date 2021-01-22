@@ -15,14 +15,16 @@ const DowndownMenu = () => {
     };
     const dropDownRef = useRef();
 
-    const handleClickOutside = e => {
-        if (dropDownRef.current.contains(e.target)) {
-            return;
-        }
-        setDropdown(!dropdown);
-    };
+
 
     useEffect(() => {
+        const handleClickOutside = e => {
+            if (dropDownRef.current.contains(e.target)) {
+                return;
+            }
+            setDropdown(!dropdown);
+        };
+
         if (dropdown) {
             document.addEventListener("mousedown", handleClickOutside);
         } else {

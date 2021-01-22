@@ -3,7 +3,6 @@ import { Container, Modal, ModalHeader, Row, ModalBody } from 'reactstrap';
 import MovieCard from '../cards/card';
 import '../../css/PreviousCurations.css';
 import tw from "twin.macro";
-import { useSelector } from 'react-redux';
 const HighlightedText = tw.span`text-primary-500`;
 const route = 'https://image.tmdb.org/t/p/original';
 let modalHead, modalBody;
@@ -11,11 +10,9 @@ let modalHead, modalBody;
 const Playlists = ({ Playlist }) => {
     let movieCards;
     const [openModal, setModal] = useState(false);
-    const [errors, setErrors] = useState(false);
-    // console.log(Playlist);
     if (Playlist) {
-        movieCards = Playlist.movies.map((m) => {
-            return <MovieCard title={m.movieTitle} img={m.movieImagePath} rating={m.moviePopularity} desc={m.movieDescription} onClick={() => movieModal(m)} className="mb-3" />
+        movieCards = Playlist.movies.map((m, i) => {
+            return <MovieCard key={i} title={m.movieTitle} img={m.movieImagePath} rating={m.moviePopularity} desc={m.movieDescription} onClick={() => movieModal(m)} className="mb-3" />
         });
     }
     const toggle = () => {
@@ -27,7 +24,7 @@ const Playlists = ({ Playlist }) => {
         modalHead = <ModalHeader className="modalH" cssModule={{ 'modal-title': 'w-100 text-center' }}>{movieTitle}</ModalHeader>
         modalBody = <ModalBody className="modalBody">
             <div className="modalImage mb-3">
-                <img src={`${route}${movieImagePath}`} style={{ maxHeight: '200px', maxWidth: '200px' }} className="modalImage" />
+                <img src={`${route}${movieImagePath}`} style={{ maxHeight: '200px', maxWidth: '200px' }} className="modalImage" alt={movieTitle} />
             </div>
             <div className="modalDesc">
                 <p className="mb-2"><HighlightedText><b>Movie description: </b></HighlightedText> {movieDescription}</p>

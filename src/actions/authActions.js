@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getRoute } from "data/Routes";
+import route from "data/Routes";
 import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS } from "../actions/types";
 import { returnErrors, clearErrors, loginErrors } from "./errorActions";
 import { loadMovies } from "./movieActions";
@@ -18,8 +18,7 @@ export const loadUser = () => (dispatch, getState) => {
             "Content-type": "application/json"
         }
     };
-    const route = getRoute()
-        .then(route => route);
+
     if (token) {
         config.headers["x-auth-token"] = token;
         axios.post(`${route}/api/users/user`, config)
@@ -51,8 +50,6 @@ export const login = ({ email, password }) => dispatch => {
     }
     //data body
     const body = JSON.stringify({ email, password });
-    const route = getRoute()
-        .then(route => route);
 
     axios.post(`${route}/api/auth/login`, body, config)
         .then((res) => {
@@ -78,8 +75,6 @@ export const register = ({ name, email, password }) => (dispatch) => {
     }
 
     const body = JSON.stringify({ name, email, password });
-    const route = getRoute()
-        .then(route => route);
 
     axios.post(`${route}/api/auth/register`, body, config)
         .then((res) => {

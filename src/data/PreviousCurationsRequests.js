@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getRoute } from './Routes';
+import route from './Routes';
 
 async function requestMovies(token = null) {
     const config = {
@@ -13,7 +13,6 @@ async function requestMovies(token = null) {
             'x-auth-token': token
         }
     );
-    const route = await getRoute();
 
     return axios.post(`${route}/api/movies/returnMovies`, body, config)
         .then((res) => {

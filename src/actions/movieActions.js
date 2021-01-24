@@ -1,6 +1,6 @@
 import { MOVIES_LOADED, MOVIES_LOADING, MOVIES_LOGOUT } from './types';
 import axios from 'axios';
-import { getRoute } from 'data/Routes';
+import route from 'data/Routes';
 export const loadMovies = () => (dispatch, getState) => {
     dispatch({ type: MOVIES_LOADING });
     const token = getState().auth.token;
@@ -16,8 +16,7 @@ export const loadMovies = () => (dispatch, getState) => {
             'x-auth-token': token
         }
     );
-    const route = getRoute()
-        .then(route => route);
+
 
     if (token) {
         axios.post(`${route}/api/movies/getPlaylists`, body, config)

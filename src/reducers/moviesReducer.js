@@ -4,8 +4,8 @@ const initialState = {
     isLoaded: false,
     isLoading: false,
     weeklyPlaylist: null,
-    montlyPlaylist: null,
-    allTimePlaylists: null
+    monthlyPlaylist: null,
+    allTimePlaylist: null
 }
 
 export default function (state = initialState, action) {
@@ -30,7 +30,8 @@ export default function (state = initialState, action) {
                 isLoaded: false,
                 isLoading: false,
                 weeklyPlaylist: null,
-                montlyPlaylist: null
+                monthlyPlaylist: null,
+                allTimePlaylist: null
             }
         default:
             return state;

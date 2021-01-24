@@ -38,7 +38,7 @@ const DowndownMenu = () => {
     const userLogout = () => {
         dispatch(logout());
         dispatch(logOutMovies());
-        return <Redirect to="/" />
+
     }
 
     return (
@@ -52,7 +52,7 @@ const DowndownMenu = () => {
                 <DropdownMenu>
                     <DropdownItem className={dropDownText} href="/myGenerations">My Generations</DropdownItem>
                     <DropdownItem className={dropDownText}>My Details</DropdownItem>
-                    <DropdownItem onClick={userLogout} className={dropDownText}>Logout</DropdownItem>
+                    <DropdownItem onClick={userLogout} className={dropDownText} href="/">Logout</DropdownItem>
                 </DropdownMenu>
             </UncontrolledDropdown >
         </div>

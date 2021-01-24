@@ -75,7 +75,7 @@ export default ({
   signupUrl = "#",
 
 }) => (
-  <>
+  <AnimationRevealPage>
     <Container>
       <Content>
         <MainContainer>
@@ -125,5 +125,5 @@ export default ({
         </IllustrationContainer>
       </Content>
     </Container>
-  </>
+  </AnimationRevealPage>
 );

@@ -6,11 +6,11 @@ import Header from "components/headers/light";
 
 const ViewCurations = () => {
     return (
-        <>
+        <AnimationRevealPage>
             <Header />
             <PreviousCurations />
             <Footer />
-        </>
+        </AnimationRevealPage >
     )
 }
 

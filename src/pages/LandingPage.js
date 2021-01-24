@@ -7,12 +7,12 @@ import FAQ from "components/faqs/SimpleWithSideImage.js";
 import Footer from "components/footers/MiniCenteredFooter.js";
 
 export default () => (
-  <>
+  <AnimationRevealPage>
     <Hero />
     <Features />
     <SliderCard />
 
     <FAQ />
     <Footer />
-  </>
+  </AnimationRevealPage>
 );

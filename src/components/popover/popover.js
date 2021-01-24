@@ -1,4 +1,3 @@
-import WeeklyPlaylist from 'pages/weeklyPlaylists';
 import React from 'react';
 import { Popover, PopoverHeader, PopoverBody, Row } from 'reactstrap';
 import { ReactComponent as Help } from "feather-icons/dist/icons/help-circle.svg";

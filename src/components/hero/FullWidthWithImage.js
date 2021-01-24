@@ -65,19 +65,12 @@ const HomePageWithImage = () => {
 
   }
 
-  const handleGenerate = () => {
-    if (isAuthenticated) {
-      return <Redirect to="/myGenerations" />
-    } else {
-      return <Redirect to="/" />
-    }
-  }
   const navLinks = [
     <NavLinks key={1}>
       <NavLink href="#">Trending</NavLink>
       <NavLink href="#">Community</NavLink>
-      <NavLink onClick={handleGenerate}>Generate</NavLink>
-      {isAuthenticatedNavLink}
+      <NavLink href="/Generate">Generate</NavLink>
+      {/* {isAuthenticatedNavLink} */}
     </NavLinks>
   ];
   const heading = (

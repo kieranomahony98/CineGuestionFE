@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import React from 'react';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import tw from 'twin.macro';
 
 const HighlightedText = tw.span`text-primary-500`;
@@ -10,10 +10,8 @@ const MovieModal = ({
     moviePopularity,
     movieReleaseYear,
     movieGenres,
-    onClosed,
     isOpen,
     toggle
-
 }) => {
     // const [modal, setModal] = useState(true);
     const route = 'https://image.tmdb.org/t/p/original';

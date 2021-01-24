@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Modal, ModalHeader, Row, ModalBody, Popover, PopoverHeader, PopoverBody, Button } from 'reactstrap';
+import { Container, Row } from 'reactstrap';
 import { MoviePopover } from '../popover/popover';
 import MovieCard from '../cards/card';
 import '../../css/PreviousCurations.css';

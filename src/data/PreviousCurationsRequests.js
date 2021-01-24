@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getRoute } from './Routes';
 
 async function requestMovies(token = null) {
     const config = {
@@ -12,8 +13,9 @@ async function requestMovies(token = null) {
             'x-auth-token': token
         }
     );
+    const route = await getRoute();
 
-    return axios.post('/api/movies/returnMovies', body, config)
+    return axios.post(`${route}/api/movies/returnMovies`, body, config)
         .then((res) => {
             if (res.status === 200) {
                 return res.data;

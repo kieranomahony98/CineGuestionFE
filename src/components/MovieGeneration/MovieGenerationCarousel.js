@@ -3,7 +3,7 @@ import MovieGenerationCheckbox from './MovieGenerationCheckbox';
 import { Carousel } from 'react-responsive-carousel'
 import MovieGenerationRadioButton from './MovieGenerationRadioButton';
 import { SkipBackward } from 'react-bootstrap-icons';
-import { Button, Container, Row, Col, Table, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Button, Container, Row, Col, Table } from 'reactstrap';
 import movieGenerationQuestions from '../../data/MovieGenerationQuestions';
 import Loader from 'react-loader-spinner';
 import MovieModal from 'components/modal/movieModal'

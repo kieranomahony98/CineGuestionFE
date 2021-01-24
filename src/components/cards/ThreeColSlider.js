@@ -9,7 +9,6 @@ import { ReactComponent as Video } from "feather-icons/dist/icons/video.svg";
 import weeklyPlaylist from "../../images/cineGuestion/test.png";
 import monthlyPlaylist from "../../images/cineGuestion/monthlyPlaylist.png";
 import allTime from "../../images/cineGuestion/allTime.png";
-import movieIcon from "../../images/cineGuestion/movieIcon.svg";
 import { useSelector } from "react-redux";
 
 const Container = tw.div`relative`;

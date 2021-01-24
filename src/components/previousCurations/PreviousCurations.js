@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import requestMovies from '../../data/PreviousCurationsRequests';
 import Loader from 'react-loader-spinner';
-import { Container, Row, Col, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import MovieCard from '../cards/card';
 import '../../css/PreviousCurations.css';
 import tw from "twin.macro";
@@ -12,7 +12,6 @@ import MovieModal from 'components/modal/movieModal';
 import { moviePopoverText } from 'helpers/PopoverText';
 import { MoviePopover } from 'components/popover/popover';
 const HighlightedText = tw.span`text-primary-500`;
-const route = 'https://image.tmdb.org/t/p/original';
 let movie;
 
 const PreviousCurations = () => {

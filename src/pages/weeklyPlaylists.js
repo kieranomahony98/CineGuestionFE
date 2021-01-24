@@ -9,7 +9,7 @@ import { Redirect, useParams } from 'react-router-dom';
 const WeeklyPlaylist = () => {
     const { type } = useParams();
     const { [type]: value } = useSelector(state => state.movies);
-    console.log(value);
+
     if (!value) {
         return <Redirect to="/" />
     }

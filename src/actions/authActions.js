@@ -23,7 +23,6 @@ export const loadUser = () => (dispatch, getState) => {
             .then((res) => {
                 dispatch({ type: USER_LOADED, payload: res.data });
                 if (!getState().movies.isLoaded) {
-                    console.log('hi');
                     dispatch(loadMovies());
 
                 }

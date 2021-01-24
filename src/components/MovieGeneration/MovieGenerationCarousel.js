@@ -6,24 +6,36 @@ import { SkipBackward } from 'react-bootstrap-icons';
 import { Button, Container, Row, Col, Table, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import movieGenerationQuestions from '../../data/MovieGenerationQuestions';
 import Loader from 'react-loader-spinner';
+import MovieModal from 'components/modal/movieModal'
 import MovieCard from '../cards/card';
+import { MoviePopover } from "components/popover/popover";
 import MovieRequests from '../../data/MovieRequests';
+import { moviePopoverText } from "helpers/PopoverText";
 import tw from "twin.macro";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import "../../MovieGeneration.css";
 import { useSelector } from 'react-redux';
 
+
 const HighlightedText = tw.span`text-primary-500`;
 
 let movieCards;
-let modalHead, modalBody;
-const route = 'https://image.tmdb.org/t/p/original';
+let movie;
 let slides;
 const MovieGenerationCarousel = () => {
     const [carouselVisible, setCarouselVisible] = useState(true);
     const [spinnerVisibility, setSpinnerVisibility] = useState(false);
     const [openModal, setModal] = useState(false);
     const [surveyResults, setSurveyResults] = useState({});
+    const [popover, setPopover] = useState(false);
+    const [popOverText, setPopoverText] = useState({
+        title: "Curation Help",
+        body: "Select anything you want to see in your movies. Everything is optional so dont feel pressured to select some slides!"
+    });
+    const [isRevised, setIsRevised] = useState(false);
+    const popoverToggle = () => {
+        setPopover(popover => !popover);
+    }
 
     const { token } = useSelector(state => state.auth);
     const toggle = () => setModal(!openModal);
@@ -31,36 +43,19 @@ const MovieGenerationCarousel = () => {
         setCarouselVisible(false);
         setSpinnerVisibility(true);
         movieCards = await MovieRequests(token, surveyResults)
-            .then((moviesDom) => {
-                return moviesDom.map((movie, index) => {
-                    const { movieImagePath, movieTitle, movieDescription, moviePopularity } = movie;
-                    return <MovieCard title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => movieModal(movie)} key={index} />
+            .then(({ moviesDom, isRevised }) => {
+                const text = moviePopoverText(moviesDom.newMovieCriteria);
+                if (isRevised) setIsRevised(() => true);
+                setPopoverText(popOverText => ({ ...popOverText, title: text.title, body: text.body }));
+                return moviesDom.movies.map((m, index) => {
+                    const { movieImagePath, movieTitle, movieDescription, moviePopularity } = m;
+                    return <MovieCard title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; setModal(() => true) }} key={index} />
                 });
             }).catch((err) => {
                 throw err;
             });
         setSpinnerVisibility(false);
     }
-
-    function movieModal(movie) {
-        setModal(() => false);
-        const { movieImagePath, movieTitle, movieDescription, moviePopularity, movieReleaseYear, movieGenres } = movie;
-        modalHead = <ModalHeader className="modalH" cssModule={{ 'modal-title': 'w-100 text-center' }}>{movieTitle}</ModalHeader>
-        modalBody =
-            <ModalBody className="modalBody">
-                <div className="modalImage mb-3">
-                    <img src={`${route}${movieImagePath}`} style={{ maxHeight: '200px', maxWidth: '200px' }} className="modalImage" alt={movieTitle} />
-                </div>
-                <div className="modalDesc">
-                    <p className="mb-2"><HighlightedText><b>Movie description: </b></HighlightedText> {movieDescription}</p>
-                    <p className="mb-2"><HighlightedText><b>User rating: </b></HighlightedText>{moviePopularity}</p>
-                    <p className="mb-2"><HighlightedText><b>Release Year: </b> </HighlightedText>{movieReleaseYear}</p>
-                    <p className="mb-2"><HighlightedText><b>Included Genres:</b> </HighlightedText> {movieGenres}</p>
-                </div>
-            </ModalBody>
-        setModal(() => true);
-    }
-
 
     const handleSurvey = (value, characteristic) => {
         if (characteristic === 'with_genres') {
@@ -128,6 +123,7 @@ const MovieGenerationCarousel = () => {
         );
     };
     const handleClick = () => {
+        setIsRevised(() => false);
         setCarouselVisible(carouselVisible => !carouselVisible);
         setSurveyResults(() => ({}));
     }
@@ -144,30 +140,29 @@ const MovieGenerationCarousel = () => {
             </>
         );
     };
-    // const resetSurvey = () => {
-    //     setSurveyResults(() => ({}));
-    //     showCarousel();
-    //     setCarouselVisible(carouselVisible => !carouselVisible);
-    //     setSpinnerVisibility(spinnerVisibility => !spinnerVisibility);
-    //     setCarouselVisible(carouselVisible => !carouselVisible);
-
-    // }
 
     return (
         <Container style={{ marginTop: '20px' }}>
+            <Row>
+                <MoviePopover toggle={popoverToggle} isOpen={popover} title={popOverText.title} body={popOverText.body} />
+                {isRevised ? <HighlightedText className="mx-auto">Youre query was altered to guarantee movie responses!</HighlightedText> : ''}
+            </Row>
             <Row className="justify-content-center">
                 {(carouselVisible) ?
+
+
                     <div className="table">
                         {showCarousel()}
-                    </div> :
+                    </div>
+                    :
                     (spinnerVisibility) ?
                         showSpinner() :
                         showMovies()
                 }
-                <Modal isOpen={openModal} modalTransition={{ timeout: 500 }} toggle={toggle} className="modalFull">
-                    {modalHead}
-                    {modalBody}
-                </Modal>
+                {
+                    (openModal) ? <MovieModal toggle={toggle} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ''
+                }
+
             </Row>
 
             <Row>

@@ -19,13 +19,12 @@ export const loadMovies = () => (dispatch, getState) => {
         axios.post('/api/movies/getPlaylists', body, config)
             .then((res) => {
                 if (res.status === 200) {
-                    console.log(res.data);
                     dispatch({ type: MOVIES_LOADED, payload: res.data });
                 } else {
                     return null;
                 }
             }).catch((err) => {
-                console.log("Failed to get movie playlists");
+                console.log(`Failed to get movie playlists: ${err.message}`);
                 throw err;
             });
     }

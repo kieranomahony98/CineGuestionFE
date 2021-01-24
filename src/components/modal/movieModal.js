@@ -9,25 +9,35 @@ const MovieModal = ({
     movieDescription,
     moviePopularity,
     movieReleaseYear,
-    movieGenres
+    movieGenres,
+    onClosed,
+    isOpen,
+    toggle
+
 }) => {
+    // const [modal, setModal] = useState(true);
     const route = 'https://image.tmdb.org/t/p/original';
-    const [modal, setModal] = useState(true);
-    const toggle = () => {
-        setModal(!modal);
-    }
+    // const toggle = () => {
+    //     setModal(() => !modal);
+    // }
+
 
     return (
         <>
-            <div className="modalImage mb-3">
-                <img src={`${route}${movieImagePath}`} style={{ maxHeight: '200px', maxWidth: '200px' }} className="modalImage" />
-            </div>
-            <div className="modalDesc">
-                <p className="mb-2"><HighlightedText><b>Movie description: </b></HighlightedText> {movieDescription}</p>
-                <p className="mb-2"><HighlightedText><b>User rating: </b></HighlightedText>{moviePopularity}</p>
-                <p className="mb-2"><HighlightedText><b>Release Year: </b> </HighlightedText>{movieReleaseYear}</p>
-                <p className="mb-2"><HighlightedText><b>Included Genres:</b> </HighlightedText> {movieGenres}</p>
-            </div>
+            <Modal isOpen={isOpen} modalTransition={{ timeout: 500 }} toggle={toggle} className="modalFull">
+                <ModalHeader className="modalH" cssModule={{ 'modal-title': 'w-100 text-center' }}>{movieTitle}</ModalHeader>
+                <ModalBody className="modalBody">
+                    <div className="modalImage mb-3">
+                        <img src={`${route}${movieImagePath}`} style={{ maxHeight: '200px', maxWidth: '200px' }} className="modalImage" alt={movieTitle} />
+                    </div>
+                    <div className="modalDesc">
+                        <p className="mb-2"><HighlightedText><b>Movie description: </b></HighlightedText> {movieDescription}</p>
+                        <p className="mb-2"><HighlightedText><b>User rating: </b></HighlightedText>{moviePopularity}</p>
+                        <p className="mb-2"><HighlightedText><b>Release Year: </b> </HighlightedText>{movieReleaseYear}</p>
+                        <p className="mb-2"><HighlightedText><b>Included Genres:</b> </HighlightedText> {movieGenres}</p>
+                    </div>
+                </ModalBody>
+            </Modal>
         </>
     );
 }

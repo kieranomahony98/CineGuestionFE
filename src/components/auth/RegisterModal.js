@@ -38,7 +38,6 @@ const RegisterModal = ({ className }) => {
 
         const { registerErrors, isValid } = registerValidation(newUser);
         if (isValid) {
-            console.log('in not errors');
             dispatch(register(user));
             if (modal) {
                 if (isAuthenticated) {

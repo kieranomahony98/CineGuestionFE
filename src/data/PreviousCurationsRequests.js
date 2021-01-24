@@ -16,13 +16,12 @@ async function requestMovies(token = null) {
     return axios.post('/api/movies/returnMovies', body, config)
         .then((res) => {
             if (res.status === 200) {
-                console.log(res.data);
-                return JSON.parse(JSON.stringify(res.data));
+                return res.data;
             } else {
                 return null;
             }
         }).catch((err) => {
-            console.log('Error in getting movies');
+            console.log(`Error in getting movies ${err.message}`);
             throw err;
         });
 }

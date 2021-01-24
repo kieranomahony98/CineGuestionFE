@@ -16,10 +16,12 @@ const LoginModal = () => {
         name: '',
         password: ''
     });
+
     const [user, setUser] = useState({
         email: '',
         password: ''
     });
+
     const { isAuthenticated } = useSelector(state => state.auth);
     const { loginError } = useSelector(state => state.error);
     const toggle = () => {

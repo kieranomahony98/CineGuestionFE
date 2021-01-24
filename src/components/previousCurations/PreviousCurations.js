@@ -8,9 +8,12 @@ import '../../css/PreviousCurations.css';
 import tw from "twin.macro";
 import { SkipBackward } from 'react-bootstrap-icons';
 
+import MovieModal from 'components/modal/movieModal';
+import { moviePopoverText } from 'helpers/PopoverText';
+import { MoviePopover } from 'components/popover/popover';
 const HighlightedText = tw.span`text-primary-500`;
 const route = 'https://image.tmdb.org/t/p/original';
-let modalHead, modalBody;
+let movie;
 
 const PreviousCurations = () => {
     const { token } = useSelector(state => state.auth);
@@ -20,10 +23,18 @@ const PreviousCurations = () => {
     const [previousCurations, setPreviousCurations] = useState(null);
     const [movieCards, setMovieCards] = useState(null);
     const [errors, setErrors] = useState(false);
-
+    const [popover, setPopover] = useState(false);
+    const [popOverText, setPopoverText] = useState({
+        title: "",
+        body: ""
+    });
+    const popoverToggle = () => {
+        setPopover(popover => !popover);
+    }
     const toggle = () => {
         setModal(openModal => !openModal);
     }
+
     const userMovies = async () => {
         await getMovies(token)
             .then(m => {
@@ -53,31 +64,15 @@ const PreviousCurations = () => {
         setGenerations(() => true);
     }
 
-    function setSpecificCuration(movie) {
-        setMovieCards(movie.movies.map((m) => {
-            const { movieImagePath, movieTitle, movieDescription, moviePopularity } = m;
-            return <MovieCard title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => movieModal(m)} className="mb-3" />
-        }));
+    function setSpecificCuration(mv) {
+        const text = moviePopoverText(mv.movieSearchCriteria);
+        setPopoverText(popOverText => ({ ...popOverText, title: text.title, body: text.body }));
 
-        setGenerations(() => false);
-        setShowMovies(showMovies => !showMovies);
-        console.log(generations, showMovies);
-    }
-    function movieModal(movie) {
-        const { movieImagePath, movieTitle, movieDescription, moviePopularity, movieReleaseYear, movieGenres } = movie;
-        modalHead = <ModalHeader className="modalH" cssModule={{ 'modal-title': 'w-100 text-center' }}>{movieTitle}</ModalHeader>
-        modalBody = <ModalBody className="modalBody">
-            <div className="modalImage mb-3">
-                <img src={`${route}${movieImagePath}`} style={{ maxHeight: '200px', maxWidth: '200px' }} className="modalImage" alt={movieTitle} />
-            </div>
-            <div className="modalDesc">
-                <p className="mb-2"><HighlightedText><b>Movie description: </b></HighlightedText> {movieDescription}</p>
-                <p className="mb-2"><HighlightedText><b>User rating: </b></HighlightedText>{moviePopularity}</p>
-                <p className="mb-2"><HighlightedText><b>Release Year: </b> </HighlightedText>{movieReleaseYear}</p>
-                <p className="mb-2"><HighlightedText><b>Included Genres:</b> </HighlightedText> {movieGenres}</p>
-            </div>
-        </ModalBody>
-        setModal(() => true);
+        setMovieCards(mv.movies.map((m, i) => {
+            const { movieImagePath, movieTitle, movieDescription, moviePopularity } = m;
+            return <MovieCard title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; toggle() }} key={i} />
+        }));
+        handleClick();
     }
 
     const showSpinner = () => {
@@ -97,7 +92,7 @@ const PreviousCurations = () => {
 
     return (
         <Container>
-
+            {(showMovies) ? <MoviePopover title={popOverText.title} body={popOverText.body} toggle={popoverToggle} isOpen={popover} /> : ''}
             {(errors) ? <HighlightedText>Failed to get Curations</HighlightedText> :
                 (generations) ?
                     previousCurations :
@@ -106,13 +101,8 @@ const PreviousCurations = () => {
                         showSpinner()
             }
             {
-                (openModal) ?
-                    <Modal isOpen={openModal} modalTransition={{ timeout: 500 }} toggle={toggle} className="modalFull">
-                        {modalHead}
-                        {modalBody}
-                    </Modal>
-                    :
-                    ''
+                (openModal) ? <MovieModal toggle={toggle} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ''
+
             }
 
         </Container >

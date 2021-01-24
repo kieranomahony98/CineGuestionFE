@@ -70,7 +70,7 @@ const HomePageWithImage = () => {
       <NavLink href="#">Trending</NavLink>
       <NavLink href="#">Community</NavLink>
       <NavLink href="/Generate">Generate</NavLink>
-      {/* {isAuthenticatedNavLink} */}
+      {isAuthenticatedNavLink}
     </NavLinks>
   ];
   const heading = (

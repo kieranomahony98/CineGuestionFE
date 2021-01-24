@@ -1,3 +1,4 @@
+//not my code, module from npm package was failing to read due to no dist folder had to import it manually.
 'use strict';
 import { useEffect, useState } from 'react';
 import throttle from 'lodash.throttle';

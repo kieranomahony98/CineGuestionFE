@@ -36,9 +36,9 @@ function AnimatedSlideInComponent({ direction = "left", offset = 30, children })
   return (
     <motion.section
       initial={{ x: x.initial }}
-      animate={{ 
+      animate={{
         x: inView && x.target,
-        transitionEnd:{
+        transitionEnd: {
           x: inView && 0
         }
       }}

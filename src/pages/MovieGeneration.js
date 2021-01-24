@@ -6,11 +6,11 @@ import Header from "components/headers/light.js";
 
 const checkBoxQuestions = () => {
     return (
-        <AnimationRevealPage>
+        <>
             <Header />
             <MovieGenerationCarousel />
             <Footer />
-        </AnimationRevealPage >
+        </>
     );
 };
 

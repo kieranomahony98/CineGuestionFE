@@ -9,11 +9,11 @@ const MontlyPlaylist = () => {
     const { montlyPlaylist } = useSelector(state => state.movies);
 
     return (
-        <AnimationRevealPage>
+        <>
             <Header />
             <Playlists Playlist={montlyPlaylist} />
             <Footer />
-        </AnimationRevealPage >
+        </ >
     )
 }
 

@@ -15,11 +15,11 @@ const WeeklyPlaylist = () => {
     }
 
     return (
-        <AnimationRevealPage>
+        <>
             <Header />
             <Playlists Playlist={value} />
             <Footer />
-        </AnimationRevealPage >
+        </ >
     )
 }
 

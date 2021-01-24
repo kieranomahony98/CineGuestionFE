@@ -85,7 +85,7 @@ export default ({
     setVisible(v => v + 6);
   };
   return (
-    <AnimationRevealPage>
+    <>
       <Header />
       <Container>
         <ContentWithPaddingXl>
@@ -115,7 +115,7 @@ export default ({
         </ContentWithPaddingXl>
       </Container>
       <Footer />
-    </AnimationRevealPage>
+    </>
   );
 };
 

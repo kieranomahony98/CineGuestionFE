@@ -11,7 +11,9 @@ import { SkipBackward } from 'react-bootstrap-icons';
 import MovieModal from 'components/modal/movieModal';
 import { moviePopoverText } from 'helpers/PopoverText';
 import { MoviePopover } from 'components/popover/popover';
+import { convertToTextGeneration } from 'helpers/convertGenres';
 const HighlightedText = tw.span`text-primary-500`;
+const route = 'https://image.tmdb.org/t/p/original';
 let movie;
 
 const PreviousCurations = () => {
@@ -36,36 +38,48 @@ const PreviousCurations = () => {
 
     const userMovies = async () => {
         await getMovies(token)
-            .then(m => {
+            .then(async (m) => {
                 if (m) {
-                    setPreviousCurations(m.map((movie, i) => {
+                    console.log(JSON.stringify(m));
+                    const generations = await Promise.all(m.map(async (movie, i) => {
                         const generationDate = movie.movieGenerationDate.split("T")[0];
-                        return (
-                            <Row className="curationRow mb-3" onClick={() => setSpecificCuration(movie)} key={i}>
-                                <Col>
-                                    <p className="mr-3">Generation Date: {generationDate}</p>
-                                    <p className="mr-3"> Genres: {(movie.movieSearchCriteria.with_genres) ? movie.movieSearchCriteria.with_genres : 'Any'}</p>
-                                    <p className="mr-3">Filtering: {(movie.movieSearchCriteria.sort_by) ? movie.movieSearchCriteria.sort_by : 'No Sorting selected'}</p>
-                                    <p className="mr-3">Release Year: {(movie.movieSearchCriteria.primary_release_year) ? movie.movieSearchCriteria.primary_release_year : 'Any'}</p>
-                                    <p className="mr-3">Movie Keywords: {(movie.movieSearchCriteria.with_keywords) ? movie.movieSearchCriteria.with_keywords : 'No keywords'}</p>
-                                </Col>
-                            </Row >
-                        );
+                        return await convertToTextGeneration(movie.movieSearchCriteria, false)
+                            .then((convertedValues) => {
+                                console.log(movie);
+                                return (
+                                    <Row className="curationRow movieCard mb-3" onClick={() => setSpecificCuration(movie)} key={i}>
+                                        <Col>
+                                            <p className="mr-3">Generation Date: {generationDate}</p>
+                                            <p className="mr-3"> Genres: {(convertedValues.with_genres) ? convertedValues.with_genres : 'Any'}</p>
+                                            <p className="mr-3">Filtering: {(convertedValues.sort_by) ? convertedValues.sort_by : 'No Sorting selected'}</p>
+                                            <p className="mr-3">Release Year: {(convertedValues.primary_release_year) ? convertedValues.primary_release_year : 'Any'}</p>
+                                            <p className="mr-3">Movie Keywords: {(convertedValues.with_keywords) ? convertedValues.with_keywords : 'No keywords'}</p>
+                                        </Col>
+                                    </Row >
+                                );
+                            })
                     }));
+                    setPreviousCurations(() => generations);
                 }
                 else {
                     setErrors(errors => !errors);
                 }
             })
             .catch((err) => {
+                setErrors(errors => !errors);
                 throw err;
             });
         setGenerations(() => true);
     }
 
     function setSpecificCuration(mv) {
-        const text = moviePopoverText(mv.movieSearchCriteria);
-        setPopoverText(popOverText => ({ ...popOverText, title: text.title, body: text.body }));
+        moviePopoverText(mv.movieSearchCriteria, true)
+            .then((text) => {
+                setPopoverText(popOverText => ({ ...popOverText, title: text.title, body: text.body }));
+            })
+            .catch((err) => {
+                throw err;
+            })
 
         setMovieCards(mv.movies.map((m, i) => {
             const { movieImagePath, movieTitle, movieDescription, moviePopularity } = m;
@@ -92,7 +106,7 @@ const PreviousCurations = () => {
     return (
         <Container>
             {(showMovies) ? <MoviePopover title={popOverText.title} body={popOverText.body} toggle={popoverToggle} isOpen={popover} /> : ''}
-            {(errors) ? <HighlightedText>Failed to get Curations</HighlightedText> :
+            {(errors) ? <Row><HighlightedText className="mx-auto">It appears you have no generations with us, <a href="/Generate">Get Started here!</a></HighlightedText></Row> :
                 (generations) ?
                     previousCurations :
                     (showMovies) ?

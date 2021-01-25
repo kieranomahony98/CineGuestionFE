@@ -3,3 +3,6 @@
     border-radius: 20px;
     border-color: #efe7ff;
 }
+.movieCard:hover{
+    cursor: pointer;
+}

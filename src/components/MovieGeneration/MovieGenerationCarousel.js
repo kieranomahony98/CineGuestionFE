@@ -44,9 +44,11 @@ const MovieGenerationCarousel = () => {
         setSpinnerVisibility(true);
         movieCards = await MovieRequests(token, surveyResults)
             .then(({ moviesDom, isRevised }) => {
-                const text = moviePopoverText(moviesDom.newMovieCriteria);
+                moviePopoverText(moviesDom.movieSearchCriteria)
+                    .then((text) => {
+                        setPopoverText(popOverText => ({ ...popOverText, title: "Generation Detials", body: text.body }));
+                    })
                 if (isRevised) setIsRevised(() => true);
-                setPopoverText(popOverText => ({ ...popOverText, title: text.title, body: text.body }));
                 return moviesDom.movies.map((m, index) => {
                     const { movieImagePath, movieTitle, movieDescription, moviePopularity } = m;
                     return <MovieCard title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; setModal(() => true) }} key={index} />

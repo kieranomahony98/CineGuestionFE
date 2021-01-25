@@ -6,9 +6,9 @@ import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
 import { ReactComponent as Video } from "feather-icons/dist/icons/video.svg";
 // import { ReactComponent as StarIcon } from "feather-icons/dist/icons/star.svg";
-import weeklyPlaylist from "../../images/cineGuestion/test.png";
+import weeklyPlaylist from "../../images/cineGuestion/weeklyPlaylist.png";
 import monthlyPlaylist from "../../images/cineGuestion/monthlyPlaylist.png";
-import allTime from "../../images/cineGuestion/allTime.png";
+import allTimePlaylist from "../../images/cineGuestion/allTimePlaylist.png";
 import { useSelector } from "react-redux";
 
 const Container = tw.div`relative`;
@@ -108,7 +108,7 @@ export default () => {
       type: "monthlyPlaylist"
     },
     {
-      imageSrc: allTime,
+      imageSrc: allTimePlaylist,
       title: "Complete Playlist",
       description: (isAuthenticated) ? "Our carefully curated playlist to match who are you, this playlist is based on all your curations with us to help you rekindle some past favourites." : "If you would like to get personalised playlists make sure to register!",
       locationText: "Why not give it a go!",

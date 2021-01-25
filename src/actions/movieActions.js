@@ -1,6 +1,7 @@
 import { MOVIES_LOADED, MOVIES_LOADING, MOVIES_LOGOUT } from './types';
 import axios from 'axios';
 import route from 'data/Routes';
+import { convertPlayListsText } from 'helpers/convertGenres';
 export const loadMovies = () => (dispatch, getState) => {
     dispatch({ type: MOVIES_LOADING });
     const token = getState().auth.token;
@@ -22,7 +23,13 @@ export const loadMovies = () => (dispatch, getState) => {
         axios.post(`${route}/api/movies/getPlaylists`, body, config)
             .then((res) => {
                 if (res.status === 200) {
-                    dispatch({ type: MOVIES_LOADED, payload: res.data });
+                    convertPlayListsText(res.data)
+                        .then((playlists) => {
+                            dispatch({ type: MOVIES_LOADED, payload: playlists });
+                        })
+                        .catch((err) => {
+                            throw err;
+                        })
                 } else {
                     return null;
                 }

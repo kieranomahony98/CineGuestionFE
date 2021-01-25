@@ -42,7 +42,7 @@ const DowndownMenu = () => {
     }
 
     return (
-        <div ref={dropDownRef} style={{ marginTop: '-2px' }}>
+        <div ref={dropDownRef} style={{ display: "inline-block" }}>
             <UncontrolledDropdown nav isOpen={dropdown} onClick={toggle}>
                 <DropdownToggle tag="span" onClick={toggle} caret>
                     <NavLink>

@@ -19,7 +19,6 @@ const RatingsInfo = styled.div`
     }
   `;
 const Rating = tw.span`ml-2 font-bold`;
-
 // const Description = tw.p`text-sm leading-loose mt-2 sm:mt-4`;
 
 // const SecondaryInfoContainer = tw.div`flex flex-col sm:flex-row mt-2 sm:mt-4`;
@@ -36,7 +35,7 @@ const movieCard = ({ title, img, onClick, rating, desc, className }) => {
 
   const imageRoute = `https://image.tmdb.org/t/p/original${img}`;
   return (
-    <Col className={className}>
+    <Col className={`movieCard ${className}  mb-3 `}>
       <Card key={title} onClick={onClick}>
         <CardImage imageSrc={imageRoute} />
         <TextInfo>
@@ -46,7 +45,6 @@ const movieCard = ({ title, img, onClick, rating, desc, className }) => {
               <Rating>{rating}</Rating>
             </RatingsInfo>
           </TitleReviewContainer>
-          {/* <Description>{desc}</Description> */}
         </TextInfo>
       </Card>
     </Col>

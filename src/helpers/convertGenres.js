@@ -1,5 +1,13 @@
 export async function convertToTextGeneration(movieSearchCriteria) {
     try {
+        if (!movieSearchCriteria) {
+            return {
+                ...movieSearchCriteria,
+                sort_by: null,
+                with_genres: null,
+                keywords: null
+            }
+        }
         const genreList = (movieSearchCriteria.with_genres) ? await listMatcher(movieSearchCriteria.with_genres.split(",")) : null;
         const keywords = (movieSearchCriteria.with_keywords) ? await keywordController(movieSearchCriteria.with_keywords.toString()) : null;
         const sort_by = (movieSearchCriteria.sort_by) ? await sortByMatcher(movieSearchCriteria.sort_by) : null
@@ -10,7 +18,11 @@ export async function convertToTextGeneration(movieSearchCriteria) {
         return movieSearchCriteria;
 
     } catch (err) {
-        throw err;
+        console.log(`Failed conversion: ${err.message}`);
+        return {
+            error: 404,
+            msg: `We're sorry, we couldnt get your generations right now, please try again later`
+        }
     }
 
 }
@@ -19,56 +31,83 @@ async function sortByMatcher(sort_by) {
 
 }
 async function genreMatcher(genres) {
-    const movieGenreOBJ = await getGenres();
-    let returnGenres = '';
-    for (const genre of genres) {
-        returnGenres += movieGenreOBJ[genre] ? (returnGenres.length === 0) ? `${movieGenreOBJ[genre]}` : `, ${movieGenreOBJ[genre]}` : null;
+    try {
+        const movieGenreOBJ = await getGenres();
+        let returnGenres = '';
+        for (const genre of genres) {
+            returnGenres += movieGenreOBJ[genre] ? (returnGenres.length === 0) ? `${movieGenreOBJ[genre]}` : `, ${movieGenreOBJ[genre]}` : null;
+        }
+        return returnGenres;
+    } catch (err) {
+        console.log(`failed to match genres: ${err.message}`);
+        throw err;
     }
-    return returnGenres;
 }
 
 async function listMatcher(movieGenres) {
-    if (!movieGenres) {
-        return '';
+    try {
+
+
+        if (!movieGenres) {
+            return '';
+        }
+        return await genreMatcher(movieGenres);
+    } catch (err) {
+        console.log(`failed to match lists: ${err.message}`);
+        throw err;
     }
-    const g = await genreMatcher(movieGenres);
-    console.log(g)
-    return g;
 }
 
 async function keywordMatcher(keywords) {
-    const movieKeywordsObj = await getKeywords();
-    let returnkeywords = '';
-    for (const keyword of keywords) {
-        returnkeywords += movieKeywordsObj[keyword] ? (returnkeywords.length === 0) ? `${movieKeywordsObj[keyword]}` : `, ${movieKeywordsObj[keyword]}` : null;
+    try {
+        const movieKeywordsObj = await getKeywords();
+        let returnkeywords = '';
+        for (const keyword of keywords) {
+            returnkeywords += movieKeywordsObj[keyword] ? (returnkeywords.length === 0) ? `${movieKeywordsObj[keyword]}` : `, ${movieKeywordsObj[keyword]}` : null;
+        }
+        return returnkeywords;
+    } catch (err) {
+        console.log(`failed to match keywords: ${err.message}`);
+        throw err;
     }
-    return returnkeywords;
 }
 
-export async function convertPlayListsText({ weeklyPlaylist, monthlyPlaylist, allTimePlaylist }) {
-    if (weeklyPlaylist) {
-        weeklyPlaylist.movieSeachCriteria = await convertToTextGeneration(weeklyPlaylist.movieSeachCriteria);
-    }
-    if (monthlyPlaylist) {
-        monthlyPlaylist.movieSeachCriteria = await convertPlayListsText(monthlyPlaylist.movieSeachCriteria);
-    }
-    if (monthlyPlaylist) {
-        allTimePlaylist.movieSeachCriteria = await convertPlayListsText(allTimePlaylist.movieSeachCriteria);
-    }
-    return {
-        weeklyPlaylist,
-        monthlyPlaylist,
-        allTimePlaylist
+export async function convertPlayListsText({ weeklyPlaylists, monthlyPlaylists, allTimePlaylists }) {
+    try {
+        if (weeklyPlaylists) {
+            weeklyPlaylists.movieSeachCriteria = await convertToTextGeneration(weeklyPlaylists.movieSearchCriteria);
+        }
+        if (monthlyPlaylists) {
+            monthlyPlaylists.movieSeachCriteria = await convertPlayListsText(monthlyPlaylists.movieSearchCriteria);
+        }
+        if (allTimePlaylists) {
+            allTimePlaylists.movieSeachCriteria = await convertPlayListsText(allTimePlaylists.movieSearchCriteria);
+        }
+
+        return {
+            weeklyPlaylists,
+            monthlyPlaylists,
+            allTimePlaylists
+        }
+    } catch (err) {
+        console.log(`failed to convert playlists: ${err.message}`);
+        throw err;
     }
 }
 
 async function keywordController(movieGenres) {
-    if (!movieGenres) {
-        return '';
-    };
-    const genres = movieGenres.split(",");
-    return await keywordMatcher(genres);
+    try {
 
+
+        if (!movieGenres) {
+            return '';
+        };
+        const genres = movieGenres.split(",");
+        return await keywordMatcher(genres);
+    } catch (err) {
+        console.log(`failed to get keywords: ${err.message}`);
+        throw err;
+    }
 }
 
 async function getKeywords() {

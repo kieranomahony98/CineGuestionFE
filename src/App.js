@@ -34,7 +34,7 @@ export default function App() {
               <MovieGeneration />
             </Route>
             <Route path="/myGenerations">
-              {isAuthenticated() ? <ViewCurations /> : <Redirect to="/Generate" />}
+              {isAuthenticated() ? <ViewCurations /> : <Redirect to="/" />}
             </Route>
             <Route path="/playlists/:type" >
               {isAuthenticated() ? <WeeklyPlaylist /> : <Redirect to="/" />}

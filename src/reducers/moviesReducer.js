@@ -9,6 +9,7 @@ const initialState = {
 }
 
 export default function (state = initialState, action) {
+    console.log(JSON.stringify(action));
     switch (action.type) {
         case MOVIES_LOADING:
             return {

@@ -23,8 +23,10 @@ export const loadMovies = () => (dispatch, getState) => {
         axios.post(`${route}/api/movies/getPlaylists`, body, config)
             .then((res) => {
                 if (res.status === 200) {
+                    console.log(res.data);
                     convertPlayListsText(res.data)
                         .then((playlists) => {
+                            console.log(playlists)
                             dispatch({ type: MOVIES_LOADED, payload: playlists });
                         })
                         .catch((err) => {

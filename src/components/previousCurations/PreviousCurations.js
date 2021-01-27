@@ -45,7 +45,6 @@ const PreviousCurations = () => {
                         const generationDate = movie.movieGenerationDate.split("T")[0];
                         return await convertToTextGeneration(movie.movieSearchCriteria, false)
                             .then((convertedValues) => {
-                                console.log(movie);
                                 return (
                                     <Row className="curationRow movieCard mb-3" onClick={() => setSpecificCuration(movie)} key={i}>
                                         <Col>

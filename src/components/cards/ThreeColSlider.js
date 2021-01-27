@@ -102,7 +102,7 @@ export default () => {
     },
     {
       imageSrc: monthlyPlaylist,
-      title: "Montly Playlist",
+      title: "Monthly Playlist",
       description: (isAuthenticated) ? "Our carefully curated playlist to help you find new movies based on your previous month of watching. Your playlist will be made every month!" : "If you would like to get personalised playlists make sure to register!",
       locationText: "Why not give it a go!",
       type: "monthlyPlaylist"

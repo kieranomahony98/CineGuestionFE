@@ -75,13 +75,13 @@ async function keywordMatcher(keywords) {
 export async function convertPlayListsText({ weeklyPlaylists, monthlyPlaylists, allTimePlaylists }) {
     try {
         if (weeklyPlaylists) {
-            weeklyPlaylists.movieSeachCriteria = await convertToTextGeneration(weeklyPlaylists.movieSearchCriteria);
+            weeklyPlaylists.movieSearchCriteria = await convertToTextGeneration(weeklyPlaylists.movieSearchCriteria);
         }
         if (monthlyPlaylists) {
-            monthlyPlaylists.movieSeachCriteria = await convertPlayListsText(monthlyPlaylists.movieSearchCriteria);
+            monthlyPlaylists.movieSearchCriteria = await convertPlayListsText(monthlyPlaylists.movieSearchCriteria);
         }
         if (allTimePlaylists) {
-            allTimePlaylists.movieSeachCriteria = await convertPlayListsText(allTimePlaylists.movieSearchCriteria);
+            allTimePlaylists.movieSearchCriteria = await convertPlayListsText(allTimePlaylists.movieSearchCriteria);
         }
 
         return {

@@ -6,7 +6,7 @@ import '../../css/PreviousCurations.css';
 import tw from "twin.macro";
 import MovieModal from 'components/modal/movieModal';
 import { useParams } from 'react-router-dom';
-const HighlightedText = tw.span`text-primary-500`;
+export const HighlightedText = tw.span`text-primary-500`;
 const route = 'https://image.tmdb.org/t/p/original';
 let movie;
 

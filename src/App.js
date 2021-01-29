@@ -11,6 +11,7 @@ import { loadUser } from "actions/authActions";
 import LandingPage from "pages/LandingPage";
 import WeeklyPlaylist from "pages/weeklyPlaylists";
 import { PersistGate } from "redux-persist/integration/react";
+import { DiscussionPage } from "pages/DiscussionPage";
 
 
 export default function App() {
@@ -38,6 +39,9 @@ export default function App() {
             </Route>
             <Route path="/playlists/:type" >
               {isAuthenticated() ? <WeeklyPlaylist /> : <Redirect to="/" />}
+            </Route>
+            <Route path="/movies/discussion">
+              <DiscussionPage />
             </Route>
           </Switch>
 

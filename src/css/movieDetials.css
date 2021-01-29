@@ -1,0 +1,12 @@
+
+
+.desc {
+    height: 100%;
+}
+
+.movieImg{
+    /* max-width: 50%; */
+    max-height: 80%;
+    padding-left: 30%;
+}
+.tm-bg-gray { background-color: #EEEEEE; }

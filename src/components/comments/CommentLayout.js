@@ -5,23 +5,52 @@ import axios from 'axios';
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import route from "data/Routes"
+import { useEffect } from "react";
 export const CommentLayout = () => {
-    getComments();
     // const { discussionId } = useParams();
     const [commentText, setCommentText] = useState({
         text: ''
     });
-    const [comments, setComments] = useState(null);
-    const { token, user } = useSelector(state => state.auth)
-    const addComment = (e, replyComment = false, parentComment = null, replyCommentText = null) => {
-        console.log('in here');
-        e.preventDefault();
+    const [commentCount, setCommentCount] = useState(0);
+    const [comments, setComments] = useState([]);
+    const { token, user } = useSelector(state => state.auth);
+    useEffect(() => {
+        makeRequest()
+            .then((result) => {
+                setCommentCount(() => result.count);
+                const placeHolder = [];
+                console.log(result.comment)
+                for (const comment of Object.values(result.comments)) {
+                    placeHolder.push(comment);
+                }
+                setComments(() => manageComments(placeHolder));
+            }).catch((err) => {
+                throw err
+            });
+    }, []);
+
+    const refreshData = () => {
+        makeRequest()
+            .then((result) => {
+                setCommentCount(() => result.count);
+                const placeHolder = [];
+                console.log(result.comment)
+                for (const comment of Object.values(result.comments)) {
+                    placeHolder.push(comment);
+                }
+                setComments(() => manageComments(placeHolder));
+            }).catch((err) => {
+                throw err
+            });
+    }
+
+    const addComment = (replyComment = false, parentComment = null, replyCommentText = null) => {
         if (!user) return;
         if (!replyComment && commentText === "") return;
 
         const commentObj = {
             movieId: '2',
-            id: user._id,
+            id: user.id,
             userName: user.name,
             commentText: (replyComment) ? replyCommentText : commentText.text
         }
@@ -29,7 +58,6 @@ export const CommentLayout = () => {
             commentObj.parentId = parentComment._id;
             commentObj.depth = parentComment.depth + 1;
         }
-        console.log(commentObj);
         addCommentAPI(commentObj, token);
     }
 
@@ -39,42 +67,30 @@ export const CommentLayout = () => {
         console.log(commentText);
     }
 
-    async function getComments() {
-        makeRequest()
-            .then((result) => {
-                const commentList = [];
-                for (const commentObj in result) {
-                    commentList.push
-                }
-            }).catch((err) => {
-
-            });
-    }
-    const showComments = (comments) => {
-        let comments = [];
-        for (const [key, value] of commments.entries()) {
-            comments.push(
+    const manageComments = (comments) => {
+        let commentComponents = [];
+        for (const comment of Object.values(comments)) {
+            commentComponents.push(
                 <Row>
-                    <Comments comment={value} addComment={addComment} />
+                    <Comments comment={comment} addComment={addComment} onSubmit={addComment} refresh={refreshData} />
                 </Row>);
             if (comment.children && Object.keys(comment).length > 0) {
-                const responses = showComments(comment.children);
-                comments = comments.concat(responses);
+                const responses = manageComments(comment.children);
+                commentComponents = commentComponents.concat(responses);
             }
         }
-        setComments(() => comments);
+        setComments(() => commentComponents);
     }
+
     return (
         <Container>
             <Row>
-                <Form onSubmit={addComment}>
-                    <Label for="addComment" />
-                    <Input type="textarea" id="addComment" name="addComment" onChange={addCommentOnChange} />
-                    <Button type="submit">Add Comment</Button>
-                </Form>
-            </Row>
-            <Row style={{ margin: 20 }}><Comments /></Row>
 
+                <Input type="textarea" id="addComment" name="addComment" onChange={addCommentOnChange} />
+                <Button onClick={addComment}>Add Comment</Button>
+
+            </Row>
+            {(comments) ? comments : ''}
         </Container>
     )
 
@@ -87,13 +103,12 @@ async function makeRequest() {
         }
     };
 
-    axios.get(`${route}/api/movies/comments/getComments/2`, config)
-        .then((comments) => comments)
+    return await axios.get(`${route}/api/movies/comments/getComments/2`, config)
+        .then((comments) => comments.data)
         .catch((err) => {
             console.log(err.message);
             throw err;
         });
-
 }
 
 async function addCommentAPI(comment, token) {

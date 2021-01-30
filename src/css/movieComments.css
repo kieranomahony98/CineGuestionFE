@@ -33,11 +33,3 @@
 .replyButton:hover{
     cursor: pointer;
 }
-.commentInput {
-    border: none !important;
-    font-family: inherit;
-    font-size: inherit;
-    padding: inherit;
-    width: auto;
-    background-color: white !important;
-  }

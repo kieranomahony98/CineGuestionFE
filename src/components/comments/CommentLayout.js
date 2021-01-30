@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Label, Row, Container, Button } from "reactstrap";
+import { Input, Row, Container, Button } from "reactstrap";
 import { Comments } from "./Comments"
 import axios from 'axios';
 import { useParams } from "react-router-dom";
@@ -14,7 +14,9 @@ export const CommentLayout = () => {
     const [commentCount, setCommentCount] = useState(0);
     const [comments, setComments] = useState([]);
     const { token, user } = useSelector(state => state.auth);
+
     useEffect(() => {
+        console.log('in use effect');
         makeRequest()
             .then((result) => {
                 setCommentCount(() => result.count);
@@ -29,22 +31,27 @@ export const CommentLayout = () => {
             });
     }, []);
 
-    const refreshData = () => {
-        makeRequest()
-            .then((result) => {
-                setCommentCount(() => result.count);
-                const placeHolder = [];
-                console.log(result.comment)
-                for (const comment of Object.values(result.comments)) {
-                    placeHolder.push(comment);
-                }
-                setComments(() => manageComments(placeHolder));
-            }).catch((err) => {
-                throw err
-            });
+    const refreshData = async () => {
+        try {
+            const comments = await makeRequest()
+                .then((comments) => comments)
+                .catch((err) => {
+                    console.log(`failed to make request`);
+                    throw err;
+                })
+            setCommentCount(() => comments.count);
+            const placeHolder = [];
+            for (const comment of Object.values(comments.comments)) {
+                placeHolder.push(comment);
+            }
+            return manageComments(placeHolder);
+        } catch (err) {
+            throw err;
+        }
     }
 
     const addComment = (replyComment = false, parentComment = null, replyCommentText = null) => {
+
         if (!user) return;
         if (!replyComment && commentText === "") return;
 
@@ -58,7 +65,14 @@ export const CommentLayout = () => {
             commentObj.parentId = parentComment._id;
             commentObj.depth = parentComment.depth + 1;
         }
-        addCommentAPI(commentObj, token);
+        console.log(commentObj);
+        addCommentAPI(commentObj, token)
+            .then((data) => {
+                refreshData()
+                    .then((comments) => {
+                        setComments(() => comments);
+                    })
+            });
     }
 
     const addCommentOnChange = e => {
@@ -74,12 +88,14 @@ export const CommentLayout = () => {
                 <Row>
                     <Comments comment={comment} addComment={addComment} onSubmit={addComment} refresh={refreshData} />
                 </Row>);
-            if (comment.children && Object.keys(comment).length > 0) {
+            console.log(Object.keys(comment.children).length);
+            if (comment.children && Object.keys(comment.children).length !== 0) {
+                console.log('here');
                 const responses = manageComments(comment.children);
                 commentComponents = commentComponents.concat(responses);
             }
         }
-        setComments(() => commentComponents);
+        return commentComponents;
     }
 
     return (
@@ -112,6 +128,7 @@ async function makeRequest() {
 }
 
 async function addCommentAPI(comment, token) {
+    console.log('in add coment api');
     const config = {
         headers: {
             "Content-type": "application/json"
@@ -121,7 +138,10 @@ async function addCommentAPI(comment, token) {
     if (token) {
         config.headers["x-auth-token"] = token;
         axios.post(`${route}/api/movies/comments/addComments`, JSON.stringify(comment), config)
-            .then((comments) => comments)
+            .then((comments) => {
+                console.log(comment);
+                return comments;
+            })
             .catch((err) => {
                 console.log(err.message);
                 throw err;

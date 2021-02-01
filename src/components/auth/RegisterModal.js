@@ -11,6 +11,7 @@ const RegisterModal = ({ className }) => {
     const [modal, setModal] = useState(false);
     const [errors, setErrors] = useState({
         name: '',
+        userName: '',
         email: '',
         password: '',
     });
@@ -18,6 +19,7 @@ const RegisterModal = ({ className }) => {
     const [user, setUser] = useState({
         email: '',
         name: '',
+        userName: '',
         password: '',
         password2: ''
     });
@@ -26,12 +28,13 @@ const RegisterModal = ({ className }) => {
     const { isAuthenticated } = useSelector(state => state.auth)
     const onSubmit = (e) => {
         e.preventDefault();
-        const { name, email, password, password2 } = user;
+        const { name, email, password, password2, userName } = user;
 
         //user obj
         const newUser = {
             name,
             email,
+            userName,
             password,
             password2
         }
@@ -78,6 +81,11 @@ const RegisterModal = ({ className }) => {
                             <Label for="name"></Label>
                             <Input type="text" name="name" placeholder="Full Name..." className="mb-3" onChange={onChange} />
                             {(errors.name) ? <p className="text-danger">{errors.name}</p> : null}
+
+                            <Label for="userName"></Label>
+                            <Input type="text" name="userName" placeholder="User Name..." className="mb-3" onChange={onChange} />
+                            {(errors.userName) ? <p className="text-danger">{errors.userName}</p> : null}
+
                             <Label for="email"></Label>
                             <Input type="email" name="email" placeholder="Email..." className="mb-3" onChange={onChange} />
                             {(errors.email) ? <p className="text-danger">{errors.email}</p> : null}

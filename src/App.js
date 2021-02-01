@@ -11,7 +11,8 @@ import { loadUser } from "actions/authActions";
 import LandingPage from "pages/LandingPage";
 import WeeklyPlaylist from "pages/weeklyPlaylists";
 import { PersistGate } from "redux-persist/integration/react";
-
+import { DiscussionPage } from "pages/DiscussionPage";
+import { DiscussionLandingPage } from "pages/DiscussionLadingPage";
 
 export default function App() {
   useEffect(() => {
@@ -30,14 +31,20 @@ export default function App() {
             <Route exact path="/">
               <LandingPage />
             </Route>
-            <Route path="/Generate">
+            <Route exact path="/Generate">
               <MovieGeneration />
             </Route>
-            <Route path="/myGenerations">
+            <Route exact path="/myGenerations">
               {isAuthenticated() ? <ViewCurations /> : <Redirect to="/" />}
             </Route>
-            <Route path="/playlists/:type" >
+            <Route exact path="/playlists/:type" >
               {isAuthenticated() ? <WeeklyPlaylist /> : <Redirect to="/" />}
+            </Route>
+            <Route exact path="/movies/discussions">
+              <DiscussionLandingPage />
+            </Route>
+            <Route exact path="/movies/discussions/:movieId">
+              <DiscussionPage />
             </Route>
           </Switch>
 

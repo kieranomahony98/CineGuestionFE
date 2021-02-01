@@ -1,0 +1,17 @@
+
+.desc {
+    height: 100%;
+    padding-bottom: 0% !important;
+    margin-bottom: 0% !important;
+}
+
+.movieImg{
+    /* max-width: 50%; */
+    max-height: 520px;
+    /* padding-left: 20%; */
+    padding-left: 0% !important;
+    padding-bottom: 0% !important;
+    margin-bottom: 0% !important;
+}
+
+.tm-bg-gray { background-color: #EEEEEE; }

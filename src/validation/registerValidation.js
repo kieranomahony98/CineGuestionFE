@@ -1,10 +1,11 @@
 import Validator from 'validator';
 import isEmpty from './isEmpty';
-export default function ({ name, email, password, password2 }) {
+export default function ({ name, email, password, password2, userName }) {
     let registerErrors = {};
     name = !isEmpty(name) ? name : '';
     email = !isEmpty(email) ? email : '';
     password = !isEmpty(password) ? password : '';
+    userName = !isEmpty(userName) ? userName : '';
 
     if (!Validator.isLength(name, { min: 5, max: 100 })) {
         registerErrors.name = 'Name must be between 5 and 100 characters';
@@ -26,6 +27,12 @@ export default function ({ name, email, password, password2 }) {
     }
     if (!Validator.equals(password, password2)) {
         registerErrors.password = 'Passwords do not match';
+    }
+    if (Validator.isEmpty(userName)) {
+        registerErrors.userName = 'Please enter a user name';
+    }
+    if (!Validator.isLength(userName, { min: 5, max: 50 })) {
+        registerErrors.userName = 'User Name must be between 5 and 50 characters';
     }
     return {
         registerErrors,

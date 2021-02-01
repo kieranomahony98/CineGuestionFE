@@ -82,7 +82,7 @@ const PreviousCurations = () => {
 
         setMovieCards(mv.movies.map((m, i) => {
             const { movieImagePath, movieTitle, movieDescription, moviePopularity } = m;
-            return <MovieCard title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; toggle() }} key={i} />
+            return <MovieCard mo title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; toggle() }} key={i} />
         }));
         handleClick();
     }
@@ -113,7 +113,7 @@ const PreviousCurations = () => {
                         showSpinner()
             }
             {
-                (openModal) ? <MovieModal toggle={toggle} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ''
+                (openModal) ? <MovieModal toggle={toggle} isOpen={openModal} movieId={movie.movieId} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ''
 
             }
 

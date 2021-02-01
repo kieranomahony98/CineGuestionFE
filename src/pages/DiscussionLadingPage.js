@@ -5,15 +5,16 @@ import Header from "components/headers/light.js";
 import { CommentLayout } from 'components/comments/CommentLayout';
 import MovieDetails from "components/comments/MovieDetails";
 import { Container } from 'reactstrap';
-import { useParams } from 'react-router-dom';
-export const DiscussionPage = () => {
-    const { movie } = useParams();
-    console.log(movie);
+import Discussion from "components/discussions/discussion";
+import Hr from "components/hr/Hr";
+
+export const DiscussionLandingPage = () => {
+
     return <AnimationRevealPage>
         <Header />
+
         <Container>
-            <MovieDetails />
-            <CommentLayout />
+            <Discussion />
         </Container>
         <Footer />
     </AnimationRevealPage>

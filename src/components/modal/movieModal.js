@@ -1,9 +1,14 @@
 import React from 'react';
-import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, Button } from 'reactstrap';
 import tw from 'twin.macro';
-
+import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addMovieDiscussion } from 'actions/movieActions';
+const PrimaryButton = tw(PrimaryButtonBase)`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
 const HighlightedText = tw.span`text-primary-500`;
 const MovieModal = ({
+    movieId,
     movieImagePath,
     movieTitle,
     movieDescription,
@@ -13,13 +18,25 @@ const MovieModal = ({
     isOpen,
     toggle
 }) => {
-    // const [modal, setModal] = useState(true);
+    const movie = {
+        movieId,
+        movieImagePath,
+        movieTitle,
+        movieDescription,
+        moviePopularity,
+        movieReleaseYear,
+        movieGenres,
+    }
+    const dispatch = useDispatch();
+    const history = useHistory();
+
     const route = 'https://image.tmdb.org/t/p/original';
-    // const toggle = () => {
-    //     setModal(() => !modal);
-    // }
-
-
+    const goToDiscussion = () => {
+        dispatch(addMovieDiscussion(movie));
+        history.push({
+            pathname: `/movies/discussions/${movie.movieId}`
+        });
+    }
     return (
         <>
             <Modal isOpen={isOpen} modalTransition={{ timeout: 500 }} toggle={toggle} className="modalFull">
@@ -34,6 +51,8 @@ const MovieModal = ({
                         <p className="mb-2"><HighlightedText><b>Release Year: </b> </HighlightedText>{movieReleaseYear}</p>
                         <p className="mb-2"><HighlightedText><b>Included Genres:</b> </HighlightedText> {movieGenres}</p>
                     </div>
+                    <PrimaryButton onClick={goToDiscussion}>View Discussion!</PrimaryButton>
+
                 </ModalBody>
             </Modal>
         </>

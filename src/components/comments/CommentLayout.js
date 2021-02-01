@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Input, Row, Container, Button, Col, Collapse, UncontrolledCollapse } from "reactstrap";
-import { ReactComponent as Minus } from "feather-icons/dist/icons/minus-circle.svg";
+import { Input, Row, Container, Button, Col } from "reactstrap";
 import { Comments } from "./Comments"
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
@@ -24,7 +23,6 @@ export const CommentLayout = () => {
                 }
                 setCommentCount(() => result.count);
                 const placeHolder = [];
-                console.log(result.comment)
                 for (const comment of Object.values(result.comments)) {
                     placeHolder.push(comment);
                 }
@@ -92,8 +90,8 @@ export const CommentLayout = () => {
     const addCommentOnChange = e => {
         const { value } = e.target;
         setCommentText(commentText => ({ ...commentText, text: value }));
-        console.log(commentText);
     }
+
 
     const manageComments = async (comments) => {
         let commentComponents = [];
@@ -107,7 +105,6 @@ export const CommentLayout = () => {
             if (comment.children && Object.keys(comment.children).length !== 0) {
                 let responses = await manageComments(comment.children);
                 const newKey = uuid();
-                console.log(newKey);
                 responses = <Container key={newKey}> {responses} </Container>
                 commentComponents = commentComponents.concat(responses);
             }
@@ -124,9 +121,8 @@ export const CommentLayout = () => {
                         <Button className="mt-2" style={{ float: 'right' }} onClick={() => addComment(false, null, null)}>Add Comment</Button>
                     </>
                     : <Input type="textarea" id="addComment" name="addComment" value="Please log in to leave a comment" onChange={addCommentOnChange} disabled />}
-
             </Row>
-            {(errors) ? <Row><Col md="4"></Col> <Col md="4"> <h4>Be the first to share your opinion on this movie!</h4> </Col><Col md="4"></Col></Row> : ''}
+            {(errors) ? <Row><Col md="4"></Col> <Col md="4" className="mt-2"> <h4>Be the first to share your opinion on this movie!</h4> </Col><Col md="4"></Col></Row> : ''}
             {(comments) ? comments : ''}
         </Container>
     )

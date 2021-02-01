@@ -57,13 +57,15 @@ export const Comments = ({
                 setCommentText(commentText => ({ ...commentText, commentText: tempText }));
                 setReadonly(readOnly => !readOnly);
                 refresh();
+            }).catch((err) => {
+                throw err;
             })
-
     }
 
     const onReplySubmit = () => {
         setShowReply(showReply => !showReply);
-        onSubmit(true, comment, reply.commentText);
+        onSubmit(true, comment, reply.commentText)
+            .then((r) => r);
         setReply(reply => ({ reply, commentText: '' }));
     }
 
@@ -71,7 +73,8 @@ export const Comments = ({
         deleteCommentApi(comment._id, token)
             .then((res) => {
                 toggleConfirm();
-                refresh();
+                refresh()
+                    .then((r) => r);
             });
     }
 
@@ -110,8 +113,8 @@ export const Comments = ({
                 showReply ?
                     <>
                         <Input type="textarea" className="ml-2" name="replyBox" id="replyBox" onChange={replyOnInput} />
-                        <Button onClick={onReplySubmit} style={{ float: 'right' }}>Reply</Button>
-                        <Button onClick={onCancel}>Cancel</Button>
+                        <Button className="mt-2" onClick={onReplySubmit} style={{ float: 'right' }}>Reply</Button>
+                        <Button className="mt-2" onClick={onCancel}>Cancel</Button>
                     </>
                     : ''
             }

@@ -86,7 +86,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
     <NavLinks key={1}>
       <NavLink href="/#">Trending</NavLink>
       <NavLink href="/movies/discussions">Community</NavLink>
-      <NavLink href="/#">Generate</NavLink>
+      <NavLink href="/Generate">Generate</NavLink>
       {isAuthenticatedNavLink}
     </NavLinks>
   ];

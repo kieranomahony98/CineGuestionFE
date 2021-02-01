@@ -22,12 +22,13 @@ const MovieDetails = () => {
                 <Col>
                     <img src={`${route}${movieDiscussion.movieImagePath}`} className="movieImg" />
                 </Col>
-                <Col className="desc">
+
+                <Col className="desc justify-content-center">
                     <h3>{movieDiscussion.movieTitle}</h3>
-                    <p><HighlightedText> Genres:</HighlightedText> {movieDiscussion.movieGenres}</p>
-                    <p><HighlightedText> Popularity:</HighlightedText>  {movieDiscussion.moviePopularity}</p>
-                    <p><HighlightedText> Release Year: </HighlightedText> {movieDiscussion.movieReleaseYear}</p>
-                    <p><HighlightedText> Description: </HighlightedText>  {movieDiscussion.movieDescription}</p>
+                    <p className="mt-2"><HighlightedText> Genres:</HighlightedText> {movieDiscussion.movieGenres}</p>
+                    <p className="mt-2"><HighlightedText> Popularity:</HighlightedText>  {movieDiscussion.moviePopularity}</p>
+                    <p className="mt-2"><HighlightedText> Release Year: </HighlightedText> {movieDiscussion.movieReleaseYear}</p>
+                    <p className="mt-2"><HighlightedText> Description: </HighlightedText>  {movieDiscussion.movieDescription}</p>
 
                 </Col>
             </Row>

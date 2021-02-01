@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Col } from 'reactstrap';
 
 
-const Card = tw.div`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none`;
+const Card = tw.div`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none border-4 border-gray-500`;
 const CardImage = styled.div(props => [
   `background-image: url("${props.imageSrc}");`,
   tw`w-full h-64 sm:h-128 bg-cover bg-center rounded sm:rounded-none sm:rounded-tl-4xl`
@@ -13,7 +13,7 @@ const CardImage = styled.div(props => [
 
 const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
 const TitleReviewContainer = tw.div`flex flex-col sm:flex-row sm:justify-between sm:items-center`;
-const Title = tw.h5`text-2xl font-bold`;
+const Title = tw.h5`flex items-center text-lg font-bold`;
 
 const RatingsInfo = styled.div`
     ${tw`flex items-center sm:ml-4 mt-2 sm:mt-0`}

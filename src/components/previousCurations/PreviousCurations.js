@@ -6,7 +6,6 @@ import { Container, Row, Col } from 'reactstrap';
 import MovieCard from '../cards/card';
 import '../../css/PreviousCurations.css';
 import tw from "twin.macro";
-import { SkipBackward } from 'react-bootstrap-icons';
 
 import MovieModal from 'components/modal/movieModal';
 import { moviePopoverText } from 'helpers/PopoverText';
@@ -40,7 +39,6 @@ const PreviousCurations = () => {
         await getMovies(token)
             .then(async (m) => {
                 if (m) {
-                    console.log(JSON.stringify(m));
                     const generations = await Promise.all(m.map(async (movie, i) => {
                         const generationDate = movie.movieGenerationDate.split("T")[0];
                         return await convertToTextGeneration(movie.movieSearchCriteria, false)
@@ -109,7 +107,7 @@ const PreviousCurations = () => {
                 (generations) ?
                     previousCurations :
                     (showMovies) ?
-                        <> <Row><button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"><SkipBackward alignmentBaseline="auto" className="align-middle" /></span>All Curations </button></Row> <Row xs="3"> {movieCards}</Row></> :
+                        <> <Row><button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"></span>All Curations </button></Row> <Row xs="3"> {movieCards}</Row></> :
                         showSpinner()
             }
             {
@@ -120,7 +118,6 @@ const PreviousCurations = () => {
         </Container >
     );
 }
-
 async function getMovies(token = null) {
     return requestMovies(token)
         .then((movies) => {
@@ -129,5 +126,4 @@ async function getMovies(token = null) {
             throw err;
         })
 }
-
 export default PreviousCurations;

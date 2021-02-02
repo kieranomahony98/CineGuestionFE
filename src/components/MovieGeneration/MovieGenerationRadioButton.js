@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input } from 'reactstrap';
+import { Description } from "./MovieGenerationCheckbox";
 const MovieGenerationCheckbox = ({
     formItem,
     characteristic,
@@ -9,7 +10,7 @@ const MovieGenerationCheckbox = ({
     return (
         <tr>
             <td>
-                <label> {formItem.name}</label>
+                <Description> {formItem.name}</Description>
             </td>
             <td>
                 <Input addon type="radio" className={`carouselItem ${className}`} name={characteristic}

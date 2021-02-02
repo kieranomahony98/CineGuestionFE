@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import MovieGenerationCheckbox from './MovieGenerationCheckbox';
 import { Carousel } from 'react-responsive-carousel'
 import MovieGenerationRadioButton from './MovieGenerationRadioButton';
-import { SkipBackward } from 'react-bootstrap-icons';
 import { Button, Container, Row, Col, Table } from 'reactstrap';
 import movieGenerationQuestions from '../../data/MovieGenerationQuestions';
 import Loader from 'react-loader-spinner';
 import MovieModal from 'components/modal/movieModal'
 import MovieCard from '../cards/card';
+import Slider from "react-slick";
 import { MoviePopover } from "components/popover/popover";
 import MovieRequests from '../../data/MovieRequests';
 import { moviePopoverText } from "helpers/PopoverText";
@@ -15,9 +15,31 @@ import tw from "twin.macro";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import "../../MovieGeneration.css";
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { ReactComponent as ChevronLeftIcon } from "feather-icons/dist/icons/chevron-left.svg";
+import { ReactComponent as ChevronRightIcon } from "feather-icons/dist/icons/chevron-right.svg";
+import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
 
-
+const ControlButton = styled(PrimaryButtonBase)`
+  ${tw`mt-4 sm:mt-0 first:ml-0 ml-6 rounded-full p-2`}
+  svg {
+    ${tw`w-6 h-6`}
+  }
+`;
+const PrevButton = tw(ControlButton)``;
+const NextButton = tw(ControlButton)``;
 const HighlightedText = tw.span`text-primary-500`;
+
+const QuestionSlider = styled(Slider)`
+    ${tw`mt-16`}
+    .slick-track{
+        ${tw`flex`}
+    }
+    .slick-slide{
+        ${tw`h-auto flex justify-center mb-1`}
+    }
+`;
+const Controls = tw.div`flex items-center`;
 
 let movieCards;
 let movie;
@@ -32,10 +54,16 @@ const MovieGenerationCarousel = () => {
         title: "Curation Help",
         body: "Select anything you want to see in your movies. Everything is optional so dont feel pressured to select some slides!"
     });
+    const [sliderRef, setSliderRef] = useState(null);
     const [isRevised, setIsRevised] = useState(false);
     const popoverToggle = () => {
         setPopover(popover => !popover);
     }
+    const sliderSettings = {
+        arrows: false,
+        slidesToShow: 1,
+    }
+
 
     const { token } = useSelector(state => state.auth);
     const toggle = () => setModal(!openModal);
@@ -90,27 +118,26 @@ const MovieGenerationCarousel = () => {
                 );
             }));
     });
-    slides = slides.map((slide) => {
-        return (
-            <div key='carouselItem' className="carouselDiv">
-                <div className="wrapper">
-                    <Table>
-                        <tbody>
-                            {slide}
-                        </tbody>
-                    </Table>
-                </div>
-            </div>
-        )
-    });
+    // slides = slides.map((slide) => {
+    //     return (
+    //         <div key='carouselItem' className="carouselDiv">
+    //             <div className="wrapper">
+    //                 <Table>
+    //                     <tbody>
+    //                         {slide}
+    //                     </tbody>
+    //                 </Table>
+    //             </div>
+    //         </div>
+    //     )
+    // });
 
 
     const showCarousel = () => {
         return (
             <Col>
-                <Carousel className="carousel" showThumbs={false} >
-                    {slides}
-                </Carousel>
+                {slides}
+
             </Col>
         );
     };
@@ -134,7 +161,7 @@ const MovieGenerationCarousel = () => {
         return (
             <>
                 <Row>
-                    <Row><button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"><SkipBackward alignmentBaseline="auto" className="align-middle" /></span>Generation Survey</button></Row>
+                    <Row><button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"></span>Generation Survey</button></Row>
                 </Row>
                 <Row xs="3">
                     {movieCards}
@@ -150,18 +177,39 @@ const MovieGenerationCarousel = () => {
                 {isRevised ? <HighlightedText className="mx-auto">Youre query was altered to guarantee movie responses!</HighlightedText> : ''}
             </Row>
             <Row className="justify-content-center">
-                {(carouselVisible) ?
-                    <div className="table">
-                        {showCarousel()}
-                    </div>
-                    :
-                    (spinnerVisibility) ?
-                        showSpinner() :
-                        showMovies()
-                }
-                {
-                    (openModal) ? <MovieModal toggle={toggle} movieId={movie.movieId} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ''
-                }
+                {/* {(carouselVisible) ? */}
+                <>
+                    <Controls>
+                        <PrevButton onClick={sliderRef?.slickPrev}><ChevronLeftIcon /></PrevButton>
+                        <NextButton onClick={sliderRef?.slickNext}><ChevronRightIcon /></NextButton>
+                    </Controls>
+                    <QuestionSlider ref={setSliderRef} {...sliderSettings}>
+                        {
+                            slides.map((slide) => (
+                                <div key='carouselItem' className="carouselDiv">
+                                    <div className="wrapper">
+                                        <Table>
+                                            <tbody>
+                                                {slide}
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                </div>
+                            )
+                            )
+                        }
+
+
+                    </QuestionSlider>
+                </>
+                {/* //     : */}
+                {/* //     (spinnerVisibility) ? */}
+                {/* //         showSpinner() : */}
+                {/* //         showMovies() */}
+                {/* // } */}
+                {/* // { */}
+                {/* //     (openModal) ? <MovieModal toggle={toggle} movieId={movie.movieId} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : '' */}
+                {/* // } */}
 
             </Row>
 

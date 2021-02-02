@@ -1,5 +1,8 @@
 import React from 'react';
 import { Input } from 'reactstrap';
+import tw from 'twin.macro';
+export const Description = tw.p`text-sm leading-loose mt-2 mr-2`;
+
 const MovieGenerationCheckbox = ({
     formItem,
     characteristic,
@@ -9,7 +12,7 @@ const MovieGenerationCheckbox = ({
     return (
         <tr>
             <td>
-                <label className="formItem"> {formItem.name} </label>
+                <Description >{formItem.name}</Description>
             </td>
             <td>
                 <Input addon type="checkbox" characteristic={characteristic}

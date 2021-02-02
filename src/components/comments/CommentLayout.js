@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { Input, Row, Container, Button, Col } from "reactstrap";
 import { Comments } from "./Comments"
-import axios from 'axios';
-import { v4 as uuid } from 'uuid';
+import axios from "axios";
+import { v4 as uuid } from "uuid";
 import { useSelector } from "react-redux";
 import route from "data/Routes"
 import { useEffect } from "react";
 export const CommentLayout = () => {
     const { movieDiscussion } = useSelector(state => state.movies);
-    const [commentText, setCommentText] = useState({ text: '' });
+    const [commentText, setCommentText] = useState({ text: "" });
     const [commentCount, setCommentCount] = useState(0);
     const [comments, setComments] = useState([]);
-    const [collapse, setCollapse] = useState({ key: 'value' });
+    const [collapse, setCollapse] = useState({ key: "value" });
     const [errors, setErrors] = useState(false);
     const { token, user, isAuthenticated } = useSelector(state => state.auth);
     useEffect(() => {
@@ -28,7 +28,6 @@ export const CommentLayout = () => {
                 }
                 manageComments(placeHolder)
                     .then((res) => {
-                        console.log(res);
                         setComments(() => res);
                     })
             }).catch((err) => {
@@ -55,7 +54,7 @@ export const CommentLayout = () => {
             }
             manageComments(placeHolder)
                 .then((res) => {
-                    setCommentText(commentText => ({ ...commentText, text: '' }));
+                    setCommentText(commentText => ({ ...commentText, text: "" }));
                     setComments(() => res);
                 });
         } catch (err) {
@@ -118,12 +117,12 @@ export const CommentLayout = () => {
                 {isAuthenticated ?
                     <>
                         <Input type="textarea" id="addComment" name="addComment" value={commentText.text} onChange={addCommentOnChange} />
-                        <Button className="mt-2" style={{ float: 'right' }} onClick={() => addComment(false, null, null)}>Add Comment</Button>
+                        <Button className="mt-2" style={{ float: "right" }} onClick={() => addComment(false, null, null)}>Add Comment</Button>
                     </>
                     : <Input type="textarea" id="addComment" name="addComment" value="Please log in to leave a comment" onChange={addCommentOnChange} disabled />}
             </Row>
-            {(errors) ? <Row><Col md="4"></Col> <Col md="4" className="mt-2"> <h4>Be the first to share your opinion on this movie!</h4> </Col><Col md="4"></Col></Row> : ''}
-            {(comments) ? comments : ''}
+            {(errors) ? <Row><Col md="4"></Col> <Col md="4" className="mt-2"> <h4>Be the first to share your opinion on this movie!</h4> </Col><Col md="4"></Col></Row> : ""}
+            {(comments) ? comments : ""}
         </Container>
     )
 
@@ -144,7 +143,6 @@ async function makeRequest(movie) {
 }
 
 async function addCommentAPI(comment, token) {
-    console.log('in add coment api');
     const config = {
         headers: {
             "Content-type": "application/json"

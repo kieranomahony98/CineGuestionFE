@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import LoginModal from '../auth/LoginModal'
-import RegisterModal from '../auth/RegisterModal';
+import LoginModal from "../auth/LoginModal"
+import RegisterModal from "../auth/RegisterModal";
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.js";
-import DowndownMenu from '../../dropdown/DropdownMenu';
+import DowndownMenu from "../../dropdown/DropdownMenu";
 import logo from "../../images/cineGuestion/logo.png";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";

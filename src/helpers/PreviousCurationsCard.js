@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import MovieCard from '../components/cards/card';
-import { Col } from 'reactstrap';
-import MovieModal from '../components/modal/movieModal';
+import React, { useState } from "react"
+import MovieCard from "../components/cards/card";
+import { Col } from "reactstrap";
+import MovieModal from "../components/modal/movieModal";
 
 const PreviousCurationsCard = ({
     movieImagePath,
@@ -11,7 +11,7 @@ const PreviousCurationsCard = ({
     onClick }) => {
     const [card, setCard] = useState(null);
     const [modal, showModal] = useState(false);
-    const route = 'https://image.tmdb.org/t/p/original';
+    const route = "https://image.tmdb.org/t/p/original";
 
     const movieCards = () => {
         return (

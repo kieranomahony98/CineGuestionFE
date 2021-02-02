@@ -2,10 +2,10 @@ import "tailwindcss/dist/base.css";
 import "styles/globalStyles.css";
 import React, { useEffect, } from "react";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import { Provider } from 'react-redux'
-import { store, persistor } from './store';
-import ViewCurations from './pages/ViewCurations';
-import MovieGeneration from './pages/MovieGeneration';
+import { Provider } from "react-redux"
+import { store, persistor } from "./store";
+import ViewCurations from "./pages/ViewCurations";
+import MovieGeneration from "./pages/MovieGeneration";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { loadUser } from "actions/authActions";
 import LandingPage from "pages/LandingPage";

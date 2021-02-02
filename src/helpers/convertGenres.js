@@ -21,7 +21,7 @@ export async function convertToTextGeneration(movieSearchCriteria) {
         console.log(`Failed conversion: ${err.message}`);
         return {
             error: 404,
-            msg: `We're sorry, we couldnt get your generations right now, please try again later`
+            msg: `We"re sorry, we couldnt get your generations right now, please try again later`
         }
     }
 
@@ -33,7 +33,7 @@ async function sortByMatcher(sort_by) {
 async function genreMatcher(genres) {
     try {
         const movieGenreOBJ = await getGenres();
-        let returnGenres = '';
+        let returnGenres = "";
         for (const genre of genres) {
             returnGenres += movieGenreOBJ[genre] ? (returnGenres.length === 0) ? `${movieGenreOBJ[genre]}` : `, ${movieGenreOBJ[genre]}` : null;
         }
@@ -49,7 +49,7 @@ async function listMatcher(movieGenres) {
 
 
         if (!movieGenres) {
-            return '';
+            return "";
         }
         return await genreMatcher(movieGenres);
     } catch (err) {
@@ -61,7 +61,7 @@ async function listMatcher(movieGenres) {
 async function keywordMatcher(keywords) {
     try {
         const movieKeywordsObj = await getKeywords();
-        let returnkeywords = '';
+        let returnkeywords = "";
         for (const keyword of keywords) {
             returnkeywords += movieKeywordsObj[keyword] ? (returnkeywords.length === 0) ? `${movieKeywordsObj[keyword]}` : `, ${movieKeywordsObj[keyword]}` : null;
         }
@@ -74,14 +74,15 @@ async function keywordMatcher(keywords) {
 
 export async function convertPlayListsText({ weeklyPlaylists, monthlyPlaylists, allTimePlaylists }) {
     try {
+
         if (weeklyPlaylists) {
             weeklyPlaylists.movieSearchCriteria = await convertToTextGeneration(weeklyPlaylists.movieSearchCriteria);
         }
         if (monthlyPlaylists) {
-            monthlyPlaylists.movieSearchCriteria = await convertPlayListsText(monthlyPlaylists.movieSearchCriteria);
+            monthlyPlaylists.movieSearchCriteria = await convertToTextGeneration(monthlyPlaylists.movieSearchCriteria);
         }
         if (allTimePlaylists) {
-            allTimePlaylists.movieSearchCriteria = await convertPlayListsText(allTimePlaylists.movieSearchCriteria);
+            allTimePlaylists.movieSearchCriteria = await convertToTextGeneration(allTimePlaylists.movieSearchCriteria);
         }
 
         return {
@@ -100,7 +101,7 @@ async function keywordController(movieGenres) {
 
 
         if (!movieGenres) {
-            return '';
+            return "";
         };
         const genres = movieGenres.split(",");
         return await keywordMatcher(genres);
@@ -112,34 +113,34 @@ async function keywordController(movieGenres) {
 
 async function getKeywords() {
     return {
-        '10183': 'independent Films',
-        '4344': 'musical',
-        '3149': 'gangster',
-        '9799': 'romantic Comedy',
-        '18257': 'educational'
+        "10183": "independent Films",
+        "4344": "musical",
+        "3149": "gangster",
+        "9799": "romantic Comedy",
+        "18257": "educational"
     };
 }
 
 async function getGenres() {
     return {
-        '37': 'Western',
-        '28': 'Action',
-        '12': 'Adventure',
-        '16': 'Animation',
-        '35': 'Comedy',
-        '80': 'Crime',
-        '99': 'Documentary',
-        '18': 'Drama',
-        '10751': 'Family',
-        '14': 'Fantasy',
-        '36': 'History',
-        '27': 'Horror',
-        '10402': 'Music',
-        '9648': 'Mystery',
-        '10749': 'Romance',
-        '878': 'Sci-Fi',
-        '10770': 'TV Movie',
-        '53': 'Thriller',
-        '10752': 'War'
+        "37": "Western",
+        "28": "Action",
+        "12": "Adventure",
+        "16": "Animation",
+        "35": "Comedy",
+        "80": "Crime",
+        "99": "Documentary",
+        "18": "Drama",
+        "10751": "Family",
+        "14": "Fantasy",
+        "36": "History",
+        "27": "Horror",
+        "10402": "Music",
+        "9648": "Mystery",
+        "10749": "Romance",
+        "878": "Sci-Fi",
+        "10770": "TV Movie",
+        "53": "Thriller",
+        "10752": "War"
     };
 }

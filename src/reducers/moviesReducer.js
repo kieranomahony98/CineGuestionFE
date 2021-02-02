@@ -1,4 +1,4 @@
-import { MOVIES_LOADING, MOVIES_LOADED, MOVIES_LOGOUT, MOVIE_DISCUSSION } from '../actions/types';
+import { MOVIES_LOADING, MOVIES_LOADED, MOVIES_LOGOUT, MOVIE_DISCUSSION } from "../actions/types";
 
 const initialState = {
     isLoaded: false,

@@ -3,10 +3,10 @@ import tw from "twin.macro";
 import styled from "styled-components";
 import Header, { LogoLink, NavLinks, NavLink as NavLinkBase } from "../headers/light.js";
 import LoginModal from "components/auth/LoginModal.js";
-import DowndownMenu from '../../dropdown/DropdownMenu';
+import DowndownMenu from "../../dropdown/DropdownMenu";
 import { useSelector } from "react-redux";
 import RegisterModal from "components/auth/RegisterModal.js";
-import { Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 
 const StyledHeader = styled(Header)`
   ${tw`justify-between`}

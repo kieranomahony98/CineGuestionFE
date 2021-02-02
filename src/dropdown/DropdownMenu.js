@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
-import { logOutMovies } from '../actions/movieActions'
-import { logout } from '../actions/authActions';
-import { NavLink } from '../components/headers/light';
-import '../css/dropdown.css';
+import React, { useState, useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
+import { logOutMovies } from "../actions/movieActions"
+import { logout } from "../actions/authActions";
+import { NavLink } from "../components/headers/light";
+import "../css/dropdown.css";
 const dropDownText = "text-gray-400"
 const DowndownMenu = () => {
     const dispatch = useDispatch();
@@ -36,8 +36,8 @@ const DowndownMenu = () => {
     }, [dropdown]);
 
     const userLogout = () => {
-        dispatch(logout());
         dispatch(logOutMovies());
+        dispatch(logout());
 
     }
 

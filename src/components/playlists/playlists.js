@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Container, Row } from 'reactstrap';
-import { MoviePopover } from '../popover/popover';
-import MovieCard from '../cards/card';
-import '../../css/PreviousCurations.css';
+import React, { useState } from "react";
+import { Container, Row } from "reactstrap";
+import { MoviePopover } from "../popover/popover";
+import MovieCard from "../cards/card";
+import "../../css/PreviousCurations.css";
 import tw from "twin.macro";
-import MovieModal from 'components/modal/movieModal';
-import { useParams } from 'react-router-dom';
+import MovieModal from "components/modal/movieModal";
+import { useParams } from "react-router-dom";
 export const HighlightedText = tw.span`text-primary-500`;
-const route = 'https://image.tmdb.org/t/p/original';
+const route = "https://image.tmdb.org/t/p/original";
 let movie;
 
 const Playlists = ({ Playlist }) => {
@@ -20,7 +20,6 @@ const Playlists = ({ Playlist }) => {
     const toggle = () => {
         setOpenModal(openModal => !openModal);
     }
-
     const body = `This curation is a selection of ${genreText(Playlist.movieSearchCriteria.with_genres)} genres, ${keywordsText(Playlist.movieSearchCriteria.with_keywords)}${sortByText(Playlist.movieSearchCriteria.sort_by)}`
     const popoverToggle = () => {
         setPopoverOpen(popoverOpen => !popoverOpen);
@@ -40,10 +39,10 @@ const Playlists = ({ Playlist }) => {
                         {movieCards}
                     </Row>
                 </>
-                : ''
+                : ""
             }
             {
-                (openModal) ? <MovieModal toggle={toggle} movieId={movie.movieId} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ''
+                (openModal) ? <MovieModal toggle={toggle} movieId={movie.movieId} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ""
 
             }
         </Container >

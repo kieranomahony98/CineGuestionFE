@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import route from "../../data/Routes";
 import MovieCard from "components/cards/card";
-import { Container, Row, Button } from "reactstrap";
+import { Container, Row, Button, Col } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addMovieDiscussion } from "actions/movieActions";
@@ -29,7 +29,7 @@ const Discussion = () => {
 
     return (
         <Container>
-            <Row xs="3">
+            <Row>
                 {discussion.length > 0 ? discussion : ""}
             </Row >
         </Container>

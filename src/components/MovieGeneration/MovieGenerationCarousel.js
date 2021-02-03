@@ -202,14 +202,13 @@ const MovieGenerationCarousel = () => {
 
                     </QuestionSlider>
                 </>
-                {/* //     : */}
-                {/* //     (spinnerVisibility) ? */}
+                     :
+                   (spinnerVisibility) ?
                 {/* //         showSpinner() : */}
                 {/* //         showMovies() */}
                 {/* // } */}
                 {/* // { */}
                 {/* //     (openModal) ? <MovieModal toggle={toggle} movieId={movie.movieId} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : '' */}
-                {/* // } */}
 
             </Row>
 

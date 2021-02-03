@@ -10,7 +10,9 @@
 .spinner {
     margin: auto;
 }
-
+.objects{
+    columns: 2;
+}
 .carouselDiv {
     width: 100%;
     padding-top: 5%;

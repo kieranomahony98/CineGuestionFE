@@ -114,7 +114,6 @@ const PreviousCurations = () => {
                 (openModal) ? <MovieModal toggle={toggle} isOpen={openModal} movieId={movie.movieId} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ''
 
             }
-
         </Container >
     );
 }

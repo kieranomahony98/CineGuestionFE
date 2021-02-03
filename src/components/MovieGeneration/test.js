@@ -6,7 +6,7 @@ import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
 import { ReactComponent as ChevronLeftIcon } from "feather-icons/dist/icons/chevron-left.svg";
 import { ReactComponent as ChevronRightIcon } from "feather-icons/dist/icons/chevron-right.svg";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Container, Row, Button, Table, Tab } from "reactstrap";
 import MovieGenerationRadioButton from './MovieGenerationRadioButton';
 import MovieGenerationCheckbox from './MovieGenerationCheckbox';
 import movieGenerationQuestions from '../../data/MovieGenerationQuestions';
@@ -18,6 +18,8 @@ import MovieRequests from '../../data/MovieRequests';
 import { moviePopoverText } from "helpers/PopoverText";
 import "../../MovieGeneration.css";
 import { useSelector } from 'react-redux';
+const HighlightedText = tw.span`text-primary-500`;
+
 
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
 // all the tailwind stuff inside here is from template, however im learning as I go
@@ -39,25 +41,19 @@ const QuestionSlider = styled(Slider)`
     ${tw`flex`}
   }
   .slick-slide {
-    ${tw`h-auto flex justify-center mb-1`}
+    ${tw`h-auto flex justify-center mb-1 border sm:rounded-xl  border-gray-400 mr-2 ml-2`}
   }
 `;
+// const Slide = tw.div`sm:border max-w-sm sm:rounded-4xl relative focus:outline-none border-4 border-gray-500`
 
-const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
-const TitleReviewContainer = tw.div`flex flex-col sm:flex-row sm:justify-between sm:items-center`;
-const Title = tw.h5`text-2xl font-bold`;
-
-const RatingsInfo = styled.div`
-  ${tw`flex items-center sm:ml-4 mt-2 sm:mt-0`}
-  svg {
-    ${tw`w-6 h-6 text-yellow-500 fill-current`}
-  }
-`;
-const Rating = tw.span`ml-2 font-bold`;
-
-const Text = tw.div`ml-2 text-sm font-semibold text-gray-800`;
 let movieCards, movie;
-const PrimaryButton = tw(PrimaryButtonBase)`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
+function ArrowBack({ onClick }) {
+    return <PrevButton onClick={onClick}><ChevronLeftIcon /></PrevButton>
+}
+function ArrowNext({ onClick }) {
+    return <NextButton onClick={onClick}><ChevronRightIcon /></NextButton>
+
+}
 export default () => {
     // useState is used instead of useRef below because we want to re-render when sliderRef becomes available (not null)
     const [sliderRef, setSliderRef] = useState(null);
@@ -74,6 +70,7 @@ export default () => {
     const popoverToggle = () => {
         setPopover(popover => !popover);
     }
+
     const { token } = useSelector(state => state.auth);
     const toggle = () => setModal(!openModal);
     async function requestMovies() {
@@ -113,68 +110,127 @@ export default () => {
                     slidesToShow: 1,
                 }
             },
-        ]
-    };
-    const slides = movieGenerationQuestions.map((movieSlide) => {
-        return (
-            movieSlide.values.map((type) => {
-                if (movieSlide.display === 'checkbox') {
-                    return (
-                        <MovieGenerationCheckbox key={type.value} characteristic={movieSlide.type} formItem={type} />
-                    );
-                }
-                return (
-                    <MovieGenerationRadioButton key={type.value} characteristic={movieSlide.type} formItem={type} />
-                );
-            }));
-    });
-    const showCarousel = () => {
-        return (
-            <Col>
-                {slides}
+        ],
 
-            </Col>
-        );
+        prevArrow: <ArrowBack onClick={sliderRef?.slickPrev} />,
+        nextArrow: <ArrowBack onClick={sliderRef?.slickNext} />
     };
+    const handleSurvey = (value, characteristic) => {
+        if (characteristic === 'with_genres') {
+            if (surveyResults.with_genres) {
+                const genres = surveyResults.with_genres.toString();
+                value = (genres.match(new RegExp(`,${value}`, "g"))) ? genres.replace(new RegExp(`,${value}`, "g"), "") : (genres.match(new RegExp(`${value},`, "g"))) ? genres.replace(new RegExp(`${value},`, "g"), "") : (genres.match(new RegExp(`${value}`, "g"))) ? genres.replace(new RegExp(`${value}`, "g"), "") : `${genres},${value}`;
+            } else {
+                value = value.toString();
+            }
+        }
+        if (characteristic === 'with_keywords') {
+            if (surveyResults.with_keywords) {
+                const keywords = surveyResults.with_keywords.toString();
+                value = (keywords.match(new RegExp(`,${value}`, "g"))) ? keywords.replace(new RegExp(`,${value}`, "g"), "") : (keywords.match(new RegExp(`${value},`, "g"))) ? keywords.replace(new RegExp(`${value},`, "g"), "") : (keywords.match(new RegExp(`${value}`, "g"))) ? keywords.replace(new RegExp(`${value},`, "g"), "") : `${keywords},${value}`;
+            }
+        }
+        setSurveyResults(surveyResults => ({ ...surveyResults, [characteristic]: value }));
+    }
+
+    const slides = movieGenerationQuestions.map((movieSlide, i) => {
+        const className = movieSlide.type === "with_genres" ? "objects" : '';
+        const title = movieSlide.type === "with_genres" ? "Genres" : movieSlide.type === "primary_release_year" ? "Release Year" : movieSlide.type === "sort_by" ? "Rate by" : "Sub Genres";
+        return (
+            <React.Fragment key={i}>
+                <h1 style={{ textAlign: "center" }}>{title}</h1>
+                <Container className={className}>
+                    <Row>
+                        <Col>
+                            <table>
+                                <tbody>
+                                    {movieSlide.values.map((type) => {
+                                        if (movieSlide.display === 'checkbox') {
+
+                                            return (
+                                                <MovieGenerationCheckbox key={type.value} characteristic={movieSlide.type} formItem={type} clickAction={() => handleSurvey(type.value, movieSlide.type)} />
+                                            );
+                                        }
+                                        return (
+                                            <MovieGenerationRadioButton key={type.value} characteristic={movieSlide.type} formItem={type} clickAction={() => handleSurvey(type.value, movieSlide.type)} />
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </Col>
+                    </Row>
+                </Container>
+            </React.Fragment>
+        )
+    });
 
     const showSpinner = () => {
         return (
             <Row className="justify-content-center">
                 <Col xs="1">
-                    < Loader type="BallTriangle" color="#00BFFF" height={80} width={80} className="spinner p-2" />
+                    <Loader type="BallTriangle" color="#00BFFF" height={80} width={80} className="spinner p-2" />
                 </Col>
             </Row >
         );
     };
+    const showMovies = () => {
+        return (
+            <>
+                <Row>
+                    <Row><button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"></span>Generation Survey</button></Row>
+                </Row>
+                <Row xs="3">
+                    {movieCards}
+                </Row >
+            </>
+        );
+    };
+
     const handleClick = () => {
         setIsRevised(() => false);
         setCarouselVisible(carouselVisible => !carouselVisible);
         setSurveyResults(() => ({}));
     }
 
-
     return (
         <Container>
-            <Content>
-                <HeadingWithControl>
-                    <Heading>Popular Hotels</Heading>
+            <Row>
+                <MoviePopover toggle={popoverToggle} isOpen={popover} title={popOverText.title} body={popOverText.body} />
+                {isRevised ? <HighlightedText className="mx-auto">Youre query was altered to guarantee movie responses!</HighlightedText> : ''}
+            </Row>
+            {(carouselVisible) ?
+                <>
+                    <Row className="justify-content-center">
+                        <Col >
+                            <Controls>
+                                <PrevButton onClick={sliderRef?.slickPrev}><ChevronLeftIcon /></PrevButton>
+                            </Controls>
+                        </Col>
+                        <Col>
+                            <Controls style={{ display: 'table', margin: 'auto' }}>
+                                <Button className="ml-auto mr-10 btnGenerate btn btn-light mb-10 " onClick={requestMovies}>Generate Movies</Button>
+                            </Controls>
+                        </Col>
+                        <Col>
+                            <Controls style={{ float: "right" }}>
+                                <NextButton onClick={sliderRef?.slickNext}><ChevronRightIcon /></NextButton>
+                            </Controls>
+                        </Col>
 
-                </HeadingWithControl>
+                    </Row>
 
-                <QuestionSlider ref={setSliderRef} {...sliderSettings}>
+                    <QuestionSlider ref={setSliderRef} {...sliderSettings}>
+                        {slides.map((s) => s)}
+                    </QuestionSlider>
+                </>
+                :
+                (spinnerVisibility) ?
+                    showSpinner() :
+                    showMovies()
+            }
+            {(openModal) ? <MovieModal toggle={toggle} movieId={movie.movieId} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ''}
 
-                    {slides.map((slide) => (
-                        <Row>
-                            {slide}
-                        </Row>
-                    ))}
-                    <div style={{ textAlign: "center" }}>
-                        <PrevButton onClick={sliderRef?.slickPrev}><ChevronLeftIcon /></PrevButton>
-                        <NextButton onClick={sliderRef?.slickNext}><ChevronRightIcon /></NextButton>
-                    </div>
-                </QuestionSlider>
-            </Content>
-        </Container>
+        </Container >
     );
 };
 

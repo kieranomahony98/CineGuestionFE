@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import MovieGenerationCheckbox from "./MovieGenerationCheckbox";
 import { Carousel } from "react-responsive-carousel"
 import MovieGenerationRadioButton from "./MovieGenerationRadioButton";
-import { SkipBackward } from "react-bootstrap-icons";
 import { Button, Container, Row, Col, Table } from "reactstrap";
 import movieGenerationQuestions from "../../data/MovieGenerationQuestions";
 import Loader from "react-loader-spinner";
@@ -134,7 +133,7 @@ const MovieGenerationCarousel = () => {
         return (
             <>
                 <Row>
-                    <button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"><SkipBackward alignmentBaseline="auto" className="align-middle" /></span>Generation Survey</button>
+                    <button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"></span>Generation Survey</button>
                 </Row>
                 <Row>
                     {movieCards}

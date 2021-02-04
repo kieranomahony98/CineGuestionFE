@@ -4,51 +4,6 @@ const movieGenerationQuestions = [
         display: "checkbox",
         values: [
             {
-                name: "Western",
-                value: 37
-            },
-            {
-                name: "Crime",
-                value: 80
-            },
-            {
-                name: "Documentary",
-                value: 99
-            },
-            {
-                name: "Drama",
-                value: 18
-
-            },
-            {
-                name: "Family",
-                value: 10751
-            },
-            {
-                name: "Fantasy",
-                value: 14
-            },
-            {
-                name: "Mystery",
-                value: 9648
-            },
-            {
-                name: "Horror",
-                value: 27
-            },
-            {
-                name: "Romance",
-                value: 10749
-            },
-            {
-                name: "Thriller",
-                value: 53
-            },
-            {
-                name: "Sci-Fi",
-                value: 878
-            },
-            {
                 name: "Action",
                 value: 28
             },

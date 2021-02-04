@@ -6,8 +6,6 @@ import { Container, Row, Col } from "reactstrap";
 import MovieCard from "../cards/card";
 import "../../css/PreviousCurations.css";
 import tw from "twin.macro";
-import { SkipBackward } from "react-bootstrap-icons";
-
 import MovieModal from "components/modal/movieModal";
 import { moviePopoverText } from "helpers/PopoverText";
 import { MoviePopover } from "components/popover/popover";
@@ -108,7 +106,7 @@ const PreviousCurations = () => {
                 (generations) ?
                     previousCurations :
                     (showMovies) ?
-                        <> <Row><button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"><SkipBackward alignmentBaseline="auto" className="align-middle" /></span>All Curations </button></Row> <Row> {movieCards}</Row></> :
+                        <> <Row><button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"></span>All Curations </button></Row> <Row> {movieCards}</Row></> :
                         showSpinner()
             }
             {

@@ -6,12 +6,15 @@ import { v4 as uuid } from "uuid";
 import { useSelector } from "react-redux";
 import route from "data/Routes"
 import { useEffect } from "react";
+import Collapsible from "react-collapsible";
+import { ReactComponent as Minus } from "feather-icons/dist/icons/minus.svg";
+import "css/commentLayout.css";
+
 export const CommentLayout = () => {
     const { movieDiscussion } = useSelector(state => state.movies);
     const [commentText, setCommentText] = useState({ text: "" });
-    const [commentCount, setCommentCount] = useState(0);
+    const [commentCount, setCommentCount] = useState(-1);
     const [comments, setComments] = useState([]);
-    const [collapse, setCollapse] = useState({ key: "value" });
     const [errors, setErrors] = useState(false);
     const { token, user, isAuthenticated } = useSelector(state => state.auth);
     useEffect(() => {
@@ -43,6 +46,7 @@ export const CommentLayout = () => {
                     console.log(`failed to make request`);
                     throw err;
                 });
+            console.log(comments.count);
             if (comments.count === 0) {
                 setErrors(error => !error)
                 return;
@@ -65,7 +69,9 @@ export const CommentLayout = () => {
     const addComment = async (replyComment = false, parentComment = null, replyCommentText = null) => {
         if (!user) return;
         if (!replyComment && commentText === "") return;
-        setErrors(errors => !errors);
+        if (errors) {
+            setErrors(errors => !errors);
+        }
         const commentObj = {
             movieId: movieDiscussion.movieId,
             id: user.id,
@@ -91,20 +97,20 @@ export const CommentLayout = () => {
         setCommentText(commentText => ({ ...commentText, text: value }));
     }
 
-
     const manageComments = async (comments) => {
         let commentComponents = [];
         for (const comment of Object.values(comments)) {
-            const key = uuid();
             commentComponents.push(
-                <Row key={key}>
+
+                <Row key={uuid()}>
                     <Comments comment={comment} addComment={addComment} onSubmit={addComment} refresh={refreshData} />
                 </Row>
             );
             if (comment.children && Object.keys(comment.children).length !== 0) {
                 let responses = await manageComments(comment.children);
-                const newKey = uuid();
-                responses = <Container key={newKey}> {responses} </Container>
+
+                responses = <Collapsible trigger="View Replies" open={false} overflowWhenOpen="visible" classParentString="replies" key={uuid()}>
+                    <Container> {responses} </Container></Collapsible>
                 commentComponents = commentComponents.concat(responses);
             }
         }

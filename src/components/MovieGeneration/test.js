@@ -6,7 +6,8 @@ import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
 import { ReactComponent as ChevronLeftIcon } from "feather-icons/dist/icons/chevron-left.svg";
 import { ReactComponent as ChevronRightIcon } from "feather-icons/dist/icons/chevron-right.svg";
-import { Col, Container, Row, Button, Table, Tab } from "reactstrap";
+import { ReactComponent as Play } from "feather-icons/dist/icons/play.svg";
+import { Col, Container, Row, Button } from "reactstrap";
 import MovieGenerationRadioButton from './MovieGenerationRadioButton';
 import MovieGenerationCheckbox from './MovieGenerationCheckbox';
 import movieGenerationQuestions from '../../data/MovieGenerationQuestions';
@@ -18,7 +19,7 @@ import MovieRequests from '../../data/MovieRequests';
 import { moviePopoverText } from "helpers/PopoverText";
 import "../../MovieGeneration.css";
 import { useSelector } from 'react-redux';
-const HighlightedText = tw.span`text-primary-500`;
+const HighlightedText = tw.h6`text-primary-500`;
 
 
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
@@ -32,11 +33,12 @@ const ControlButton = styled(PrimaryButtonBase)`
     ${tw`w-6 h-6`}
   }
 `;
+
+const SlideCounter = tw.p`text-gray-400	`
 const PrevButton = tw(ControlButton)``;
 const NextButton = tw(ControlButton)``;
 
 const QuestionSlider = styled(Slider)`
-  ${tw`mt-16`}
   .slick-track { 
     ${tw`flex`}
   }
@@ -66,6 +68,7 @@ export default () => {
         title: "Curation Help",
         body: "Select anything you want to see in your movies. Everything is optional so dont feel pressured to select some slides!"
     });
+    const [slideCount, setSlideCount] = useState(1);
     const [isRevised, setIsRevised] = useState(false);
     const popoverToggle = () => {
         setPopover(popover => !popover);
@@ -96,6 +99,7 @@ export default () => {
     const sliderSettings = {
         arrows: false,
         slidesToShow: 1,
+
         responsive: [
             {
                 breakpoint: 1280,
@@ -116,29 +120,24 @@ export default () => {
         nextArrow: <ArrowBack onClick={sliderRef?.slickNext} />
     };
     const handleSurvey = (value, characteristic) => {
-        if (characteristic === 'with_genres') {
-            if (surveyResults.with_genres) {
-                const genres = surveyResults.with_genres.toString();
+        if (characteristic === 'with_genres' || characteristic === "with_keywords" || characteristic === "with_companies") {
+            if (surveyResults[characteristic]) {
+                const genres = surveyResults[characteristic].toString();
                 value = (genres.match(new RegExp(`,${value}`, "g"))) ? genres.replace(new RegExp(`,${value}`, "g"), "") : (genres.match(new RegExp(`${value},`, "g"))) ? genres.replace(new RegExp(`${value},`, "g"), "") : (genres.match(new RegExp(`${value}`, "g"))) ? genres.replace(new RegExp(`${value}`, "g"), "") : `${genres},${value}`;
             } else {
                 value = value.toString();
             }
         }
-        if (characteristic === 'with_keywords') {
-            if (surveyResults.with_keywords) {
-                const keywords = surveyResults.with_keywords.toString();
-                value = (keywords.match(new RegExp(`,${value}`, "g"))) ? keywords.replace(new RegExp(`,${value}`, "g"), "") : (keywords.match(new RegExp(`${value},`, "g"))) ? keywords.replace(new RegExp(`${value},`, "g"), "") : (keywords.match(new RegExp(`${value}`, "g"))) ? keywords.replace(new RegExp(`${value},`, "g"), "") : `${keywords},${value}`;
-            }
-        }
         setSurveyResults(surveyResults => ({ ...surveyResults, [characteristic]: value }));
+        console.log(surveyResults);
     }
 
     const slides = movieGenerationQuestions.map((movieSlide, i) => {
-        const className = movieSlide.type === "with_genres" ? "objects" : '';
-        const title = movieSlide.type === "with_genres" ? "Genres" : movieSlide.type === "primary_release_year" ? "Release Year" : movieSlide.type === "sort_by" ? "Rate by" : "Sub Genres";
+        const className = movieSlide.type === "with_genres" || movieSlide.type === "with_companies" ? "objects" : '';
+        const title = movieSlide.type === "with_genres" ? "Genres" : movieSlide.type === "primary_release_year" ? "Release Year" : movieSlide.type === "sort_by" ? "Rate by" : movieSlide.type === "with_companies" ? "Production Studios" : "Sub Genres";
         return (
             <React.Fragment key={i}>
-                <h1 style={{ textAlign: "center" }}>{title}</h1>
+                <HighlightedText style={{ textAlign: "center" }}>{title}</HighlightedText>
                 <Container className={className}>
                     <Row>
                         <Col>
@@ -191,6 +190,11 @@ export default () => {
         setCarouselVisible(carouselVisible => !carouselVisible);
         setSurveyResults(() => ({}));
     }
+    const increment = (e) => {
+        const slideNo = (slideCount === 1 && e === "right") ? 5 : (slideCount === 5 && e === "left") ? 1 : (e === "left") ? slideCount + 1 : slideCount - 1;
+        setSlideCount(() => slideNo);
+
+    }
 
     return (
         <Container>
@@ -208,7 +212,7 @@ export default () => {
                         </Col>
                         <Col>
                             <Controls style={{ display: 'table', margin: 'auto' }}>
-                                <Button className="ml-auto mr-10 btnGenerate btn btn-light mb-10 " onClick={requestMovies}>Generate Movies</Button>
+                                <Button className="ml-auto mr-10 btnGenerate btn btn-light mb-10 " onClick={requestMovies}><Play className="mr-1" style={{ verticalAlign: "middle", display: "inline-block" }} />Generate Movies</Button>
                             </Controls>
                         </Col>
                         <Col>
@@ -218,10 +222,18 @@ export default () => {
                         </Col>
 
                     </Row>
+                    <Row>
+                        <Col></Col>
+                        <Col></Col>
+                        <Col>
+                            <SlideCounter style={{ float: "right" }}>{slideCount}/5</SlideCounter>
+                        </Col>
+                    </Row>
 
-                    <QuestionSlider ref={setSliderRef} {...sliderSettings}>
+                    <QuestionSlider ref={setSliderRef} {...sliderSettings} onSwipe={increment}>
                         {slides.map((s) => s)}
                     </QuestionSlider>
+
                 </>
                 :
                 (spinnerVisibility) ?

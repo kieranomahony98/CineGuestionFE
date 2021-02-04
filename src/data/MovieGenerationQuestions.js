@@ -71,6 +71,79 @@ const movieGenerationQuestions = [
         ]
     },
     {
+        type: "with_keywords",
+        display: "checkbox",
+        values: [
+            {
+                name: "Independent Films",
+                value: "10183"
+            },
+            {
+                name: "Musical",
+                value: "4344"
+            },
+            {
+                name: "Gangster",
+                value: "3149"
+            },
+            {
+                name: "Romantic Comedy",
+                value: "9799"
+            },
+            {
+                name: "Educational",
+                value: "18257"
+            }
+        ]
+    },
+    {
+        type: "with_companies",
+        display: "checkbox",
+        values: [
+            {
+                name: "Marvel",
+                value: "420"
+            },
+            {
+                name: "Lucasfilm",
+                value: "1"
+            },
+            {
+                name: "Bad Robot",
+                value: "11461"
+            },
+            {
+                name: "DC Films",
+                value: "128064"
+            },
+            {
+                name: "Warner Bros",
+                value: "174"
+            },
+            {
+                name: "Universal",
+                value: "33"
+            },
+            {
+                name: "Legendary",
+                value: "923"
+            },
+            {
+                name: "Columbia",
+                value: "5"
+            },
+            {
+                name: "Walt Disney",
+                value: "2"
+            },
+            {
+                name: "Pixar",
+                value: "3"
+            }
+
+        ]
+    },
+    {
         type: "primary_release_year",
         display: "radio",
         values: [
@@ -97,8 +170,7 @@ const movieGenerationQuestions = [
             {
                 name: "1995-1999",
                 value: "1995-1999"
-            }
-            ,
+            },
             {
                 name: "1990-1994",
                 value: "1990-1994"
@@ -129,32 +201,7 @@ const movieGenerationQuestions = [
         ]
 
     },
-    {
-        type: "with_keywords",
-        display: "checkbox",
-        values: [
-            {
-                name: "Independent Films",
-                value: "10183"
-            },
-            {
-                name: "Musical",
-                value: "4344"
-            },
-            {
-                name: "Gangster",
-                value: "3149"
-            },
-            {
-                name: "Romantic Comedy",
-                value: "9799"
-            },
-            {
-                name: "Educational",
-                value: "18257"
-            }
-        ]
-    }
+
 
 ]
 

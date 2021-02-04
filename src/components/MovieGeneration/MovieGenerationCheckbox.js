@@ -8,7 +8,6 @@ const MovieGenerationCheckbox = ({
     characteristic,
     clickAction
 }) => {
-
     return (
         <tr>
             <td>

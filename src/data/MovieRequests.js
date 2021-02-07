@@ -1,17 +1,17 @@
-import axios from 'axios';
-import route from './Routes';
+import axios from "axios";
+import route from "./Routes";
 
 async function requestMovies(token = null, MovieGenerationModel) {
     const config = {
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         }
     }
 
     const body = JSON.stringify(
         {
             MovieGenerationModel,
-            'x-auth-token': token
+            "x-auth-token": token
         }
     );
 

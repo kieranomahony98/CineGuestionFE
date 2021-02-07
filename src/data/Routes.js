@@ -1,1 +1,1 @@
-export default (process.env.NODE_ENV) === "production" ? "https://cineguestion-be.herokuapp.com" : "http://localhost:8080";
+export default (process.env.NODE_ENV) === "production" ? "https://cineguestion-be.herokuapp.com" : "http://192.168.0.146:8080";

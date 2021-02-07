@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { Col } from 'reactstrap';
+import { Col } from "reactstrap";
 
 
-const Card = tw.div`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none border-4 border-gray-500`;
+const Card = tw.div`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none border-2 border-gray-300`;
 const CardImage = styled.div(props => [
   `background-image: url("${props.imageSrc}");`,
   tw`w-full h-64 sm:h-128 bg-cover bg-center rounded sm:rounded-none sm:rounded-tl-4xl`
@@ -38,7 +38,7 @@ const movieCard = ({ title, img, onClick, rating, desc, className }) => {
 
   const imageRoute = `https://image.tmdb.org/t/p/original${img}`;
   return (
-    <Col className={`movieCard ${className}  mb-3 `}>
+    <Col md="4" xs="6" className={`movieCard ${className}  mb-3 `}>
       <Card key={title} onClick={onClick}>
         <CardImage imageSrc={imageRoute} />
         <TextInfo>

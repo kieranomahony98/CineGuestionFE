@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "../../css/movieComments.css";
 import { Confirm } from "components/confirm/confirmAlert";
 import { ReactComponent as Down } from "feather-icons/dist/icons/chevrons-down.svg";
 import { ReactComponent as Up } from "feather-icons/dist/icons/chevrons-up.svg";
-import { Container, Button, Form, Input, Row, FormGroup, Label, Col } from 'reactstrap';
-import { useSelector } from 'react-redux';
+import { Container, Button, Form, Input, Row, FormGroup, Label, Col } from "reactstrap";
+import { useSelector } from "react-redux";
 import { ReactComponent as Delete } from "feather-icons/dist/icons/x-circle.svg";
-import axios from 'axios';
+import axios from "axios";
 import route from "../../data/Routes";
 export const Comments = ({
     comment,
@@ -41,7 +41,7 @@ export const Comments = ({
         setShowReply(showReply => !showReply);
     }
     const onCancel = () => {
-        setReply(reply => ({ ...reply, commentText: '' }))
+        setReply(reply => ({ ...reply, commentText: "" }))
     }
 
     const editOnClick = () => {
@@ -66,7 +66,7 @@ export const Comments = ({
         setShowReply(showReply => !showReply);
         onSubmit(true, comment, reply.commentText)
             .then((r) => r);
-        setReply(reply => ({ reply, commentText: '' }));
+        setReply(reply => ({ reply, commentText: "" }));
     }
 
     const deleteComment = () => {
@@ -93,30 +93,30 @@ export const Comments = ({
 
     return (
         <Container className="mt-2" style={{ marginLeft: indent }}>
-            {confirm ? <Confirm deleteComment={deleteComment} toggleConfirm={toggleConfirm} /> : ''}
+            {confirm ? <Confirm deleteComment={deleteComment} toggleConfirm={toggleConfirm} /> : ""}
             <Row className="d-flex flex-row align-items-center commented-user">
-                <h6 className="mr-2 mb-1">{comment.user.userName}</h6><span className="dot mb-1"></span><span className="mb-1 ml-2">{comment.postedDate.split("T")[0]}</span>{(user && comment.user.userId && comment.user.userId === user.id) ? <span ><Col><div className="float-right"><Delete style={{ float: 'inline-end' }} onClick={toggleConfirm} className="replyButton" /></div> </Col></span> : ''}
+                <h6 className="mr-2 mb-1">{comment.user.userName}</h6><span className="dot mb-1"></span><span className="mb-1 ml-2">{comment.postedDate.split("T")[0]}</span>{(user && comment.user.userId && comment.user.userId === user.id) ? <span ><Col><div className="float-right"><Delete style={{ float: "inline-end" }} onClick={toggleConfirm} className="replyButton" /></div> </Col></span> : ""}
             </Row>
             {
                 !readOnly ? <Row className="mb-2 ml-1"><Input type="text" defaultValue={comment.commentText} className="commentInput" onChange={setText} /></Row> : <p>{comment.commentText}</p>
             }
             {
-                (user && comment.user.userId && comment.user.userId === user.id && !readOnly) ? <Button className="ml-2 mt-1 replyButton" onClick={() => updateComment()}>Update</Button> : ''
+                (user && comment.user.userId && comment.user.userId === user.id && !readOnly) ? <Button className="ml-2 mt-1 replyButton" onClick={() => updateComment()}>Update</Button> : ""
             }
             <Row className="reply-section">
                 <Row className="d-flex flex-row align-items-center voting-icons"><Up onClick={() => changeCommentScore(1)} className="replyButton" /><Down className="replyButton" onClick={() => changeCommentScore(-1)} /><span className="ml-2">{commentScore}</span><span className="dot ml-2"></span>
                     <h6 className="ml-2 mt-1 replyButton" onClick={replyOnClick}>Reply</h6>
-                    {user && comment.user.userId && comment.user.userId === user.id ? <h6 className="ml-2 mt-1 replyButton" onClick={editOnClick}>Edit</h6> : ''}
+                    {user && comment.user.userId && comment.user.userId === user.id ? <h6 className="ml-2 mt-1 replyButton" onClick={editOnClick}>Edit</h6> : ""}
                 </Row>
             </Row>
             {
                 showReply ?
                     <>
                         <Input type="textarea" className="ml-2" name="replyBox" id="replyBox" onChange={replyOnInput} />
-                        <Button className="mt-2" onClick={onReplySubmit} style={{ float: 'right' }}>Reply</Button>
+                        <Button className="mt-2" onClick={onReplySubmit} style={{ float: "right" }}>Reply</Button>
                         <Button className="mt-2" onClick={onCancel}>Cancel</Button>
                     </>
-                    : ''
+                    : ""
             }
 
         </Container >

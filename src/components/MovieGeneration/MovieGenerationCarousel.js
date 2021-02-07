@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import MovieGenerationCheckbox from './MovieGenerationCheckbox';
-import { Carousel } from 'react-responsive-carousel'
-import MovieGenerationRadioButton from './MovieGenerationRadioButton';
-import { SkipBackward } from 'react-bootstrap-icons';
-import { Button, Container, Row, Col, Table } from 'reactstrap';
-import movieGenerationQuestions from '../../data/MovieGenerationQuestions';
-import Loader from 'react-loader-spinner';
-import MovieModal from 'components/modal/movieModal'
-import MovieCard from '../cards/card';
+import React, { useState } from "react";
+import MovieGenerationCheckbox from "./MovieGenerationCheckbox";
+import { Carousel } from "react-responsive-carousel"
+import MovieGenerationRadioButton from "./MovieGenerationRadioButton";
+import { Button, Container, Row, Col, Table } from "reactstrap";
+import movieGenerationQuestions from "../../data/MovieGenerationQuestions";
+import Loader from "react-loader-spinner";
+import MovieModal from "components/modal/movieModal"
+import MovieCard from "../cards/card";
 import { MoviePopover } from "components/popover/popover";
-import MovieRequests from '../../data/MovieRequests';
+import MovieRequests from "../../data/MovieRequests";
 import { moviePopoverText } from "helpers/PopoverText";
 import tw from "twin.macro";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import "../../MovieGeneration.css";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 
 const HighlightedText = tw.span`text-primary-500`;
@@ -60,7 +59,7 @@ const MovieGenerationCarousel = () => {
     }
 
     const handleSurvey = (value, characteristic) => {
-        if (characteristic === 'with_genres') {
+        if (characteristic === "with_genres") {
             if (surveyResults.with_genres) {
                 const genres = surveyResults.with_genres.toString();
                 value = (genres.match(new RegExp(`,${value}`, "g"))) ? genres.replace(new RegExp(`,${value}`, "g"), "") : (genres.match(new RegExp(`${value},`, "g"))) ? genres.replace(new RegExp(`${value},`, "g"), "") : (genres.match(new RegExp(`${value}`, "g"))) ? genres.replace(new RegExp(`${value}`, "g"), "") : `${genres},${value}`;
@@ -68,7 +67,7 @@ const MovieGenerationCarousel = () => {
                 value = value.toString();
             }
         }
-        if (characteristic === 'with_keywords') {
+        if (characteristic === "with_keywords") {
             if (surveyResults.with_keywords) {
                 const keywords = surveyResults.with_keywords.toString();
                 value = (keywords.match(new RegExp(`,${value}`, "g"))) ? keywords.replace(new RegExp(`,${value}`, "g"), "") : (keywords.match(new RegExp(`${value},`, "g"))) ? keywords.replace(new RegExp(`${value},`, "g"), "") : (keywords.match(new RegExp(`${value}`, "g"))) ? keywords.replace(new RegExp(`${value},`, "g"), "") : `${keywords},${value}`;
@@ -80,7 +79,7 @@ const MovieGenerationCarousel = () => {
     slides = movieGenerationQuestions.map((movieSlide) => {
         return (
             movieSlide.values.map((type) => {
-                if (movieSlide.display === 'checkbox') {
+                if (movieSlide.display === "checkbox") {
                     return (
                         <MovieGenerationCheckbox key={type.value} characteristic={movieSlide.type} formItem={type} clickAction={() => handleSurvey(type.value, movieSlide.type)} />
                     );
@@ -92,7 +91,7 @@ const MovieGenerationCarousel = () => {
     });
     slides = slides.map((slide) => {
         return (
-            <div key='carouselItem' className="carouselDiv">
+            <div key="carouselItem" className="carouselDiv">
                 <div className="wrapper">
                     <Table>
                         <tbody>
@@ -134,9 +133,9 @@ const MovieGenerationCarousel = () => {
         return (
             <>
                 <Row>
-                    <Row><button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"><SkipBackward alignmentBaseline="auto" className="align-middle" /></span>Generation Survey</button></Row>
+                    <button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"></span>Generation Survey</button>
                 </Row>
-                <Row xs="3">
+                <Row>
                     {movieCards}
                 </Row >
             </>
@@ -144,29 +143,31 @@ const MovieGenerationCarousel = () => {
     };
 
     return (
-        <Container style={{ marginTop: '20px' }}>
+        <Container style={{ marginTop: "20px" }}>
             <Row>
                 <MoviePopover toggle={popoverToggle} isOpen={popover} title={popOverText.title} body={popOverText.body} />
-                {isRevised ? <HighlightedText className="mx-auto">Youre query was altered to guarantee movie responses!</HighlightedText> : ''}
+                {isRevised ? <HighlightedText className="mx-auto">Youre query was altered to guarantee movie responses!</HighlightedText> : ""}
             </Row>
-            <Row className="justify-content-center">
-                {(carouselVisible) ?
+            {(carouselVisible) ?
+                <Row className="justify-content-center">
+
                     <div className="table">
                         {showCarousel()}
                     </div>
-                    :
-                    (spinnerVisibility) ?
-                        showSpinner() :
-                        showMovies()
-                }
-                {
-                    (openModal) ? <MovieModal toggle={toggle} movieId={movie.movieId} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ''
-                }
+                </Row>
 
-            </Row>
+                :
+                (spinnerVisibility) ?
+                    showSpinner() :
+                    showMovies()
+            }
+            {
+                (openModal) ? <MovieModal toggle={toggle} movieId={movie.movieId} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ""
+            }
+
 
             <Row>
-                {(carouselVisible) ? <Button className="ml-auto mr-10 btnGenerate btn btn-light mb-10 " onClick={requestMovies}>Generate Movies</Button> : ''}
+                {(carouselVisible) ? <Button className="ml-auto mr-10 btnGenerate btn btn-light mb-10 " onClick={requestMovies}>Generate Movies</Button> : ""}
             </Row>
         </Container >
     );

@@ -1,27 +1,27 @@
-import { PrimaryLink } from 'components/headers/light';
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux';
-import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, Badge } from 'reactstrap';
-import { register } from '../../actions/authActions';
-import registerValidation from '../../validation/registerValidation';
+import { PrimaryLink } from "components/headers/light";
+import React, { useState } from "react"
+import { useSelector, useDispatch } from "react-redux";
+import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, Badge } from "reactstrap";
+import { register } from "../../actions/authActions";
+import registerValidation from "../../validation/registerValidation";
 import "../../css/authModals.css"
 const RegisterModal = ({ className }) => {
     const dispatch = useDispatch();
 
     const [modal, setModal] = useState(false);
     const [errors, setErrors] = useState({
-        name: '',
-        userName: '',
-        email: '',
-        password: '',
+        name: "",
+        userName: "",
+        email: "",
+        password: "",
     });
 
     const [user, setUser] = useState({
-        email: '',
-        name: '',
-        userName: '',
-        password: '',
-        password2: ''
+        email: "",
+        name: "",
+        userName: "",
+        password: "",
+        password2: ""
     });
 
     const { id, msg } = useSelector(state => state.error);
@@ -55,9 +55,9 @@ const RegisterModal = ({ className }) => {
     // const
     const toggle = () => {
         setErrors(errors => ({
-            ...errors, name: '',
-            email: '',
-            password: '',
+            ...errors, name: "",
+            email: "",
+            password: "",
         }));
         setModal(() => !modal);
     };
@@ -69,13 +69,13 @@ const RegisterModal = ({ className }) => {
     };
     return (
         <>
-            <PrimaryLink to="#" onClick={toggle} style={{ marginTop: '-10px' }} className={`authModal ${className}`}>
+            <PrimaryLink to="#" onClick={toggle} style={{ marginTop: "-10px" }} className={`authModal ${className}`}>
                 Register
             </PrimaryLink>
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader>Register</ModalHeader>
                 <ModalBody>
-                    {(id === 'REGISTER_FAIL') ? <Badge color="warning" style={{ width: "100%" }} className="mb-2">{msg}</Badge> : null}
+                    {(id === "REGISTER_FAIL") ? <Badge color="warning" style={{ width: "100%" }} className="mb-2">{msg}</Badge> : null}
                     <Form onSubmit={onSubmit}>
                         <FormGroup>
                             <Label for="name"></Label>
@@ -96,7 +96,7 @@ const RegisterModal = ({ className }) => {
                             <Input type="password" name="password2" placeholder="Confirm Password..." className="mb-3" onChange={onChange} />
                             {(errors.password) ? <p className="text-danger">{errors.password}</p> : null}
 
-                            <Button type="submit" color="dark" style={{ marginTop: '2rem' }} block onClick={onSubmit}>Register</Button>
+                            <Button type="submit" color="dark" style={{ marginTop: "2rem" }} block onClick={onSubmit}>Register</Button>
                         </FormGroup>
                     </Form>
                 </ModalBody>

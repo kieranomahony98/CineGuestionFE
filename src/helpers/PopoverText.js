@@ -1,4 +1,4 @@
-import { convertToTextGeneration } from './convertGenres';
+import { convertToTextGeneration } from "./convertGenres";
 export async function moviePopoverText({ with_genres, with_keywords, sort_by, primary_release_year }, isConverted = null) {
     try {
 

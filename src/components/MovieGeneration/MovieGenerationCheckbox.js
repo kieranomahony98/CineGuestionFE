@@ -1,5 +1,5 @@
-import React from 'react';
-import { Input } from 'reactstrap';
+import React from "react";
+import { Input } from "reactstrap";
 const MovieGenerationCheckbox = ({
     formItem,
     characteristic,

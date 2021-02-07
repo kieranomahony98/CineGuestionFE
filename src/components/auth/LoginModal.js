@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, Badge } from 'reactstrap';
-import { login } from '../../actions/authActions';
-import loginValidation from '../../validation/loginValidation';
-import { NavLink } from '../headers/light';
+import React, { useState } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, Badge } from "reactstrap";
+import { login } from "../../actions/authActions";
+import loginValidation from "../../validation/loginValidation";
+import { NavLink } from "../headers/light";
 import "../../css/authModals.css"
-import { clearErrors } from 'actions/errorActions';
+import { clearErrors } from "actions/errorActions";
 
 
 const LoginModal = () => {
@@ -13,21 +13,21 @@ const LoginModal = () => {
 
     const [modal, setModal] = useState(false);
     const [errors, setErrors] = useState({
-        name: '',
-        password: ''
+        name: "",
+        password: ""
     });
 
     const [user, setUser] = useState({
-        email: '',
-        password: ''
+        email: "",
+        password: ""
     });
 
     const { isAuthenticated } = useSelector(state => state.auth);
     const { loginError } = useSelector(state => state.error);
     const toggle = () => {
         setErrors(errors => ({
-            ...errors, name: '',
-            password: ''
+            ...errors, name: "",
+            password: ""
         }));
         dispatch(clearErrors());
         setModal(!modal);
@@ -50,7 +50,7 @@ const LoginModal = () => {
                     setModal(() => !modal);
                 }
             }
-            setErrors(() => ({ ...errors, email: '', password: '' }));
+            setErrors(() => ({ ...errors, email: "", password: "" }));
         } else {
             setErrors(() => ({ ...errors, ...loginErrors }));
         }
@@ -75,7 +75,7 @@ const LoginModal = () => {
                     <Form onSubmit={onSubmit}>
                         <FormGroup>
                             <div className="mb-3">
-                                {(loginError) ? <Badge color="warning" style={{ width: "100%" }} className="mb-2">{loginError}</Badge> : ''}
+                                {(loginError) ? <Badge color="warning" style={{ width: "100%" }} className="mb-2">{loginError}</Badge> : ""}
                                 <Label for="email"></Label>
                                 <Input type="email" name="email" placeholder="Email..." className="mb-3" onChange={onChange} />
                                 {(errors.email) ? <p className="text-danger">{errors.email}</p> : null}
@@ -86,7 +86,7 @@ const LoginModal = () => {
                                 {(errors.password) ? <p className="text-danger">{errors.password}</p> : null}
 
                             </div>
-                            <Button type="submit" color="dark" style={{ marginTop: '2rem' }} block>Login</Button>
+                            <Button type="submit" color="dark" style={{ marginTop: "2rem" }} block>Login</Button>
                         </FormGroup>
                     </Form>
                 </ModalBody>

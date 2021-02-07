@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { Input, Row, Container, Button, Col } from "reactstrap";
 import { Comments } from "./Comments"
-import axios from 'axios';
-import { v4 as uuid } from 'uuid';
+import axios from "axios";
+import { v4 as uuid } from "uuid";
 import { useSelector } from "react-redux";
 import route from "data/Routes"
 import { useEffect } from "react";
+import Collapsible from "react-collapsible";
+import { ReactComponent as Minus } from "feather-icons/dist/icons/minus.svg";
+import "css/commentLayout.css";
+
 export const CommentLayout = () => {
     const { movieDiscussion } = useSelector(state => state.movies);
-    const [commentText, setCommentText] = useState({ text: '' });
-    const [commentCount, setCommentCount] = useState(0);
+    const [commentText, setCommentText] = useState({ text: "" });
+    const [commentCount, setCommentCount] = useState(-1);
     const [comments, setComments] = useState([]);
-    const [collapse, setCollapse] = useState({ key: 'value' });
     const [errors, setErrors] = useState(false);
     const { token, user, isAuthenticated } = useSelector(state => state.auth);
     useEffect(() => {
@@ -28,7 +31,6 @@ export const CommentLayout = () => {
                 }
                 manageComments(placeHolder)
                     .then((res) => {
-                        console.log(res);
                         setComments(() => res);
                     })
             }).catch((err) => {
@@ -44,6 +46,7 @@ export const CommentLayout = () => {
                     console.log(`failed to make request`);
                     throw err;
                 });
+            console.log(comments.count);
             if (comments.count === 0) {
                 setErrors(error => !error)
                 return;
@@ -55,7 +58,7 @@ export const CommentLayout = () => {
             }
             manageComments(placeHolder)
                 .then((res) => {
-                    setCommentText(commentText => ({ ...commentText, text: '' }));
+                    setCommentText(commentText => ({ ...commentText, text: "" }));
                     setComments(() => res);
                 });
         } catch (err) {
@@ -66,7 +69,9 @@ export const CommentLayout = () => {
     const addComment = async (replyComment = false, parentComment = null, replyCommentText = null) => {
         if (!user) return;
         if (!replyComment && commentText === "") return;
-        setErrors(errors => !errors);
+        if (errors) {
+            setErrors(errors => !errors);
+        }
         const commentObj = {
             movieId: movieDiscussion.movieId,
             id: user.id,
@@ -92,20 +97,20 @@ export const CommentLayout = () => {
         setCommentText(commentText => ({ ...commentText, text: value }));
     }
 
-
     const manageComments = async (comments) => {
         let commentComponents = [];
         for (const comment of Object.values(comments)) {
-            const key = uuid();
             commentComponents.push(
-                <Row key={key}>
+
+                <Row key={uuid()}>
                     <Comments comment={comment} addComment={addComment} onSubmit={addComment} refresh={refreshData} />
                 </Row>
             );
             if (comment.children && Object.keys(comment.children).length !== 0) {
                 let responses = await manageComments(comment.children);
-                const newKey = uuid();
-                responses = <Container key={newKey}> {responses} </Container>
+
+                responses = <Collapsible trigger="View Replies" open={false} overflowWhenOpen="visible" classParentString="replies" key={uuid()}>
+                    <Container> {responses} </Container></Collapsible>
                 commentComponents = commentComponents.concat(responses);
             }
         }
@@ -118,12 +123,12 @@ export const CommentLayout = () => {
                 {isAuthenticated ?
                     <>
                         <Input type="textarea" id="addComment" name="addComment" value={commentText.text} onChange={addCommentOnChange} />
-                        <Button className="mt-2" style={{ float: 'right' }} onClick={() => addComment(false, null, null)}>Add Comment</Button>
+                        <Button className="mt-2" style={{ float: "right" }} onClick={() => addComment(false, null, null)}>Add Comment</Button>
                     </>
                     : <Input type="textarea" id="addComment" name="addComment" value="Please log in to leave a comment" onChange={addCommentOnChange} disabled />}
             </Row>
-            {(errors) ? <Row><Col md="4"></Col> <Col md="4" className="mt-2"> <h4>Be the first to share your opinion on this movie!</h4> </Col><Col md="4"></Col></Row> : ''}
-            {(comments) ? comments : ''}
+            {(errors) ? <Row><Col md="4"></Col> <Col md="4" className="mt-2"> <h4>Be the first to share your opinion on this movie!</h4> </Col><Col md="4"></Col></Row> : ""}
+            {(comments) ? comments : ""}
         </Container>
     )
 
@@ -144,7 +149,6 @@ async function makeRequest(movie) {
 }
 
 async function addCommentAPI(comment, token) {
-    console.log('in add coment api');
     const config = {
         headers: {
             "Content-type": "application/json"

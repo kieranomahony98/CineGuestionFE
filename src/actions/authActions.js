@@ -29,7 +29,7 @@ export const loadUser = () => (dispatch, getState) => {
 
                 }
             }).catch((err) => {
-                dispatch(returnErrors(err.response.data, err.response.status))
+                dispatch(returnErrors('Network error: failed to load user', 500))
                 dispatch({
                     type: AUTH_ERROR
                 });

@@ -3,15 +3,12 @@ import { useDispatch } from "react-redux";
 import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
 import { logOutMovies } from "../actions/movieActions"
 import { logout } from "../actions/authActions";
-import { NavLink } from "../components/headers/light";
+import { NavLink, MobileNavLinks } from "../components/headers/light";
 import "../css/dropdown.css";
 import tw from "twin.macro";
 const DropDown = tw.div`
     hidden lg:flex flex-1 justify-between items-center
 `;
-const DropDownMobile = tw.div`
-    lg:hidden
-`
 const dropDownText = "text-gray-400"
 const DowndownMenu = () => {
     const dispatch = useDispatch();
@@ -63,11 +60,11 @@ const DowndownMenu = () => {
                     </DropdownMenu>
                 </UncontrolledDropdown >
             </DropDown>
-            <DropDownMobile>
+            <MobileNavLinks>
                 <NavLink className={dropDownText} href="/myGenerations">My Generations</NavLink>
                 <NavLink className={dropDownText}>My Details</NavLink>
                 <NavLink onClick={userLogout} className={dropDownText} href="/">Logout</NavLink>
-            </DropDownMobile>
+            </MobileNavLinks>
         </>
     );
 }

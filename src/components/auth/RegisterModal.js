@@ -5,9 +5,10 @@ import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, B
 import { register } from "../../actions/authActions";
 import registerValidation from "../../validation/registerValidation";
 import "../../css/authModals.css"
+import Loader from "react-loader-spinner";
 const RegisterModal = ({ className }) => {
     const dispatch = useDispatch();
-
+    const [isLogginIn, setIsLogginIn] = useState(false);
     const [modal, setModal] = useState(false);
     const [errors, setErrors] = useState({
         name: "",
@@ -25,8 +26,9 @@ const RegisterModal = ({ className }) => {
     });
 
     const { id, msg } = useSelector(state => state.error);
-    const { isAuthenticated } = useSelector(state => state.auth)
+    const { isAuthenticated, isLoading } = useSelector(state => state.auth)
     const onSubmit = (e) => {
+        setIsLogginIn(() => true);
         e.preventDefault();
         const { name, email, password, password2, userName } = user;
 
@@ -45,9 +47,15 @@ const RegisterModal = ({ className }) => {
             if (modal) {
                 if (isAuthenticated) {
                     setModal(() => !modal);
+                    setIsLogginIn(() => false);
+
                 }
             }
+            setIsLogginIn(() => false);
+            setErrors((errors) => ({ ...errors, name: "", userName: "", email: "", password: "" }))
         } else {
+            setIsLogginIn(() => false);
+
             setErrors(errors => ({ ...errors, ...registerErrors }));
         }
     }
@@ -95,8 +103,9 @@ const RegisterModal = ({ className }) => {
                             <Label for="Confrim Password"></Label>
                             <Input type="password" name="password2" placeholder="Confirm Password..." className="mb-3" onChange={onChange} />
                             {(errors.password) ? <p className="text-danger">{errors.password}</p> : null}
-
-                            <Button type="submit" color="dark" style={{ marginTop: "2rem" }} block onClick={onSubmit}>Register</Button>
+                            <div>
+                                {isLoading ? <Loader type="ThreeDots" color="#007BFF" /> : <Button type="submit" color="dark" style={{ marginTop: "2rem" }} block onClick={onSubmit}>Register</Button>}
+                            </div>
                         </FormGroup>
                     </Form>
                 </ModalBody>

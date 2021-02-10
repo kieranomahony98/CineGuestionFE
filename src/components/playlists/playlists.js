@@ -20,7 +20,7 @@ const Playlists = ({ Playlist }) => {
     const toggle = () => {
         setOpenModal(openModal => !openModal);
     }
-    const body = `This curation is a selection of ${genreText(Playlist.movieSearchCriteria.with_genres)} genres, ${keywordsText(Playlist.movieSearchCriteria.with_keywords)}${sortByText(Playlist.movieSearchCriteria.sort_by)}`
+    const body = `This curation is a selection of ${genreText(Playlist.movieSearchCriteria.with_genres)} genres${keywordsText(Playlist.movieSearchCriteria.with_keywords)}${sortByText(Playlist.movieSearchCriteria.sort_by)}`
     const popoverToggle = () => {
         setPopoverOpen(popoverOpen => !popoverOpen);
     }
@@ -62,14 +62,16 @@ function genreText(with_genres) {
 
 function keywordsText(keywords) {
     if (keywords) {
-        return ` while all also delivering elements of ${keywords} vibes`
+        return `, while all also delivering elements of ${keywords} vibes`
     }
+    return ''
 }
 
 function sortByText(sortBy) {
     if (sortBy) {
         return (sortBy === "vote_count.desc") ? " and lastly is filtered to show the most interacted with movies out there!" : " and lastly is filtered to show the most popular movies out there!";
     }
+    return '';
 }
 
 export default Playlists;

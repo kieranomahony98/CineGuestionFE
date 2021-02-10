@@ -6,7 +6,8 @@ const initialState = {
     weeklyPlaylist: null,
     monthlyPlaylist: null,
     allTimePlaylist: null,
-    movieDiscussion: null
+    movieDiscussion: null,
+    trendingNow: null
 }
 
 export default function (state = initialState, action) {
@@ -23,7 +24,8 @@ export default function (state = initialState, action) {
                 isLoading: false,
                 weeklyPlaylist: action.payload.weeklyPlaylists,
                 monthlyPlaylist: action.payload.monthlyPlaylists,
-                allTimePlaylist: action.payload.allTimePlaylists
+                allTimePlaylist: action.payload.allTimePlaylists,
+                trendingNow: action.payload.trendingNow
             };
         case MOVIE_DISCUSSION:
             return {
@@ -38,7 +40,8 @@ export default function (state = initialState, action) {
                 weeklyPlaylist: null,
                 monthlyPlaylist: null,
                 allTimePlaylist: null,
-                movieDiscussion: null
+                movieDiscussion: null,
+                trendingNow: null
             }
         default:
             return state;

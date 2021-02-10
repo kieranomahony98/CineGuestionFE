@@ -40,6 +40,9 @@ export default function App() {
             <Route exact path="/playlists/:type" >
               {isAuthenticated() ? <WeeklyPlaylist /> : <Redirect to="/" />}
             </Route>
+            <Route exact path="/playlists/trending/now" >
+              <WeeklyPlaylist />
+            </Route>
             <Route exact path="/movies/discussions">
               <DiscussionLandingPage />
             </Route>

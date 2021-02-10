@@ -67,7 +67,7 @@ const HomePageWithImage = () => {
 
   const navLinks = [
     <NavLinks key={1}>
-      <NavLink href="#">Trending</NavLink>
+      <NavLink href="/playlists/trending/now">Trending</NavLink>
       <NavLink href="/movies/discussions">Community</NavLink>
       <NavLink href="/Generate">Generate</NavLink>
       {isAuthenticatedNavLink}

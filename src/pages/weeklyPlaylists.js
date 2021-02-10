@@ -7,7 +7,10 @@ import { useSelector } from "react-redux";
 import { Redirect, useParams } from "react-router-dom";
 
 const WeeklyPlaylist = () => {
-    const { type } = useParams();
+    let { type } = useParams();
+    if (!type) {
+        type = "trendingNow"
+    }
     const { [type]: value } = useSelector(state => state.movies);
 
     if (!value) {

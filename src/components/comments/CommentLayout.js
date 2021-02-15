@@ -29,7 +29,7 @@ export const CommentLayout = () => {
                 manageComments(placeHolder)
                     .then((res) => {
                         console.log(res);
-                        setComments(() => res);
+                        setComments(() => [...res]);
                     })
             }).catch((err) => {
                 throw err

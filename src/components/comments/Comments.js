@@ -16,7 +16,11 @@ export const Comments = ({
     const indent = `${(comment.depth - 1) * 5}%`
     const { user, token, isAuthenticated } = useSelector(state => state.auth);
     const [confirm, showConfirm] = useState(false);
+    const [upvotes, setUpVotes] = useState(comment.commentUpVotes);
+    const [downVotes, setDownVotes] = useState(comment.commentDownVotes);
     const [commentScore, setCommentScore] = useState(comment.commentScore);
+    const [isDownVoted, setIsDownVoted] = useState(false);
+    const [isUpVoted, setIsUpVoted] = useState(false);
     const [showReply, setShowReply] = useState(false);
     const [reply, setReply] = useState({
         commentText: comment.commentText
@@ -24,9 +28,21 @@ export const Comments = ({
     const [commentText, setCommentText] = useState({
         commentText: comment.commentText
     });
-
     const [tempText, setTempText] = useState({ commentText: comment.commentText })
     const [readOnly, setReadonly] = useState(true);
+    const { id } = useSelector(state => state.auth.user);
+
+    if (id) {
+        const i = (comment.commentDownVotes) ? comment.commentDownVotes.indexOf(id) : -1;
+        if (i !== -1) {
+            setIsDownVoted(isDownVoted => !isDownVoted);
+        }
+        const x = (comment.commentUpVotes) ? comment.commentUpVotes.indexOf(id) : -1;
+        if (x !== -1) {
+            setIsUpVoted(isUpVoted => !isUpVoted);
+        }
+    }
+
 
     const handleOnClick = () => {
         setShowReply(showReply => !showReply);
@@ -83,11 +99,50 @@ export const Comments = ({
     }
 
     const changeCommentScore = (value) => {
+        const changeFromUpvote = false;
+        const changeFromDownVote = false;
         if (comment.isDeleted) return;
         if (!isAuthenticated) return;
-        setCommentScoreApi(comment._id, commentScore + value, token)
+        if (value === 1 && isUpVoted) return;
+        if (value === -1 && isDownVoted) return;
+        if (value === 1 && isDownVoted) {
+            changeFromDownVote = true;
+        }
+        if (value === -1 && isUpVoted) {
+            changeFromUpvote = true;
+        }
+
+        setCommentScoreApi(comment._id, commentScore + value, token, value, changeFromUpvote, changeFromDownVote)
             .then((comment) => {
-                setCommentScore(commentUpvotes => commentUpvotes + value);
+                setCommentScore(commentUpVotes => commentUpVotes + value);
+                if (changeFromUpvote) {
+                    const temp = [...upvotes];
+                    const i = temp.indexOf(id);
+                    if (i !== -1) {
+                        temp.splice(i, 1);
+                        setUpVotes(() => temp);
+                    }
+                    setIsUpVoted(isUpVoted => !isUpVoted)
+                    return;
+                }
+                if (changeFromDownVote) {
+                    const temp = [...downVotes];
+                    const i = temp.indexOf(id);
+                    if (i !== -1) {
+                        temp.splice(i, 1);
+                        setDownVotes(() => temp);
+                    }
+                    setIsDownVoted(isDownVoted => !isDownVoted);
+                    return;
+                }
+                if (value === 1) {
+                    setUpVotes(upvotes => [...upvotes, id]);
+                    setIsUpVoted(() => true);
+                }
+                if (value === -1) {
+                    setDownVotes(downVotes => [...downVotes, id]);
+                    setIsDownVoted(() => true);
+                }
             });
     }
 
@@ -163,16 +218,25 @@ async function deleteCommentApi(commentId, token) {
     }
 }
 
-async function setCommentScoreApi(commentId, commentScore, token) {
+async function setCommentScoreApi(commentId, commentScore, token, value, changeFromDownVote, changeFromUpvote) {
     console.log(commentScore);
     const config = {
         headers: {
             "Content-type": "application/json"
         }
     };
+
+    const body = {
+        commentId,
+        commentScore,
+        value,
+        changeFromDownVote,
+        changeFromUpvote
+    }
+
     if (token) {
-        config.headers["x-auth-token"] = token;
-        axios.get(`${route}/api/movies/comments/increase/score/${commentId}/${commentScore}`, config)
+        body["x-auth-token"] = token;
+        axios.post(`${route}/api/movies/comments/set/score`, body, config)
             .then((updatedComment) => updatedComment)
             .catch((err) => {
                 console.log(`failed to update commment: ${err.message}`);

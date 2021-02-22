@@ -15,7 +15,7 @@ const Discussion = () => {
         getAllDiscussions()
             .then((discussions) => {
                 setDiscussions(() => discussions.map((discussion, index) => {
-                    return <MovieCard key={index} title={discussion.movieTitle} img={discussion.movieImagePath} rating={discussion.rating} onClick={() => onClick(discussion)} />
+                    return <MovieCard key={index} md="4" xs="6" title={discussion.movieTitle} img={discussion.movieImagePath} rating={discussion.rating} onClick={() => onClick(discussion)} />
                 }));
             });
     }, []);

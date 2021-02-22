@@ -14,9 +14,14 @@ const MovieModal = ({
     movieDescription,
     moviePopularity,
     movieReleaseYear,
-    movieGenres,
     isOpen,
-    toggle
+    toggle,
+    movieGenres,
+    movieCredits,
+    moviePlaybackPath,
+    userName,
+    userId,
+    isUserPage
 }) => {
     const movie = {
         movieId,
@@ -26,16 +31,27 @@ const MovieModal = ({
         moviePopularity,
         movieReleaseYear,
         movieGenres,
+        movieCredits,
+        moviePlaybackPath
+
     }
     const dispatch = useDispatch();
     const history = useHistory();
 
     const route = "https://image.tmdb.org/t/p/original";
     const goToDiscussion = async () => {
-        dispatch(addMovieDiscussion(movie));
+        console.log(userName);
+        if (userName === undefined) {
+            dispatch(addMovieDiscussion(movie));
+            history.push({
+                pathname: `/movies/discussions/${movie.movieId}`
+            });
+            return;
+        }
         history.push({
-            pathname: `/movies/discussions/${movie.movieId}`
+            pathname: `/movies/indie/get/user/${userId}`
         });
+
     }
     return (
         <>
@@ -43,16 +59,16 @@ const MovieModal = ({
                 <ModalHeader className="modalH" cssModule={{ "modal-title": "w-100 text-center" }}>{movieTitle}</ModalHeader>
                 <ModalBody className="modalBody">
                     <div className="modalImage mb-3">
-                        <img src={`${route}${movieImagePath}`} style={{ maxHeight: "200px", maxWidth: "200px" }} className="modalImage" alt={movieTitle} />
+                        {(moviePlaybackPath) ? <iframe height="100%" width="100%" src={moviePlaybackPath} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} /> : <img src={`${route}${movieImagePath}`} style={{ maxHeight: "200px", maxWidth: "200px" }} className="modalImage" alt={movieTitle} />}
                     </div>
                     <div className="modalDesc">
-                        <p className="mb-2"><HighlightedText><b>Movie description: </b></HighlightedText> {movieDescription}</p>
-                        <p className="mb-2"><HighlightedText><b>User rating: </b></HighlightedText>{moviePopularity}</p>
-                        <p className="mb-2"><HighlightedText><b>Release Year: </b> </HighlightedText>{movieReleaseYear}</p>
-                        <p className="mb-2"><HighlightedText><b>Included Genres:</b> </HighlightedText> {movieGenres}</p>
+                        {movieDescription ? <p className="mb-2"><HighlightedText><b>Movie description: </b></HighlightedText> {movieDescription}</p> : ""}
+                        {moviePopularity ? <p className="mb-2"><HighlightedText><b>User rating: </b></HighlightedText>{moviePopularity}</p> : ""}
+                        {movieReleaseYear ? <p className="mb-2"><HighlightedText><b>Release Year: </b> </HighlightedText>{movieReleaseYear}</p> : ""}
+                        {movieGenres ? <p className="mb-2"><HighlightedText><b>Included Genres:</b> </HighlightedText> {movieGenres}</p> : ""}
+                        {movieCredits ? <p className="mb-2"><HighlightedText><b>Credits:</b> </HighlightedText> {movieCredits}</p> : ""}
                     </div>
-                    <PrimaryButton onClick={goToDiscussion}>View Discussion!</PrimaryButton>
-
+                    {!isUserPage ? <PrimaryButton onClick={goToDiscussion}>{userName ? `View More Movies by ${userName}!` : "View Discussion!"}</PrimaryButton> : ""}
                 </ModalBody>
             </Modal>
         </>

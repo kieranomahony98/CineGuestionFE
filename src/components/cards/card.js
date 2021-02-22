@@ -3,11 +3,11 @@ import tw from "twin.macro";
 import styled from "styled-components";
 import { Col } from "reactstrap";
 
-
-const Card = tw.div`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none border-2 border-gray-300`;
+//tw components come from template 
+const Card = tw.div`h-full flex! flex-col border max-w-sm relative focus:outline-none border-2 border-gray-300`;
 const CardImage = styled.div(props => [
   `background-image: url("${props.imageSrc}");`,
-  tw`w-full h-64 sm:h-128 bg-cover bg-center rounded sm:rounded-none sm:rounded-tl-4xl`
+  tw`w-full h-64 sm:h-128 bg-cover bg-center rounded`
 ]);
 
 
@@ -22,23 +22,15 @@ const RatingsInfo = styled.div`
     }
   `;
 const Rating = tw.span`ml-2 font-bold`;
-// const Description = tw.p`text-sm leading-loose mt-2 sm:mt-4`;
 
-// const SecondaryInfoContainer = tw.div`flex flex-col sm:flex-row mt-2 sm:mt-4`;
-// const IconWithText = tw.div`flex items-center mr-6 my-2 sm:my-0`;
-// const IconContainer = styled.div`
-//     ${tw`inline-block rounded-full p-2 bg-gray-700 text-gray-100`}
-//     svg {
-//       ${tw`w-3 h-3`}
-//     }
-//   `;
-// const Text = tw.div`ml-2 text-sm font-semibold text-gray-800`;
 
-const movieCard = ({ title, img, onClick, rating, desc, className }) => {
-
-  const imageRoute = `https://image.tmdb.org/t/p/original${img}`;
+const movieCard = ({ title, img, onClick, rating, desc, className, notRoute, md, xs }) => {
+  xs = xs ? xs : "";
+  md = md ? md : "";
+  const imageRoute = (notRoute) ? img : `https://image.tmdb.org/t/p/original${img}`;
   return (
-    <Col md="4" xs="6" className={`movieCard ${className}  mb-3 `}>
+
+    <Col xs={`${xs}`} md={`${md}`} className={`${className} mb-3`}>
       <Card key={title} onClick={onClick}>
         <CardImage imageSrc={imageRoute} />
         <TextInfo>

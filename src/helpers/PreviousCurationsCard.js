@@ -21,7 +21,9 @@ const PreviousCurationsCard = ({
                     key={movieTitle}
                     desc={movieDescription}
                     rating={moviePopularity}
-                    onClick={onClick} />
+                    onClick={onClick}
+                    md="4" xs="6"
+                />
             </Col >
         )
     }

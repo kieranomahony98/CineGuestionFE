@@ -21,7 +21,7 @@ export const loadUser = () => (dispatch, getState) => {
 
     if (token) {
         config.headers["x-auth-token"] = token;
-        axios.post(`${route}/api/users/user`, config)
+        axios.post(`${route}/api/users/user`, {}, config)
             .then((res) => {
                 dispatch({ type: USER_LOADED, payload: res.data });
                 if (!getState().movies.isLoaded) {
@@ -51,7 +51,6 @@ export const login = ({ email, password }) => dispatch => {
     }
     //data body
     const body = JSON.stringify({ email, password });
-    console.log(route);
     axios.post(`${route}/api/auth/login`, body, config)
         .then((res) => {
             dispatch(clearErrors());

@@ -20,13 +20,14 @@ const Playlists = ({ Playlist }) => {
     const toggle = () => {
         setOpenModal(openModal => !openModal);
     }
-    const body = `This curation is a selection of ${genreText(Playlist.movieSearchCriteria.with_genres)} genres${keywordsText(Playlist.movieSearchCriteria.with_keywords)}${sortByText(Playlist.movieSearchCriteria.sort_by)}`
+    console.log(Playlist);
+    const body = `This curation is a selection of ${(Playlist.movieSearchCriteria.with_genres)} genres${keywordsText(Playlist.movieSearchCriteria.with_keywords)}${sortByText(Playlist.movieSearchCriteria.sort_by)}`
     const popoverToggle = () => {
         setPopoverOpen(popoverOpen => !popoverOpen);
     }
     if (Playlist) {
         movieCards = Playlist.movies.map((m, i) => {
-            return <MovieCard key={i} title={m.movieTitle} img={m.movieImagePath} rating={m.moviePopularity} desc={m.movieDescription} onClick={() => { movie = m; setOpenModal(() => true) }} className="mb-3" />
+            return <MovieCard md="4" xs="6" key={i} title={m.movieTitle} img={m.movieImagePath} rating={m.moviePopularity} desc={m.movieDescription} onClick={() => { movie = m; setOpenModal(() => true) }} className="mb-3" />
         });
     }
 
@@ -34,7 +35,7 @@ const Playlists = ({ Playlist }) => {
         <Container>
             {(movieCards) ?
                 <>
-                    <MoviePopover isOpen={popoverOpen} toggle={popoverToggle} body={body} title={type} />
+                    <MoviePopover target="target1" isOpen={popoverOpen} toggle={popoverToggle} body={body} title={type} />
                     <Row xs="3" className="justify-content-centre">
                         {movieCards}
                     </Row>
@@ -50,6 +51,7 @@ const Playlists = ({ Playlist }) => {
 }
 
 function genreText(with_genres) {
+    console.log(with_genres)
     const genres = with_genres.split(",");
     let genreText = "";
     if (genres) {

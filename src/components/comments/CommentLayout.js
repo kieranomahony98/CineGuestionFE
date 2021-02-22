@@ -46,7 +46,6 @@ export const CommentLayout = () => {
                     console.log(`failed to make request`);
                     throw err;
                 });
-            console.log(comments.count);
             if (comments.count === 0) {
                 setErrors(error => !error)
                 return;
@@ -75,7 +74,7 @@ export const CommentLayout = () => {
         const commentObj = {
             movieId: movieDiscussion.movieId,
             id: user.id,
-            userName: user.name,
+            userName: user.userName,
             commentText: (replyComment) ? replyCommentText : commentText.text
         }
         if (replyComment) {
@@ -87,7 +86,6 @@ export const CommentLayout = () => {
                 refreshData();
             })
             .catch((err) => {
-                console.log(err.message);
                 throw err;
             });
     }

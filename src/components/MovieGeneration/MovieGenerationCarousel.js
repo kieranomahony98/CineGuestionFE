@@ -50,7 +50,7 @@ const MovieGenerationCarousel = () => {
                 if (isRevised) setIsRevised(() => true);
                 return moviesDom.movies.map((m, index) => {
                     const { movieImagePath, movieTitle, movieDescription, moviePopularity } = m;
-                    return <MovieCard title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; setModal(() => true) }} key={index} />
+                    return <MovieCard title={movieTitle} md="4" xs="6" img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; setModal(() => true) }} key={index} />
                 });
             }).catch((err) => {
                 throw err;
@@ -145,7 +145,7 @@ const MovieGenerationCarousel = () => {
     return (
         <Container style={{ marginTop: "20px" }}>
             <Row>
-                <MoviePopover toggle={popoverToggle} isOpen={popover} title={popOverText.title} body={popOverText.body} />
+                <MoviePopover target="target1" toggle={popoverToggle} isOpen={popover} title={popOverText.title} body={popOverText.body} />
                 {isRevised ? <HighlightedText className="mx-auto">Youre query was altered to guarantee movie responses!</HighlightedText> : ""}
             </Row>
             {(carouselVisible) ?

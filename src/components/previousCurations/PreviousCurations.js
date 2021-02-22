@@ -79,7 +79,7 @@ const PreviousCurations = () => {
 
         setMovieCards(mv.movies.map((m, i) => {
             const { movieImagePath, movieTitle, movieDescription, moviePopularity } = m;
-            return <MovieCard title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; toggle() }} key={i} />
+            return <MovieCard title={movieTitle} md="4" xs="6" img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; toggle() }} key={i} />
         }));
         handleClick();
     }
@@ -101,7 +101,7 @@ const PreviousCurations = () => {
 
     return (
         <Container>
-            {(showMovies) ? <MoviePopover title={popOverText.title} body={popOverText.body} toggle={popoverToggle} isOpen={popover} /> : ""}
+            {(showMovies) ? <MoviePopover title={popOverText.title} body={popOverText.body} toggle={popoverToggle} isOpen={popover} target="target1" /> : ""}
             {(errors) ? <Row><HighlightedText className="mx-auto">It appears you have no generations with us, <a href="/Generate">Get Started here!</a></HighlightedText></Row> :
                 (generations) ?
                     previousCurations :

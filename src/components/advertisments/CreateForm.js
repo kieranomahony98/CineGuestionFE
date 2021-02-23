@@ -130,11 +130,9 @@ export default ({
                     <LogoImage src={logo} />
                 </LogoLink>
                 {success ? <Badge color="green">Your Movie has successfully been uploaded!</Badge> : ''}
-
             </Row>
             <Row>
-                <Col className="order-sm-first">
-
+                <Col>
                     <Row className="justify-content-center">
                         <Heading>{headingText}</Heading>
                     </Row>

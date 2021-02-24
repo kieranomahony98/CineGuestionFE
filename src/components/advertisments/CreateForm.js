@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
@@ -13,6 +13,7 @@ import { HighlightedText } from "components/playlists/playlists";
 import MovieCard from "components/cards/card";
 import { useSelector } from "react-redux";
 import { PrimaryButton } from "components/misc/Buttons";
+import { useParams } from "react-router";
 
 const LogoLink = tw.a``;
 const LogoImage = tw.img`h-12 mx-auto`;
@@ -27,13 +28,14 @@ const SubmitButton = styled.button`
     ${tw`ml-3`}
   }
 `;
-
+let m;
 export default ({
     logoLinkUrl = "#",
     headingText = "Add your movie to CineGuestion!",
     submitButtonText = "Create Posting!",
     SubmitButtonIcon = LoginIcon,
 }) => {
+    const { movieId } = useParams();
     const [titlePopover, setTitlePopoer] = useState(false);
     const [releasePopover, setReleasePopover] = useState(false);
     const [creditsPopover, setCreditsPopover] = useState(false);
@@ -44,6 +46,7 @@ export default ({
     const [isRadioChecked, setIsRadioChecked] = useState(false);
     const [isAddressValid, setIsAddressValid] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [movie, setMovie] = useState({});
     const [errors, setErrors] = useState({
         movieTitle: "",
         movieReleaseYear: "",
@@ -70,6 +73,18 @@ export default ({
     const descriptionToggle = () => setDescriptionPopover((descriptionPopover) => !descriptionPopover);
     const imageToggle = () => setImagePopover((imagePopover) => !imagePopover);
     const playBackToggle = () => setPlaybackPopover((playbackPopover) => !playbackPopover);
+    useEffect(() => {
+        if (movieId) {
+            makeRequest(movieId, token)
+                .then((movie) => {
+                    m = movie
+                    console.log(movie);
+                    setMovieDetails(movieDetails => ({ ...movieDetails, ...movie.movieDetails }));
+                }).catch((err) => {
+                    throw err;
+                });
+        }
+    }, []);
 
     const updateMovieDetails = (e) => {
         const { name, value } = e.target;
@@ -92,34 +107,57 @@ export default ({
         e.preventDefault();
 
         const { isValid, validation } = validateMovie(movieDetails);
-        console.log(isValid);
-        console.log(validation);
+
         if (!isValid) {
             setErrors(errors => ({ ...errors, ...validation }));
         }
 
         const verifyLink = verifyYoutubeAddress(movieDetails.moviePlaybackPath);
         if (!verifyLink) setErrors(errors => ({ ...errors, moviePlaybackPath: "Please enter a valid youtube URL, We ask you to use the embed link within the share option" }));
-        console.log(errors);
-        if (!isValid || !verifyLink) return;
-        addMovieToDatabase(movieDetails, token, user)
-            .then((movieAdded) => {
-                if (movieAdded) {
-                    setMovieDetails((movieDetails) => ({
-                        ...movieDetails,
-                        movieTitle: "",
-                        movieReleaseYear: "",
-                        movieCredits: "",
-                        movieDescription: "",
-                        movieImagePath: "",
-                        moviePlaybackPath: "",
-                        movieGenres: ""
-                    }));
-                    setSuccess(success => !success);
-                }
 
-            }).catch((err) => {
-                throw err;
+        if (!isValid || !verifyLink) return;
+
+        if (!movieId) {
+            addMovieToDatabase(movieDetails, token, user)
+                .then((movieAdded) => {
+                    if (movieAdded) {
+                        setMovieDetails((movieDetails) => ({
+                            ...movieDetails,
+                            movieTitle: "",
+                            movieReleaseYear: "",
+                            movieCredits: "",
+                            movieDescription: "",
+                            movieImagePath: "",
+                            moviePlaybackPath: "",
+                            movieGenres: ""
+                        }));
+                        setSuccess(success => !success);
+                    }
+                }).catch((err) => {
+                    throw err;
+                });
+            return;
+        }
+        const movieBody = {
+            _id: m._id,
+            user: m.user,
+            movieDetails
+        }
+        console.log(movie);
+        updateMovieInDatabse(movieBody, token)
+            .then((movie) => {
+                setMovieDetails((movieDetails) => ({
+                    ...movieDetails,
+                    movieTitle: "",
+                    movieGenres: "",
+                    movieReleaseYear: "",
+                    movieCredits: "",
+                    movieDescription: "",
+                    movieImagePath: "",
+                    moviePlaybackPath: "",
+
+                }));
+                setSuccess(success => !success);
             });
     }
 
@@ -137,30 +175,30 @@ export default ({
                         <Heading>{headingText}</Heading>
                     </Row>
                     <Form className="ml-5" onSubmit={submit}>
-                        <Row><Col md="10" sm="8"><Input type="text" name="movieTitle" placeholder="Movie Title" className="mb-2" onChange={updateMovieDetails} /></Col>   <Col sm="1"><MoviePopover isOpen={titlePopover} toggle={() => titleToggle()} target="movieTitle" title="Movie Title" body="Pleae enter the title of you movie!" /></Col></Row>
+                        <Row><Col md="10" sm="8"><Input type="text" name="movieTitle" placeholder="Movie Title" className="mb-2" defaultValue={movieDetails.movieTitle} onChange={updateMovieDetails} /></Col>   <Col sm="1"><MoviePopover isOpen={titlePopover} toggle={() => titleToggle()} target="movieTitle" title="Movie Title" body="Pleae enter the title of you movie!" /></Col></Row>
                         <Badge color="warning" className="mb-1">{errors.movieTitle}</Badge>
-                        <Row><Col md="10" sm="8"><Input type="text" name="movieReleaseYear" placeholder="Movie Release Year" className="mb-2" onChange={updateMovieDetails} maxLength="4" /> </Col > <Col sm="1"><MoviePopover isOpen={releasePopover} toggle={() => releaseToggle()} target="release" title="Movie Release Year" body="Please enter the release year of your movie, in the format of YYYY/2019" /></Col></Row>
+                        <Row><Col md="10" sm="8"><Input type="text" name="movieReleaseYear" placeholder="Movie Release Year" className="mb-2" defaultValue={movieDetails.movieReleaseYear} onChange={updateMovieDetails} maxLength="4" /> </Col > <Col sm="1"><MoviePopover isOpen={releasePopover} toggle={() => releaseToggle()} target="release" title="Movie Release Year" body="Please enter the release year of your movie, in the format of YYYY/2019" /></Col></Row>
                         <Badge color="warning" className="mb-1">{errors.movieReleaseYear}</Badge>
 
-                        <Row><Col md="10" sm="8"><Input type="text" name="movieCredits" placeholder="Credits" className="mb-2" onChange={updateMovieDetails} />  </Col>    <Col sm="1"><MoviePopover isOpen={creditsPopover} toggle={() => creditToggle()} title="Movie Credits" target="credits" body="Enter those who worked on the project, this is optional in order to keep privacy" /></Col></Row>
+                        <Row><Col md="10" sm="8"><Input type="text" name="movieCredits" placeholder="Credits" className="mb-2" defaultValue={movieDetails.movieCredits} onChange={updateMovieDetails} />  </Col>    <Col sm="1"><MoviePopover isOpen={creditsPopover} toggle={() => creditToggle()} title="Movie Credits" target="credits" body="Enter those who worked on the project, this is optional in order to keep privacy" /></Col></Row>
 
                         <Row><Badge color="warning" className="mb-1">{errors.movieCredits}</Badge></Row>
 
-                        <Row><Col md="10" sm="8"><Input type="text" name="movieGenres" placeholder="Movie Genres" className="mb-2" onChange={updateMovieDetails} /> </Col> <Col sm="1"><MoviePopover isOpen={genrePopover} toggle={() => genreToggle()} title="Movie Genres" target="genres" body="Please enter the genres included in this movie, i.e. Action, Thriller, Animation." /></Col></Row>
+                        <Row><Col md="10" sm="8"><Input type="text" name="movieGenres" placeholder="Movie Genres" className="mb-2" defaultValue={movieDetails.movieGenres} onChange={updateMovieDetails} /> </Col> <Col sm="1"><MoviePopover isOpen={genrePopover} toggle={() => genreToggle()} title="Movie Genres" target="genres" body="Please enter the genres included in this movie, i.e. Action, Thriller, Animation." /></Col></Row>
 
-                        <Row> <Badge color="warning" className="mb-1">{errors.movieCredits}</Badge></Row>
+                        <Row> <Badge color="warning" className="mb-1">{errors.movieGenres}</Badge></Row>
 
-                        <Row><Col md="10" sm="8"><Input type="textarea" name="movieDescription" placeholder="Movie Description" className="mb-2" onChange={updateMovieDetails} />  </Col> <Col sm="1"><MoviePopover isOpen={descriptionPopover} toggle={() => descriptionToggle()} target="desc" title="Movie Description" body="Please enter a short description of your movie" /></Col></Row>
+                        <Row><Col md="10" sm="8"><Input type="textarea" name="movieDescription" placeholder="Movie Description" defaultValue={movieDetails.movieDescription} className="mb-2" onChange={updateMovieDetails} />  </Col> <Col sm="1"><MoviePopover isOpen={descriptionPopover} toggle={() => descriptionToggle()} target="desc" title="Movie Description" body="Please enter a short description of your movie" /></Col></Row>
                         <Row> <Badge color="warning" className="mb-1">{errors.movieDescription}</Badge></Row>
 
-                        <Row><Col md="10" sm="8"><Input type="text" name="movieImagePath" placeholder="Movie Image URL" className="mb-2" onChange={updateMovieDetails} />    </Col> <Col sm="1"><MoviePopover isOpen={imagePopover} toggle={() => imageToggle()} title="Movie Image" target="movieImg" body="Please enter the URL of image source for your movie, this is optional so if there is none we will put in a placeholder for you" /></Col></Row>
+                        <Row><Col md="10" sm="8"><Input type="text" name="movieImagePath" placeholder="Movie Image URL" className="mb-2" defaultValue={movieDetails.movieImagePath} onChange={updateMovieDetails} />    </Col> <Col sm="1"><MoviePopover isOpen={imagePopover} toggle={() => imageToggle()} title="Movie Image" target="movieImg" body="Please enter the URL of image source for your movie, this is optional so if there is none we will put in a placeholder for you" /></Col></Row>
 
-                        <Row><Col md="10" sm="8"><Input type="text" name="moviePlaybackPath" placeholder="Movie Playback URL" className="mb-2" onChange={updateMovieDetails} /> </Col> <Col sm="1"><MoviePopover isOpen={playbackPopover} toggle={() => playBackToggle()} title="Movie Playback" target="playback" body="Please enter the URL where the movie is uploaded, make sure to grab the 'embed' link under share rather then the link in your web browser. Please note, as of now we only accept youtube uploads." /></Col></Row>
+                        <Row><Col md="10" sm="8"><Input type="text" name="moviePlaybackPath" placeholder="Movie Playback URL" className="mb-2" defaultValue={movieDetails.moviePlaybackPath} onChange={updateMovieDetails} /> </Col> <Col sm="1"><MoviePopover isOpen={playbackPopover} toggle={() => playBackToggle()} title="Movie Playback" target="playback" body="Please enter the URL where the movie is uploaded, make sure to grab the 'embed' link under share rather then the link in your web browser. Please note, as of now we only accept youtube uploads." /></Col></Row>
                         <Row><Badge color="warning" className="mb-1">{errors.moviePlaybackPath}</Badge></Row>
 
                         <SubmitButton type="submit">
                             <SubmitButtonIcon className="icon" />
-                            <span className="text">{submitButtonText}</span>
+                            <span className="text">{movieId ? "Update Movie" : submitButtonText}</span>
                         </SubmitButton>
                     </Form>
                 </Col>
@@ -168,9 +206,7 @@ export default ({
                     {/* <Heading>Preview</Heading> */}
                     <SubmitButton onClick={radioToggle} className="mt-2" > <span className="text">{!isRadioChecked ? "See Movie Card" : "See Movie Modal"}</span></SubmitButton>
                     {(isRadioChecked) ?
-
                         <MovieCard title={movieDetails.movieTitle} img={movieDetails.movieImagePath} notRoute={true} />
-
                         :
                         <ModalBody className="modalBody" style={{ marginLeft: "0%" }}>
                             <div className="modalImage mb-3">
@@ -227,11 +263,45 @@ async function addMovieToDatabase(movieObj, token, currentUser) {
     }
     if (token) {
         config.headers["x-auth-token"] = token;
-        axios.post(`${route}/api/movies/indie/create`, body, config)
+        return await axios.post(`${route}/api/movies/indie/create`, body, config)
             .then((res) => res)
             .catch((err) => {
                 return false;
-            })
+            });
+    }
+}
+
+async function makeRequest(movieId, token) {
+    console.log("in function");
+    const config = {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
+
+    if (token) {
+        config.headers["x-auth-token"] = token;
+        return await axios.get(`${route}/api/movies/indie/user/single/movie/${movieId}`, config)
+            .then((movie) => movie.data)
+            .catch((err) => false);
+    }
+    return false;
+}
+
+async function updateMovieInDatabse(movieDetails, token) {
+    const config = {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    };
+    const body = {
+        movieDetails
+    }
+    if (token) {
+        config.headers["x-auth-token"] = token;
+        return await axios.post(`${route}/api/movies/indie/user/movie/update`, body, config)
+            .then((movie) => movie)
+            .catch((err) => false);
     }
 
 }

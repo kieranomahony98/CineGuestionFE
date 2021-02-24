@@ -19,7 +19,7 @@ const DowndownMenu = () => {
     };
     const dropDownRef = useRef();
     const history = useHistory();
-    const { isAuthenticated } = useSelector(state => state.auth);
+    const { isAuthenticated, user } = useSelector(state => state.auth);
     useEffect(() => {
         const handleClickOutside = e => {
             if (dropDownRef.current.contains(e.target)) {
@@ -50,6 +50,12 @@ const DowndownMenu = () => {
             });
         }
     }
+    const goToMoviesPage = () => {
+
+        history.push({
+            pathname: `/movies/indie/get/user/${user.id}`
+        });
+    }
     return (
         <>
             <DropDown ref={dropDownRef} style={{ marginTop: "-6px" }}>
@@ -63,6 +69,7 @@ const DowndownMenu = () => {
                         <DropdownItem className={dropDownText} href="/myGenerations">My Generations</DropdownItem>
                         <DropdownItem className={dropDownText}>My Details</DropdownItem>
                         <DropdownItem className={dropDownText} onClick={goToCreatePage}>Add a Movie</DropdownItem>
+                        <DropdownItem className={dropDownText} onClick={goToMoviesPage}>My Movies</DropdownItem>
                         <DropdownItem onClick={userLogout} className={dropDownText} href="/">Logout</DropdownItem>
                     </DropdownMenu>
                 </UncontrolledDropdown >

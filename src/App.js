@@ -60,6 +60,10 @@ export default function App() {
             <Route exact path="/movies/indie/get/user/:userId">
               <ViewMovieAdvertismentsForUser />
             </Route>
+            <Route exact path="/movies/indie/edit/user/:movieId">
+              <CreateMovieAdvertisment />
+            </Route>
+
           </Switch>
 
         </Router>

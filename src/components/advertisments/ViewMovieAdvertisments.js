@@ -11,6 +11,7 @@ import { useParams } from 'react-router';
 let movie;
 export default ({ isUserMovie }) => {
     const { userId } = useParams();
+
     const [movies, setMovies] = useState([]);
     const [error, setErrors] = useState(false);
     const [openModal, setOpenModal] = useState(false);
@@ -56,7 +57,7 @@ export default ({ isUserMovie }) => {
                 {movies}
             </Row>
             {
-                (openModal) ? <MovieModal toggle={toggle} isUserPage={isUserMovie} movieId={movie.movieDetails.movieId} isOpen={openModal} moviePlaybackPath={movie.movieDetails.moviePlaybackPath} movieImagePath={movie.movieDetails.movieImagePath} movieTitle={movie.movieDetails.movieTitle} movieDescription={movie.movieDetails.movieDescription} userName={movie.user.userName} moviePopularity={movie.movieDetails.moviePopularity} movieReleaseYear={movie.movieReleaseYear} userId={movie.user.userId} movieGenres={movie.movieGenres} /> : ""
+                (openModal) ? <MovieModal toggle={toggle} isUserPage={isUserMovie} movieId={movie._id} isOpen={openModal} moviePlaybackPath={movie.movieDetails.moviePlaybackPath} movieImagePath={movie.movieDetails.movieImagePath} movieTitle={movie.movieDetails.movieTitle} movieDescription={movie.movieDetails.movieDescription} userName={movie.user.userName} moviePopularity={movie.movieDetails.moviePopularity} movieReleaseYear={movie.movieReleaseYear} userId={movie.user.userId} movieGenres={movie.movieGenres} /> : ""
             }
         </Container>
     )

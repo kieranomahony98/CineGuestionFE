@@ -87,7 +87,7 @@ export const Comments = ({
     }
 
     const deleteComment = () => {
-        deleteCommentApi(comment._id, token)
+        deleteCommentApi(comment._id, token, user.id, comment.user.userId)
             .then((res) => {
                 toggleConfirm();
                 refresh()
@@ -207,7 +207,7 @@ async function updateCommentApi(commentText, commentId, token) {
     }
 }
 
-async function deleteCommentApi(commentId, token) {
+async function deleteCommentApi(commentId, token, id, commentUserId) {
     const config = {
         headers: {
             "Content-type": "application/json"
@@ -215,7 +215,7 @@ async function deleteCommentApi(commentId, token) {
     };
     if (token) {
         config.headers["x-auth-token"] = token;
-        axios.get(`${route}/api/movies/comments/delete/${commentId}`, config)
+        axios.get(`${route}/api/movies/comments/delete/${commentId}/${id}/${commentUserId}`, config)
             .then((updatedComment) => updatedComment)
             .catch((err) => {
                 console.log(`failed to update commment: ${err.message}`);

@@ -6,12 +6,14 @@ import loginValidation from "../../validation/loginValidation";
 import { NavLink } from "../headers/light";
 import "../../css/authModals.css"
 import { clearErrors } from "actions/errorActions";
+import Loader from "react-loader-spinner";
 
 
 const LoginModal = () => {
     const dispatch = useDispatch();
 
     const [modal, setModal] = useState(false);
+    const [isLogginIn, setIsLogginIn] = useState(false);
     const [errors, setErrors] = useState({
         name: "",
         password: ""
@@ -21,9 +23,9 @@ const LoginModal = () => {
         email: "",
         password: ""
     });
-
-    const { isAuthenticated } = useSelector(state => state.auth);
+    const { isLoading, isAuthenticated } = useSelector(state => state.auth);
     const { loginError } = useSelector(state => state.error);
+    console.log(isAuthenticated);
     const toggle = () => {
         setErrors(errors => ({
             ...errors, name: "",
@@ -34,6 +36,8 @@ const LoginModal = () => {
     }
 
     const onSubmit = (e) => {
+        setIsLogginIn(() => true);
+
         e.preventDefault();
         const { email, password } = user;
 
@@ -45,18 +49,19 @@ const LoginModal = () => {
         const { loginErrors, isValid } = loginValidation(loginUser);
         if (isValid) {
             dispatch(login(loginUser));
+
             if (modal) {
                 if (isAuthenticated) {
                     setModal(() => !modal);
                 }
             }
             setErrors(() => ({ ...errors, email: "", password: "" }));
+
         } else {
             setErrors(() => ({ ...errors, ...loginErrors }));
         }
-
-
     }
+
 
     const onChange = (e) => {
         const id = e.target.name;
@@ -86,7 +91,9 @@ const LoginModal = () => {
                                 {(errors.password) ? <p className="text-danger">{errors.password}</p> : null}
 
                             </div>
-                            <Button type="submit" color="dark" style={{ marginTop: "2rem" }} block>Login</Button>
+                            <div>
+                                {isLoading ? <Loader type="ThreeDots" color="#007BFF" style={{ marginLeft: "40%" }} /> : <Button type="submit" color="dark" style={{ marginTop: "2rem" }} block>Login</Button>}
+                            </div>
                         </FormGroup>
                     </Form>
                 </ModalBody>

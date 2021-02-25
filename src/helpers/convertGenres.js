@@ -72,7 +72,7 @@ async function keywordMatcher(keywords) {
     }
 }
 
-export async function convertPlayListsText({ weeklyPlaylists, monthlyPlaylists, allTimePlaylists }) {
+export async function convertPlayListsText({ weeklyPlaylists, monthlyPlaylists, allTimePlaylists, trendingNow }) {
     try {
 
         if (weeklyPlaylists) {
@@ -84,11 +84,15 @@ export async function convertPlayListsText({ weeklyPlaylists, monthlyPlaylists, 
         if (allTimePlaylists) {
             allTimePlaylists.movieSearchCriteria = await convertToTextGeneration(allTimePlaylists.movieSearchCriteria);
         }
+        if (trendingNow) {
+            trendingNow.movieSearchCriteria = await convertToTextGeneration(trendingNow.movieSearchCriteria);
+        }
 
         return {
             weeklyPlaylists,
             monthlyPlaylists,
-            allTimePlaylists
+            allTimePlaylists,
+            trendingNow
         }
     } catch (err) {
         console.log(`failed to convert playlists: ${err.message}`);

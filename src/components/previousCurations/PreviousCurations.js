@@ -10,12 +10,19 @@ import MovieModal from "components/modal/movieModal";
 import { moviePopoverText } from "helpers/PopoverText";
 import { MoviePopover } from "components/popover/popover";
 import { convertToTextGeneration } from "helpers/convertGenres";
+import { useHistory } from "react-router";
 const HighlightedText = tw.span`text-primary-500`;
 const route = "https://image.tmdb.org/t/p/original";
 let movie;
 
 const PreviousCurations = () => {
-    const { token } = useSelector(state => state.auth);
+    const history = useHistory();
+    const { token, isAuthenticated } = useSelector(state => state.auth);
+    if (!isAuthenticated) {
+        history.push({
+            pathname: "/"
+        });
+    }
     const [showMovies, setShowMovies] = useState(false);
     const [generations, setGenerations] = useState(false);
     const [openModal, setModal] = useState(false);
@@ -79,7 +86,7 @@ const PreviousCurations = () => {
 
         setMovieCards(mv.movies.map((m, i) => {
             const { movieImagePath, movieTitle, movieDescription, moviePopularity } = m;
-            return <MovieCard title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; toggle() }} key={i} />
+            return <MovieCard title={movieTitle} md="4" xs="6" img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; toggle() }} key={i} />
         }));
         handleClick();
     }
@@ -101,7 +108,7 @@ const PreviousCurations = () => {
 
     return (
         <Container>
-            {(showMovies) ? <MoviePopover title={popOverText.title} body={popOverText.body} toggle={popoverToggle} isOpen={popover} /> : ""}
+            {(showMovies) ? <MoviePopover title={popOverText.title} body={popOverText.body} toggle={popoverToggle} isOpen={popover} target="target1" /> : ""}
             {(errors) ? <Row><HighlightedText className="mx-auto">It appears you have no generations with us, <a href="/Generate">Get Started here!</a></HighlightedText></Row> :
                 (generations) ?
                     previousCurations :
@@ -110,7 +117,7 @@ const PreviousCurations = () => {
                         showSpinner()
             }
             {
-                (openModal) ? <MovieModal toggle={toggle} isOpen={openModal} movieId={movie.movieId} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ""
+                (openModal) ? <MovieModal toggle={toggle} isUserPage={false} isOpen={openModal} movieId={movie.movieId} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ""
 
             }
 

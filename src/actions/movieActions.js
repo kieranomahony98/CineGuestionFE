@@ -1,4 +1,4 @@
-import { MOVIES_LOADED, MOVIES_LOADING, MOVIES_LOGOUT, MOVIE_DISCUSSION } from "./types";
+import { MOVIES_LOADED, MOVIES_LOADING, MOVIES_LOGOUT, MOVIE_DISCUSSION, MOVIE_EDIT } from "./types";
 import axios from "axios";
 import route from "data/Routes";
 import { convertPlayListsText } from "helpers/convertGenres";
@@ -49,7 +49,10 @@ export const addMovieDiscussion = (movie) => dispatch => {
     }
     axios.post(`${route}/api/movies/discussions/create`, movie, config)
 }
-
+export const addMovieToEdit = (movie, dispatch) => {
+    dispatch({ Type: MOVIE_EDIT, payload: movie });
+}
 export const logOutMovies = () => dispatch => {
     dispatch({ type: MOVIES_LOGOUT });
 }
+

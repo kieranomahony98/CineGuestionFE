@@ -51,10 +51,10 @@ const MovieDetails = () => {
                         </Col>
 
                         <Col className="desc justify-content-center ml-2" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-                            <p style={{ fontSize: "2vw" }}><HighlightedText> Genres:</HighlightedText><span><MovieText >{movie.movieGenres}</MovieText></span> </p>
-                            <p style={{ fontSize: "2vw" }}><HighlightedText> Popularity:</HighlightedText>  <MovieText>{movie.moviePopularity}</MovieText></p>
-                            <p style={{ fontSize: "2vw" }}><HighlightedText> Release Year: </HighlightedText> <MovieText>{movie.movieReleaseYear}</MovieText></p>
-                            <p style={{ fontSize: "2vw" }}><HighlightedText> Description: </HighlightedText>  <MovieText>{movie.movieDescription}</MovieText></p>
+                            <span style={{ fontSize: "2vw" }}><HighlightedText> Genres:</HighlightedText><span><MovieText >{movie.movieGenres}</MovieText></span> </span>
+                            <span style={{ fontSize: "2vw" }}><HighlightedText> Popularity:</HighlightedText>  <MovieText>{movie.moviePopularity}</MovieText></span>
+                            <span style={{ fontSize: "2vw" }}><HighlightedText> Release Year: </HighlightedText> <MovieText>{movie.movieReleaseYear}</MovieText></span>
+                            <span style={{ fontSize: "2vw" }}><HighlightedText> Description: </HighlightedText>  <MovieText>{movie.movieDescription}</MovieText></span>
 
                         </Col>
                     </Row>

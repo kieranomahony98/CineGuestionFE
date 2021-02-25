@@ -13,15 +13,13 @@ import WeeklyPlaylist from "pages/weeklyPlaylists";
 import { PersistGate } from "redux-persist/integration/react";
 import { DiscussionPage } from "pages/DiscussionPage";
 import { DiscussionLandingPage } from "pages/DiscussionLadingPage";
-
+import CreateMovieAdvertisment from "pages/CreateMovieAdvertisment";
+import ViewMovieAdvertisments from "pages/ViewMovieAdvertisments";
+import ViewMovieAdvertismentsForUser from "pages/ViewMovieAdvertismentsForSIngleUser";
 export default function App() {
   useEffect(() => {
     store.dispatch(loadUser());
   });
-  let isAuthenticated = () => {
-    if (store.getState().auth.token) return true;
-    return false;
-  };
 
   return (
     <Provider store={store}>
@@ -35,10 +33,13 @@ export default function App() {
               <MovieGeneration />
             </Route>
             <Route exact path="/myGenerations">
-              {isAuthenticated() ? <ViewCurations /> : <Redirect to="/" />}
+              <ViewCurations />
             </Route>
             <Route exact path="/playlists/:type" >
-              {isAuthenticated() ? <WeeklyPlaylist /> : <Redirect to="/" />}
+              <WeeklyPlaylist />
+            </Route>
+            <Route exact path="/playlists/trending/now" >
+              <WeeklyPlaylist />
             </Route>
             <Route exact path="/movies/discussions">
               <DiscussionLandingPage />
@@ -46,6 +47,19 @@ export default function App() {
             <Route exact path="/movies/discussions/:movieId">
               <DiscussionPage />
             </Route>
+            <Route exact path="/movies/indie/create">
+              <CreateMovieAdvertisment />
+            </Route>
+            <Route exact path="/movies/indie/get/all">
+              <ViewMovieAdvertisments />
+            </Route>
+            <Route exact path="/movies/indie/get/user/:userId">
+              <ViewMovieAdvertismentsForUser />
+            </Route>
+            <Route exact path="/movies/indie/edit/user/:movieId">
+              <CreateMovieAdvertisment />
+            </Route>
+
           </Switch>
 
         </Router>
@@ -55,21 +69,3 @@ export default function App() {
   );
 }
 
-// export default EventLandingPage;
-// export default HotelTravelLandingPage;
-// export default AgencyLandingPage;
-// export default SaaSProductLandingPage;
-// export default RestaurantLandingPage;
-// export default ServiceLandingPage;
-// export default HostingCloudLandingPage;
-
-// export default LoginPage;
-// export default SignupPage;
-// export default PricingPage;
-// export default AboutUsPage;
-// export default ContactUsPage;
-// export default BlogIndexPage;
-// export default TermsOfServicePage;
-// export default PrivacyPolicyPage;
-
-// export default MainLandingPage;

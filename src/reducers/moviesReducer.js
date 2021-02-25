@@ -1,4 +1,4 @@
-import { MOVIES_LOADING, MOVIES_LOADED, MOVIES_LOGOUT, MOVIE_DISCUSSION } from "../actions/types";
+import { MOVIES_LOADING, MOVIES_LOADED, MOVIES_LOGOUT, MOVIE_DISCUSSION, MOVIE_EDIT } from "../actions/types";
 
 const initialState = {
     isLoaded: false,
@@ -6,7 +6,9 @@ const initialState = {
     weeklyPlaylist: null,
     monthlyPlaylist: null,
     allTimePlaylist: null,
-    movieDiscussion: null
+    movieDiscussion: null,
+    trendingNow: null,
+    editMovie: null
 }
 
 export default function (state = initialState, action) {
@@ -23,12 +25,18 @@ export default function (state = initialState, action) {
                 isLoading: false,
                 weeklyPlaylist: action.payload.weeklyPlaylists,
                 monthlyPlaylist: action.payload.monthlyPlaylists,
-                allTimePlaylist: action.payload.allTimePlaylists
+                allTimePlaylist: action.payload.allTimePlaylists,
+                trendingNow: action.payload.trendingNow
             };
         case MOVIE_DISCUSSION:
             return {
                 ...state,
                 movieDiscussion: action.payload
+            }
+        case MOVIE_EDIT:
+            return {
+                ...state,
+                editMovie: action.payload
             }
         case MOVIES_LOGOUT:
             return {
@@ -38,8 +46,10 @@ export default function (state = initialState, action) {
                 weeklyPlaylist: null,
                 monthlyPlaylist: null,
                 allTimePlaylist: null,
-                movieDiscussion: null
+                movieDiscussion: null,
+                trendingNow: null
             }
+
         default:
             return state;
     }

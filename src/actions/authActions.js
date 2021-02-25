@@ -21,7 +21,7 @@ export const loadUser = () => (dispatch, getState) => {
 
     if (token) {
         config.headers["x-auth-token"] = token;
-        axios.post(`${route}/api/users/user`, config)
+        axios.post(`${route}/api/users/user`, {}, config)
             .then((res) => {
                 dispatch({ type: USER_LOADED, payload: res.data });
                 if (!getState().movies.isLoaded) {
@@ -29,7 +29,7 @@ export const loadUser = () => (dispatch, getState) => {
 
                 }
             }).catch((err) => {
-                dispatch(returnErrors(err.response.data, err.response.status))
+                dispatch(returnErrors('Network error: failed to load user', 500))
                 dispatch({
                     type: AUTH_ERROR
                 });
@@ -43,6 +43,7 @@ export const loadUser = () => (dispatch, getState) => {
 }
 
 export const login = ({ email, password }) => dispatch => {
+    dispatch({ type: USER_LOADING });
     const config = {
         headers: {
             "Content-Type": "application/json"
@@ -50,7 +51,6 @@ export const login = ({ email, password }) => dispatch => {
     }
     //data body
     const body = JSON.stringify({ email, password });
-
     axios.post(`${route}/api/auth/login`, body, config)
         .then((res) => {
             dispatch(clearErrors());
@@ -60,7 +60,7 @@ export const login = ({ email, password }) => dispatch => {
             });
             dispatch(loadMovies());
         }).catch((err) => {
-            dispatch(loginErrors(err.response.data, err.response.status));
+            dispatch(loginErrors(`Internal Server Error`, 500));
             dispatch({
                 type: LOGIN_FAIL
             });

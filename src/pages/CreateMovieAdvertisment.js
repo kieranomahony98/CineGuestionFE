@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 export default () => {
     const { isAuthenticated } = useSelector(state => state.auth);
+    console.log(isAuthenticated);
     if (!isAuthenticated) {
         Redirect("/");
     }

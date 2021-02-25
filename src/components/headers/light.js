@@ -11,9 +11,8 @@ import logo from "../../images/cineGuestion/logo.png";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 import { useSelector } from "react-redux";
-import Hr from "components/hr/Hr";
 import "../../homepage.css";
-
+//90% of this code is from template
 const Header = tw.header`
   flex justify-between items-center
   max-w-screen-xl mx-auto
@@ -85,7 +84,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
   const defaultLinks = [
     <NavLinks key={1}>
       <NavLink href="/playlists/trending/now">Trending</NavLink>
-      <NavLink href="/movies/discussions">Community</NavLink>
+      <NavLink href="/movies/discussions">Discuss</NavLink>
       <NavLink href="/Generate">Generate</NavLink>
       {isAuthenticatedNavLink}
     </NavLinks>
@@ -97,7 +96,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
   const defaultLogoLink = (
     <LogoLink href="/">
       <img src={logo} alt="logo" />
-      CineGuestion
+      CineGestion
     </LogoLink>
   );
 

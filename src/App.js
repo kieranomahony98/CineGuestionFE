@@ -20,10 +20,6 @@ export default function App() {
   useEffect(() => {
     store.dispatch(loadUser());
   });
-  let isAuthenticated = () => {
-    if (store.getState().auth.token) return true;
-    return false;
-  };
 
   return (
     <Provider store={store}>
@@ -37,10 +33,10 @@ export default function App() {
               <MovieGeneration />
             </Route>
             <Route exact path="/myGenerations">
-              {isAuthenticated() ? <ViewCurations /> : <Redirect to="/" />}
+              <ViewCurations />
             </Route>
             <Route exact path="/playlists/:type" >
-              {isAuthenticated() ? <WeeklyPlaylist /> : <Redirect to="/" />}
+              <WeeklyPlaylist />
             </Route>
             <Route exact path="/playlists/trending/now" >
               <WeeklyPlaylist />

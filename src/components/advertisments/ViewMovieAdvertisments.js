@@ -11,11 +11,11 @@ import { useParams } from 'react-router';
 let movie;
 export default ({ isUserMovie }) => {
     const { userId } = useParams();
+    const { user } = useSelector(state => state.auth);
 
     const [movies, setMovies] = useState([]);
     const [error, setErrors] = useState(false);
     const [openModal, setOpenModal] = useState(false);
-
     useEffect(() => {
         if (!userId) {
             requestMovies()
@@ -37,19 +37,20 @@ export default ({ isUserMovie }) => {
 
                 setMovies(() => [...filterMovies(movies)]);
 
-            })
+            });
 
     }, []);
 
     const filterMovies = movies => {
-        return movies.map((m) => {
+        return movies.map((m, i) => {
             console.log(m.movieDetails.movieTitle);
-            return <MovieCard md="4" xs="6" title={m.movieDetails.movieTitle} img={(m.movieDetails.movieImagePath) ? m.movieDetails.movieImagePath : stockImage} notRoute={true} onClick={() => { movie = m; toggle(); }} className="mb-3" />
+            return <MovieCard key={i} md="4" xs="6" title={m.movieDetails.movieTitle} img={(m.movieDetails.movieImagePath) ? m.movieDetails.movieImagePath : stockImage} notRoute={true} onClick={() => { movie = m; toggle(); }} className="mb-3" />
         });
     }
     const toggle = () => {
         setOpenModal(openModal => !openModal);
     }
+
     return (
         <Container>
             {error ? <Row><Badge color="warning">Sorry, we could not get community movies right now, please try again later</Badge></Row> : ""}
@@ -57,7 +58,7 @@ export default ({ isUserMovie }) => {
                 {movies}
             </Row>
             {
-                (openModal) ? <MovieModal toggle={toggle} isUserPage={isUserMovie} movieId={movie._id} isOpen={openModal} moviePlaybackPath={movie.movieDetails.moviePlaybackPath} movieImagePath={movie.movieDetails.movieImagePath} movieTitle={movie.movieDetails.movieTitle} movieDescription={movie.movieDetails.movieDescription} userName={movie.user.userName} moviePopularity={movie.movieDetails.moviePopularity} movieReleaseYear={movie.movieReleaseYear} userId={movie.user.userId} movieGenres={movie.movieGenres} /> : ""
+                (openModal) ? <MovieModal toggle={toggle} isUserPage={isUserMovie} movieId={movie._id} isOpen={openModal} moviePlaybackPath={movie.movieDetails.moviePlaybackPath} movieImagePath={movie.movieDetails.movieImagePath} movieTitle={movie.movieDetails.movieTitle} movieDescription={movie.movieDetails.movieDescription} userName={movie.user.userName} moviePopularity={movie.movieDetails.moviePopularity} movieReleaseYear={movie.movieDetails.movieReleaseYear} userId={movie.user.userId} movieCredits={movie.movieDetails.movieCredits} movieGenres={movie.movieDetails.movieGenres} /> : ""
             }
         </Container>
     )

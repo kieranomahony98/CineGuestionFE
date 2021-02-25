@@ -40,7 +40,13 @@ const MovieModal = ({
 
     const dispatch = useDispatch();
     const history = useHistory();
-    const { token } = useSelector(state => state.auth);
+    const { token, user } = useSelector(state => state.auth);
+    console.log(user);
+    // console.log(userId);
+    if (user && userId === user.id) {
+        editMoviePage = true;
+        isUserPage = true;
+    }
     const route = "https://image.tmdb.org/t/p/original";
     const goToDiscussion = async () => {
         console.log(userName);
@@ -62,10 +68,9 @@ const MovieModal = ({
         });
     }
     const deleteMovie = () => {
-        console.log('hi');
+
         deleteUserMovie({ movieId, userId }, token)
             .then((movie) => {
-                console.log(movie);
                 if (movie) {
                     window.location.reload();
                 }
@@ -88,7 +93,7 @@ const MovieModal = ({
                         {movieCredits ? <p className="mb-2"><HighlightedText><b>Credits:</b> </HighlightedText> {movieCredits}</p> : ""}
                     </div>
                     {!isUserPage ? <PrimaryButton onClick={goToDiscussion}>{userName ? `View More Movies by ${userName}!` : "View Discussion!"}</PrimaryButton> : ""}
-                    {!editMoviePage ? <Row><Col><PrimaryButton onClick={editMovie}>Update Movie</PrimaryButton></Col><Col><PrimaryButton onClick={deleteMovie}>Delete Movie</PrimaryButton></Col></Row> : ""}
+                    {editMoviePage ? <Row><Col><PrimaryButton onClick={editMovie}>Update Movie</PrimaryButton></Col><Col><PrimaryButton onClick={deleteMovie}>Delete Movie</PrimaryButton></Col></Row> : ""}
                 </ModalBody>
             </Modal>
         </>

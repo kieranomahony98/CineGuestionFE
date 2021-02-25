@@ -76,6 +76,7 @@ const DowndownMenu = () => {
             </DropDown>
             <MobileNavLinks>
                 <NavLink className={dropDownText} href="/myGenerations">My Generations</NavLink>
+
                 <NavLink className={dropDownText}>My Details</NavLink>
                 <NavLink className={dropDownText} onClick={goToCreatePage}>Add a Movie</NavLink>
                 <NavLink onClick={userLogout} className={dropDownText} href="/">Logout</NavLink>

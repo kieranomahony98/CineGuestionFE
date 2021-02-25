@@ -6,7 +6,6 @@ import LoginModal from "components/auth/LoginModal.js";
 import DowndownMenu from "../../dropdown/DropdownMenu";
 import { useSelector } from "react-redux";
 import RegisterModal from "components/auth/RegisterModal.js";
-import { Redirect } from "react-router-dom";
 
 const StyledHeader = styled(Header)`
   ${tw`justify-between`}
@@ -25,7 +24,7 @@ const LeftColumn = tw.div`ml-8 mr-8 xl:pl-10 py-8`;
 //image licesning is free to use source:
 const RightColumn = styled.div`
   background-image: url("https://images.unsplash.com/photo-1580247817119-c6cb496270a4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80");
-  ${tw`bg-green-500 bg-cover bg-center xl:ml-24 h-96 lg:h-auto lg:w-1/2 lg:flex-1`}
+  ${tw`bg-green-500 bg-cover bg-center xl:ml-10 h-96 lg:h-auto lg:w-1/2 lg:flex-1`}
 `;
 
 const Content = tw.div`mt-24 lg:mt-24 lg:mb-24 flex flex-col sm:items-center lg:items-stretch`;
@@ -41,7 +40,7 @@ const Actions = styled.div`
     ${tw`bg-primary-500 text-gray-100 hover:bg-primary-700`}
   }
   .secondaryAction {
-    ${tw`mt-4 sm:mt-0 sm:ml-4 bg-gray-300 text-gray-700 hover:bg-gray-400 hover:text-gray-800`}
+    ${tw`mt-4 sm:mt-0 sm:ml-2 bg-gray-300 text-gray-700 hover:bg-gray-400 hover:text-gray-800`}
   }
 `;
 
@@ -68,7 +67,7 @@ const HomePageWithImage = () => {
   const navLinks = [
     <NavLinks key={1}>
       <NavLink href="/playlists/trending/now">Trending</NavLink>
-      <NavLink href="/movies/discussions">Community</NavLink>
+      <NavLink href="/movies/discussions">Discuss</NavLink>
       <NavLink href="/Generate">Generate</NavLink>
       {isAuthenticatedNavLink}
     </NavLinks>
@@ -98,9 +97,15 @@ const HomePageWithImage = () => {
             <Paragraph>{description}</Paragraph>
             <Actions>
               {primaryActionText}
-              <a href={secondaryActionUrl} className="action secondaryAction">
+              <a href="/movies/indie/get/all" className="action secondaryAction mr-2">
+                Community Movies
+              </a>
+              <a href={secondaryActionUrl} className="action primaryAction">
                 {secondaryActionText}
               </a>
+
+
+
             </Actions>
           </Content>
         </LeftColumn>

@@ -10,12 +10,19 @@ import MovieModal from "components/modal/movieModal";
 import { moviePopoverText } from "helpers/PopoverText";
 import { MoviePopover } from "components/popover/popover";
 import { convertToTextGeneration } from "helpers/convertGenres";
+import { useHistory } from "react-router";
 const HighlightedText = tw.span`text-primary-500`;
 const route = "https://image.tmdb.org/t/p/original";
 let movie;
 
 const PreviousCurations = () => {
-    const { token } = useSelector(state => state.auth);
+    const history = useHistory();
+    const { token, isAuthenticated } = useSelector(state => state.auth);
+    if (!isAuthenticated) {
+        history.push({
+            pathname: "/"
+        });
+    }
     const [showMovies, setShowMovies] = useState(false);
     const [generations, setGenerations] = useState(false);
     const [openModal, setModal] = useState(false);
@@ -110,7 +117,7 @@ const PreviousCurations = () => {
                         showSpinner()
             }
             {
-                (openModal) ? <MovieModal toggle={toggle} isOpen={openModal} movieId={movie.movieId} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ""
+                (openModal) ? <MovieModal toggle={toggle} isUserPage={false} isOpen={openModal} movieId={movie.movieId} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ""
 
             }
 

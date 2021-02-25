@@ -7,7 +7,7 @@ import ViewUserMovies from "components/advertisments/ViewMovieAdvertisments";
 
 export default () => {
     return (
-        < AnimationRevealPage >
+        <AnimationRevealPage >
             <Header />
             <ViewUserMovies isUserMovie={true} />
         </AnimationRevealPage >

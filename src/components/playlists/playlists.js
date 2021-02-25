@@ -5,17 +5,23 @@ import MovieCard from "../cards/card";
 import "../../css/PreviousCurations.css";
 import tw from "twin.macro";
 import MovieModal from "components/modal/movieModal";
-import { useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 export const HighlightedText = tw.span`text-primary-500`;
 const route = "https://image.tmdb.org/t/p/original";
 let movie;
 
 const Playlists = ({ Playlist }) => {
     const { type } = useParams();
-
+    const history = useHistory();
+    const { isAuthenticated } = useSelector(state => state.auth);
+    if (type !== "trendingNow" && !isAuthenticated) {
+        history.push({
+            pathname: "/"
+        });
+    }
     let movieCards;
     const [openModal, setOpenModal] = useState(false);
-    const [modal, setModal] = useState(null);
     const [popoverOpen, setPopoverOpen] = useState(false);
     const toggle = () => {
         setOpenModal(openModal => !openModal);
@@ -43,24 +49,13 @@ const Playlists = ({ Playlist }) => {
                 : ""
             }
             {
-                (openModal) ? <MovieModal toggle={toggle} movieId={movie.movieId} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ""
+                (openModal) ? <MovieModal toggle={toggle} isUserPage={false} movieId={movie.movieId} isOpen={openModal} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ""
 
             }
         </Container >
     );
 }
 
-function genreText(with_genres) {
-    console.log(with_genres)
-    const genres = with_genres.split(",");
-    let genreText = "";
-    if (genres) {
-        for (const [i, genre] of genres.entries()) {
-            genreText += (i === 0) ? `both ${genre}` : ` and ${genre}`;
-        }
-    }
-    return genreText;
-}
 
 function keywordsText(keywords) {
     if (keywords) {

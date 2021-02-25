@@ -13,7 +13,7 @@ import { HighlightedText } from "components/playlists/playlists";
 import MovieCard from "components/cards/card";
 import { useSelector } from "react-redux";
 import { PrimaryButton } from "components/misc/Buttons";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 
 const LogoLink = tw.a``;
 const LogoImage = tw.img`h-12 mx-auto`;
@@ -35,6 +35,13 @@ export default ({
     submitButtonText = "Create Posting!",
     SubmitButtonIcon = LoginIcon,
 }) => {
+    const history = useHistory();
+    const { token, isAuthenticated, user } = useSelector(state => state.auth);
+    if (!isAuthenticated) {
+        history.push({
+            pathname: "/"
+        });
+    }
     const { movieId } = useParams();
     const [titlePopover, setTitlePopoer] = useState(false);
     const [releasePopover, setReleasePopover] = useState(false);
@@ -65,7 +72,6 @@ export default ({
         moviePlaybackPath: "",
         movieGenres: ""
     });
-    const { user, token } = useSelector(state => state.auth);
     const genreToggle = () => setGenrePopover((genrePopover) => !genrePopover);
     const titleToggle = () => setTitlePopoer((titlePopover) => !titlePopover);
     const releaseToggle = () => setReleasePopover((releasePopover) => !releasePopover);
@@ -121,8 +127,7 @@ export default ({
             addMovieToDatabase(movieDetails, token, user)
                 .then((movieAdded) => {
                     if (movieAdded) {
-                        setMovieDetails((movieDetails) => ({
-                            ...movieDetails,
+                        setMovieDetails(() => ({
                             movieTitle: "",
                             movieReleaseYear: "",
                             movieCredits: "",
@@ -132,35 +137,42 @@ export default ({
                             movieGenres: ""
                         }));
                         setSuccess(success => !success);
+                        clearForm();
                     }
                 }).catch((err) => {
                     throw err;
                 });
-            return;
-        }
-        const movieBody = {
-            _id: m._id,
-            user: m.user,
-            movieDetails
-        }
-        console.log(movie);
-        updateMovieInDatabse(movieBody, token)
-            .then((movie) => {
-                setMovieDetails((movieDetails) => ({
-                    ...movieDetails,
-                    movieTitle: "",
-                    movieGenres: "",
-                    movieReleaseYear: "",
-                    movieCredits: "",
-                    movieDescription: "",
-                    movieImagePath: "",
-                    moviePlaybackPath: "",
+        } else {
+            const movieBody = {
+                _id: m._id,
+                user: m.user,
+                movieDetails
+            }
+            console.log(movie);
+            updateMovieInDatabse(movieBody, token)
+                .then((movie) => {
+                    setMovieDetails(() => ({
+                        movieTitle: "",
+                        movieGenres: "",
+                        movieReleaseYear: "",
+                        movieCredits: "",
+                        movieDescription: "",
+                        movieImagePath: "",
+                        moviePlaybackPath: "",
 
-                }));
-                setSuccess(success => !success);
-            });
+                    }));
+                    setSuccess(success => !success);
+                    clearForm();
+
+                });
+        }
+
     }
-
+    const clearForm = () => {
+        Array.from(document.querySelectorAll("input")).forEach(
+            input => (input.value = "")
+        );
+    }
     return (
         <Container className="mt-3">
             <Row className="justify-content-center">
@@ -170,7 +182,7 @@ export default ({
                 {success ? <Badge color="green">Your Movie has successfully been uploaded!</Badge> : ''}
             </Row>
             <Row>
-                <Col>
+                <Col md="4" lg="6">
                     <Row className="justify-content-center">
                         <Heading>{headingText}</Heading>
                     </Row>
@@ -202,7 +214,7 @@ export default ({
                         </SubmitButton>
                     </Form>
                 </Col>
-                <Col className="mt-6">
+                <Col className="mt-6" md="4" lg="6">
                     {/* <Heading>Preview</Heading> */}
                     <SubmitButton onClick={radioToggle} className="mt-2" > <span className="text">{!isRadioChecked ? "See Movie Card" : "See Movie Modal"}</span></SubmitButton>
                     {(isRadioChecked) ?
@@ -261,6 +273,7 @@ async function addMovieToDatabase(movieObj, token, currentUser) {
         movieObj,
         currentUser
     }
+    console.log(body);
     if (token) {
         config.headers["x-auth-token"] = token;
         return await axios.post(`${route}/api/movies/indie/create`, body, config)

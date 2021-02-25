@@ -5,15 +5,19 @@ export async function convertToTextGeneration(movieSearchCriteria) {
                 ...movieSearchCriteria,
                 sort_by: null,
                 with_genres: null,
-                keywords: null
+                keywords: null,
+                withCompanies: null
             }
         }
         const genreList = (movieSearchCriteria.with_genres) ? await listMatcher(movieSearchCriteria.with_genres.split(",")) : null;
         const keywords = (movieSearchCriteria.with_keywords) ? await keywordController(movieSearchCriteria.with_keywords.toString()) : null;
+        const withCompanies = (movieSearchCriteria.with_companies) ? await companyMatcher(movieSearchCriteria.with_companies.split(",")) : null
+        console.log(withCompanies);
         const sort_by = (movieSearchCriteria.sort_by) ? await sortByMatcher(movieSearchCriteria.sort_by) : null
         movieSearchCriteria.with_genres = (genreList) ? genreList.toString() : null;
         movieSearchCriteria.with_keywords = (keywords) ? keywords.toString() : null;
         movieSearchCriteria.sort_by = (sort_by) ? sort_by : null;
+        movieSearchCriteria.with_companies = (withCompanies) ? withCompanies : null;
 
         return movieSearchCriteria;
 
@@ -46,8 +50,6 @@ async function genreMatcher(genres) {
 
 async function listMatcher(movieGenres) {
     try {
-
-
         if (!movieGenres) {
             return "";
         }
@@ -100,17 +102,31 @@ export async function convertPlayListsText({ weeklyPlaylists, monthlyPlaylists, 
     }
 }
 
-async function keywordController(movieGenres) {
+async function keywordController(moviekeyword) {
     try {
-
-
-        if (!movieGenres) {
-            return "";
+        if (!moviekeyword) {
+            return '';
         };
-        const genres = movieGenres.split(",");
-        return await keywordMatcher(genres);
+        const keywords = moviekeyword.split(",");
+        return await keywordMatcher(keywords);
     } catch (err) {
         console.log(`failed to get keywords: ${err.message}`);
+        throw err;
+    }
+}
+
+async function companyMatcher(companies) {
+    try {
+        if (!companies) {
+            return '';
+        }
+        const productionCompanies = await getCompanies();
+        let returnCompanies = '';
+        for (const company of companies) {
+            returnCompanies += productionCompanies[company] ? (returnCompanies.length === 0) ? `${productionCompanies[company]}` : `, ${productionCompanies[company]}` : null;
+        }
+        return returnCompanies;
+    } catch (err) {
         throw err;
     }
 }
@@ -147,4 +163,19 @@ async function getGenres() {
         "53": "Thriller",
         "10752": "War"
     };
+}
+
+async function getCompanies() {
+    return {
+        "420": "Marvel Studios",
+        "1": "Lucasfilm",
+        "11461": "Bad Robot",
+        "128064": "DC Films",
+        "174": "Warner Bros Pictures",
+        "33": "Universal Pictures",
+        "923": "Legendary Pictures",
+        "5": "Columbia Pictures",
+        "2": "Walt Disney Pictures",
+        "3": "Pixar",
+    }
 }

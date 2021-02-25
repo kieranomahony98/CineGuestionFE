@@ -53,10 +53,11 @@ const PreviousCurations = () => {
                                     <Row className="curationRow movieCard mb-3" onClick={() => setSpecificCuration(movie)} key={i}>
                                         <Col>
                                             <p className="mr-3">Generation Date: {generationDate}</p>
-                                            <p className="mr-3"> Genres: {(convertedValues.with_genres) ? convertedValues.with_genres : "Any"}</p>
-                                            <p className="mr-3">Filtering: {(convertedValues.sort_by) ? convertedValues.sort_by : "No Sorting selected"}</p>
-                                            <p className="mr-3">Release Year: {(convertedValues.primary_release_year) ? convertedValues.primary_release_year : "Any"}</p>
-                                            <p className="mr-3">Movie Keywords: {(convertedValues.with_keywords) ? convertedValues.with_keywords : "No keywords"}</p>
+                                            <p className="mr-3"> Genres: {(convertedValues.with_genres) ? convertedValues.with_genres : 'Any'}</p>
+                                            <p className="mr-3">Filtering: {(convertedValues.sort_by) ? convertedValues.sort_by : 'No Sorting selected'}</p>
+                                            <p className="mr-3">Release Year: {(convertedValues.primary_release_year) ? convertedValues.primary_release_year : 'Any'}</p>
+                                            <p className="mr-3">Production Studios: {(convertedValues.with_companies) ? convertedValues.with_companies : "Any Studio"}</p>
+                                            <p className="mr-3">Movie Keywords: {(convertedValues.with_keywords) ? convertedValues.with_keywords : 'No keywords'}</p>
                                         </Col>
                                     </Row >
                                 );
@@ -113,18 +114,16 @@ const PreviousCurations = () => {
                 (generations) ?
                     previousCurations :
                     (showMovies) ?
-                        <> <Row><button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"></span>All Curations </button></Row> <Row> {movieCards}</Row></> :
+                        <> <Row><button onClick={() => handleClick()} className="btn btn-light mb-3"><span className="d-inline-block mr-2"></span>All Curations </button></Row> <Row xs="3"> {movieCards}</Row></> :
                         showSpinner()
             }
             {
                 (openModal) ? <MovieModal toggle={toggle} isUserPage={false} isOpen={openModal} movieId={movie.movieId} movieImagePath={movie.movieImagePath} movieTitle={movie.movieTitle} movieDescription={movie.movieDescription} moviePopularity={movie.moviePopularity} movieReleaseYear={movie.movieReleaseYear} movieGenres={movie.movieGenres} /> : ""
 
             }
-
         </Container >
     );
 }
-
 async function getMovies(token = null) {
     return requestMovies(token)
         .then((movies) => {
@@ -133,5 +132,4 @@ async function getMovies(token = null) {
             throw err;
         })
 }
-
 export default PreviousCurations;

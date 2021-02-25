@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../../css/movieComments.css";
 import { Confirm } from "components/confirm/confirmAlert";
 import { ReactComponent as Down } from "feather-icons/dist/icons/chevrons-down.svg";
@@ -14,7 +14,7 @@ export const Comments = ({
     onSubmit,
 }) => {
     const indent = `${(comment.depth - 1) * 5}%`
-    const { user, token, isAuthenticated } = useSelector(state => state.auth);
+    const { user, token, isAuthenticated } = useSelector(state => state.auth)
     const [confirm, showConfirm] = useState(false);
     const [upvotes, setUpVotes] = useState(comment.commentUpVotes);
     const [downVotes, setDownVotes] = useState(comment.commentDownVotes);
@@ -30,20 +30,21 @@ export const Comments = ({
     });
     const [tempText, setTempText] = useState({ commentText: comment.commentText })
     const [readOnly, setReadonly] = useState(true);
-    const { id } = useSelector(state => state.auth.user);
+    useEffect(() => {
+        if (user && user.id) {
+            const i = (comment.commentDownVotes) ? comment.commentDownVotes.indexOf(user.id) : -1;
+            if (i !== -1) {
 
-    if (id) {
-        const i = (comment.commentDownVotes) ? comment.commentDownVotes.indexOf(id) : -1;
-        if (i !== -1) {
-            setIsDownVoted(isDownVoted => !isDownVoted);
+                setIsDownVoted(isDownVoted => !isDownVoted);
+            }
+
+            const x = (comment.commentUpVotes) ? comment.commentUpVotes.indexOf(user.id) : -1;
+
+            if (x !== -1) {
+                setIsUpVoted(isUpVoted => !isUpVoted);
+            }
         }
-        const x = (comment.commentUpVotes) ? comment.commentUpVotes.indexOf(id) : -1;
-        if (x !== -1) {
-            setIsUpVoted(isUpVoted => !isUpVoted);
-        }
-    }
-
-
+    }, [user]);
     const handleOnClick = () => {
         setShowReply(showReply => !showReply);
     }
@@ -86,7 +87,7 @@ export const Comments = ({
     }
 
     const deleteComment = () => {
-        deleteCommentApi(comment._id, token)
+        deleteCommentApi(comment._id, token, user.id, comment.user.userId)
             .then((res) => {
                 toggleConfirm();
                 refresh()
@@ -99,25 +100,32 @@ export const Comments = ({
     }
 
     const changeCommentScore = (value) => {
-        const changeFromUpvote = false;
-        const changeFromDownVote = false;
-        if (comment.isDeleted) return;
-        if (!isAuthenticated) return;
-        if (value === 1 && isUpVoted) return;
-        if (value === -1 && isDownVoted) return;
+        let changeFromUpvote = false;
+        let changeFromDownVote = false;
+        let isAlreadyUpVoted = false;
+        let isAlreadyDownVoted = false;
+
+        if ((value === 1 && isUpVoted) | (value === -1 && isDownVoted) | !isAuthenticated | comment.isDeleted) return;
+
         if (value === 1 && isDownVoted) {
             changeFromDownVote = true;
         }
         if (value === -1 && isUpVoted) {
             changeFromUpvote = true;
         }
+        if (value === -1 && isDownVoted) {
+            isAlreadyDownVoted = true;
+        }
+        if (value === -1 && isDownVoted) {
+            isAlreadyUpVoted = true;
+        }
 
-        setCommentScoreApi(comment._id, commentScore + value, token, value, changeFromUpvote, changeFromDownVote)
+        setCommentScoreApi(comment._id, commentScore + value, token, value, changeFromUpvote, changeFromDownVote, isAlreadyUpVoted,)
             .then((comment) => {
                 setCommentScore(commentUpVotes => commentUpVotes + value);
                 if (changeFromUpvote) {
                     const temp = [...upvotes];
-                    const i = temp.indexOf(id);
+                    const i = temp.indexOf(user.id);
                     if (i !== -1) {
                         temp.splice(i, 1);
                         setUpVotes(() => temp);
@@ -127,7 +135,7 @@ export const Comments = ({
                 }
                 if (changeFromDownVote) {
                     const temp = [...downVotes];
-                    const i = temp.indexOf(id);
+                    const i = temp.indexOf(user.id);
                     if (i !== -1) {
                         temp.splice(i, 1);
                         setDownVotes(() => temp);
@@ -136,11 +144,11 @@ export const Comments = ({
                     return;
                 }
                 if (value === 1) {
-                    setUpVotes(upvotes => [...upvotes, id]);
+                    setUpVotes(upvotes => [...upvotes, user.id]);
                     setIsUpVoted(() => true);
                 }
                 if (value === -1) {
-                    setDownVotes(downVotes => [...downVotes, id]);
+                    setDownVotes(downVotes => [...downVotes, user.id]);
                     setIsDownVoted(() => true);
                 }
             });
@@ -159,7 +167,7 @@ export const Comments = ({
                 (user && comment.user.userId && comment.user.userId === user.id && !readOnly) ? <Button className="ml-2 mt-1 replyButton" onClick={() => updateComment()}>Update</Button> : ''
             }
             <Row className="reply-section">
-                <Row className="d-flex flex-row align-items-center voting-icons"><Up onClick={() => changeCommentScore(1)} className="replyButton" /><Down className="replyButton" onClick={() => changeCommentScore(-1)} /><span className="ml-2">{commentScore}</span><span className="dot ml-2"></span>
+                <Row className="d-flex flex-row align-items-center voting-icons"><Up onClick={() => changeCommentScore(1)} className="replyButton" color={(isUpVoted) ? "#6415ff" : ''} /><Down className="replyButton" onClick={() => changeCommentScore(-1)} color={(isDownVoted) ? "#6415ff" : ''} /><span className="ml-2">{commentScore}</span><span className="dot ml-2"></span>
                     <h6 className="ml-2 mt-1 replyButton" onClick={replyOnClick}>Reply</h6>
                     {user && comment.user.userId && comment.user.userId === user.id ? <h6 className="ml-2 mt-1 replyButton" onClick={editOnClick}>Edit</h6> : ''}
                 </Row>
@@ -173,7 +181,6 @@ export const Comments = ({
                     </>
                     : ''
             }
-
         </Container >
     )
 }
@@ -189,7 +196,6 @@ async function updateCommentApi(commentText, commentId, token) {
             "Content-type": "application/json"
         }
     };
-    console.log(route);
     if (token) {
         config.headers["x-auth-token"] = token;
         axios.post(`${route}/api/movies/comments/update`, JSON.stringify(body), config)
@@ -201,7 +207,7 @@ async function updateCommentApi(commentText, commentId, token) {
     }
 }
 
-async function deleteCommentApi(commentId, token) {
+async function deleteCommentApi(commentId, token, id, commentUserId) {
     const config = {
         headers: {
             "Content-type": "application/json"
@@ -209,7 +215,7 @@ async function deleteCommentApi(commentId, token) {
     };
     if (token) {
         config.headers["x-auth-token"] = token;
-        axios.get(`${route}/api/movies/comments/delete/${commentId}`, config)
+        axios.get(`${route}/api/movies/comments/delete/${commentId}/${id}/${commentUserId}`, config)
             .then((updatedComment) => updatedComment)
             .catch((err) => {
                 console.log(`failed to update commment: ${err.message}`);
@@ -218,8 +224,8 @@ async function deleteCommentApi(commentId, token) {
     }
 }
 
-async function setCommentScoreApi(commentId, commentScore, token, value, changeFromDownVote, changeFromUpvote) {
-    console.log(commentScore);
+async function setCommentScoreApi(commentId, commentScore, token, value, changeFromUpvote, changeFromDownVote) {
+
     const config = {
         headers: {
             "Content-type": "application/json"

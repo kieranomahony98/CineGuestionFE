@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AnchorLink from 'react-anchor-link-smooth-scroll'
+import AnchorLink from "react-anchor-link-smooth-scroll"
 import { Rnd } from "react-rnd";
 import { motion } from "framer-motion";
 
@@ -16,7 +16,7 @@ import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 
 import { ReactComponent as CheckboxIcon } from "feather-icons/dist/icons/check-circle.svg";
 import { ReactComponent as HandleIcon } from "images/handle-icon.svg";
-import { ReactComponent as ArrowRightIcon} from "images/arrow-right-3-icon.svg";
+import { ReactComponent as ArrowRightIcon } from "images/arrow-right-3-icon.svg";
 
 import heroScreenshotImageSrc from "images/demo/MainLandingPageHero.png";
 import logo from "images/logo.svg";
@@ -220,28 +220,28 @@ export default ({
   );
 };
 
-const BlocksRenderer = ({blocks}) => {
+const BlocksRenderer = ({ blocks }) => {
   const [lastVisibleBlockIndex, setLastVisibleBlockIndex] = useState(0)
 
   const updateLastVisibleBlockIndex = (index) => {
     console.log("LAST WAS ", lastVisibleBlockIndex)
-    if(index > lastVisibleBlockIndex)
+    if (index > lastVisibleBlockIndex)
       setLastVisibleBlockIndex(index)
   }
 
   return (
     <ComponentsContainer>
-      {blocks.map((block, index) => ((lastVisibleBlockIndex+1) >= index) && <Block key={index} components={block} notifyIsVisible={() => updateLastVisibleBlockIndex(index)} />)}
+      {blocks.map((block, index) => ((lastVisibleBlockIndex + 1) >= index) && <Block key={index} components={block} notifyIsVisible={() => updateLastVisibleBlockIndex(index)} />)}
     </ComponentsContainer>
   )
 }
 
-const Block = ({notifyIsVisible, components}) => {
+const Block = ({ notifyIsVisible, components }) => {
   const offset = 30;
   const [ref, inView] = useInView(offset);
 
   useEffect(() => {
-    if(inView)
+    if (inView)
       notifyIsVisible()
   }, [inView, notifyIsVisible])
 

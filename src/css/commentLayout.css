@@ -1,0 +1,8 @@
+.collapse{
+    overflow:visible !important;
+}
+
+.replies:hover{
+    cursor: pointer;
+    text-emphasis:initial;
+}

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import route from '../../data/Routes';
-import MovieCard from 'components/cards/card';
-import { Container, Row, Button } from 'reactstrap';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { addMovieDiscussion } from 'actions/movieActions';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import route from "../../data/Routes";
+import MovieCard from "components/cards/card";
+import { Container, Row, Button, Col } from "reactstrap";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addMovieDiscussion } from "actions/movieActions";
 
 const Discussion = () => {
     const [discussion, setDiscussions] = useState([])
@@ -15,7 +15,7 @@ const Discussion = () => {
         getAllDiscussions()
             .then((discussions) => {
                 setDiscussions(() => discussions.map((discussion, index) => {
-                    return <MovieCard key={index} title={discussion.movieTitle} img={discussion.movieImagePath} rating={discussion.rating} onClick={() => onClick(discussion)} />
+                    return <MovieCard key={index} md="4" xs="6" title={discussion.movieTitle} img={discussion.movieImagePath} rating={discussion.rating} onClick={() => onClick(discussion)} />
                 }));
             });
     }, []);
@@ -29,8 +29,8 @@ const Discussion = () => {
 
     return (
         <Container>
-            <Row xs="3">
-                {discussion.length > 0 ? discussion : ''}
+            <Row>
+                {discussion.length > 0 ? discussion : ""}
             </Row >
         </Container>
     )
@@ -46,7 +46,7 @@ async function getAllDiscussions() {
         .then((res) => res.data)
         .catch((err) => {
             console.log(`Faield to get discussions: ${err.message}`);
-            return 'Failed to get discussions, please try again later';
+            return "Failed to get discussions, please try again later";
         });
 }
 export default Discussion;

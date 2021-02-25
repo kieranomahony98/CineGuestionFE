@@ -88,7 +88,7 @@ export default ({
             <Steps>
               {steps.map((step, index) => (
                 <Step key={index}>
-                  <StepNumber>{(index+1).toString().padStart(2,'0')}</StepNumber>
+                  <StepNumber>{(index + 1).toString().padStart(2, "0")}</StepNumber>
                   <StepText>
                     <StepHeading>{step.heading}</StepHeading>
                     <StepDescription>{step.description}</StepDescription>

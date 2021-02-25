@@ -1,7 +1,7 @@
 //not my code, module from npm package was failing to read due to no dist folder had to import it manually.
-'use strict';
-import { useEffect, useState } from 'react';
-import throttle from 'lodash.throttle';
+"use strict";
+import { useEffect, useState } from "react";
+import throttle from "lodash.throttle";
 
 export default (offset = 0) => {
     const [ref, setRef] = useState(null);
@@ -26,14 +26,14 @@ export default (offset = 0) => {
             }
 
             if (window.pageYOffset >= elementYPos()) {
-                window.removeEventListener('scroll', handleScroll);
+                window.removeEventListener("scroll", handleScroll);
                 setInView(true);
             }
         }, 200);
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener("scroll", handleScroll, { passive: true });
         handleScroll();
 
-        return () => window.removeEventListener('scroll', handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, [ref, offset]);
 
     return [setRef, inView];

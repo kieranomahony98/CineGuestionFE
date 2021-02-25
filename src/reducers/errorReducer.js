@@ -1,4 +1,4 @@
-import { GET_ERRORS, CLEAR_ERRORS, LOGIN_ERROR } from '../actions/types';
+import { GET_ERRORS, CLEAR_ERRORS, LOGIN_ERROR } from "../actions/types";
 
 const intialState = {
     msg: {},

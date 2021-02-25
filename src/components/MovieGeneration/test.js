@@ -88,7 +88,7 @@ export default () => {
                 if (isRevised) setIsRevised(() => true);
                 return moviesDom.movies.map((m, index) => {
                     const { movieImagePath, movieTitle, movieDescription, moviePopularity } = m;
-                    return <MovieCard title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; setModal(() => true) }} key={index} />
+                    return <MovieCard md="4" xs="6" title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; setModal(() => true) }} key={index} />
                 });
             }).catch((err) => {
                 throw err;
@@ -191,6 +191,7 @@ export default () => {
         setSurveyResults(() => ({}));
     }
     const increment = (e) => {
+        console.log(e);
         const slideNo = (slideCount === 1 && e === "right") ? 5 : (slideCount === 5 && e === "left") ? 1 : (e === "left") ? slideCount + 1 : slideCount - 1;
         setSlideCount(() => slideNo);
 
@@ -199,7 +200,7 @@ export default () => {
     return (
         <Container>
             <Row>
-                <MoviePopover toggle={popoverToggle} isOpen={popover} title={popOverText.title} body={popOverText.body} />
+                <MoviePopover toggle={popoverToggle} target="movieQuestionaire" isOpen={popover} title={popOverText.title} body={popOverText.body} />
                 {isRevised ? <HighlightedText className="mx-auto">Youre query was altered to guarantee movie responses!</HighlightedText> : ''}
             </Row>
             {(carouselVisible) ?
@@ -207,7 +208,7 @@ export default () => {
                     <Row className="justify-content-center">
                         <Col >
                             <Controls>
-                                <PrevButton onClick={sliderRef?.slickPrev}><ChevronLeftIcon /></PrevButton>
+                                <PrevButton onClick={sliderRef?.slickPrev}><ChevronLeftIcon onClick={() => increment("right")} /></PrevButton>
                             </Controls>
                         </Col>
                         <Col>
@@ -217,7 +218,7 @@ export default () => {
                         </Col>
                         <Col>
                             <Controls style={{ float: "right" }}>
-                                <NextButton onClick={sliderRef?.slickNext}><ChevronRightIcon /></NextButton>
+                                <NextButton onClick={sliderRef?.slickNext}><ChevronRightIcon onClick={() => increment("left")} /></NextButton>
                             </Controls>
                         </Col>
 

@@ -1,4 +1,4 @@
-import { convertToTextGeneration } from './convertGenres';
+import { convertToTextGeneration } from "./convertGenres";
 export async function moviePopoverText({ with_genres, with_keywords, sort_by, primary_release_year }, isConverted = null) {
     try {
 
@@ -14,12 +14,11 @@ export async function moviePopoverText({ with_genres, with_keywords, sort_by, pr
 
         if (with_genres) {
 
-            const genres = (typeof with_genres === typeof "") ? with_genres.split(",") : with_genres[0].split(",");
+            const genres = (typeof with_genres === typeof "") ? with_genres.trim().split(",") : with_genres[0].split(",");
             const length = genres.length;
-            console.log(genres);
             if ((length > 1)) {
                 for (const [i, genre] of genres.entries()) {
-                    body += (i === 0) ? ` genres including ${genre}` : (i !== length - 1) ? `, ${genre}` : ` and ${genre} `;
+                    body += (i === 0) ? ` genres including ${genre}` : (i !== (length - 1)) ? `, ${genre}` : ` and ${genre} `;
                 }
             } else {
                 body += `a single genre ${genres[0]}`;

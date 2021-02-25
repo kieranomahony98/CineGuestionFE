@@ -1,32 +1,34 @@
-import { PrimaryLink } from 'components/headers/light';
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux';
-import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, Badge } from 'reactstrap';
-import { register } from '../../actions/authActions';
-import registerValidation from '../../validation/registerValidation';
+import { PrimaryLink } from "components/headers/light";
+import React, { useState } from "react"
+import { useSelector, useDispatch } from "react-redux";
+import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, Badge } from "reactstrap";
+import { register } from "../../actions/authActions";
+import registerValidation from "../../validation/registerValidation";
 import "../../css/authModals.css"
+import Loader from "react-loader-spinner";
 const RegisterModal = ({ className }) => {
     const dispatch = useDispatch();
-
+    const [isLogginIn, setIsLogginIn] = useState(false);
     const [modal, setModal] = useState(false);
     const [errors, setErrors] = useState({
-        name: '',
-        userName: '',
-        email: '',
-        password: '',
+        name: "",
+        userName: "",
+        email: "",
+        password: "",
     });
 
     const [user, setUser] = useState({
-        email: '',
-        name: '',
-        userName: '',
-        password: '',
-        password2: ''
+        email: "",
+        name: "",
+        userName: "",
+        password: "",
+        password2: ""
     });
 
     const { id, msg } = useSelector(state => state.error);
-    const { isAuthenticated } = useSelector(state => state.auth)
+    const { isAuthenticated, isLoading } = useSelector(state => state.auth)
     const onSubmit = (e) => {
+        setIsLogginIn(() => true);
         e.preventDefault();
         const { name, email, password, password2, userName } = user;
 
@@ -45,9 +47,15 @@ const RegisterModal = ({ className }) => {
             if (modal) {
                 if (isAuthenticated) {
                     setModal(() => !modal);
+                    setIsLogginIn(() => false);
+
                 }
             }
+            setIsLogginIn(() => false);
+            setErrors((errors) => ({ ...errors, name: "", userName: "", email: "", password: "" }))
         } else {
+            setIsLogginIn(() => false);
+
             setErrors(errors => ({ ...errors, ...registerErrors }));
         }
     }
@@ -55,9 +63,9 @@ const RegisterModal = ({ className }) => {
     // const
     const toggle = () => {
         setErrors(errors => ({
-            ...errors, name: '',
-            email: '',
-            password: '',
+            ...errors, name: "",
+            email: "",
+            password: "",
         }));
         setModal(() => !modal);
     };
@@ -69,13 +77,13 @@ const RegisterModal = ({ className }) => {
     };
     return (
         <>
-            <PrimaryLink to="#" onClick={toggle} style={{ marginTop: '-10px' }} className={`authModal ${className}`}>
+            <PrimaryLink to="#" onClick={toggle} style={{ marginTop: "-10px" }} className={`authModal ${className}`}>
                 Register
             </PrimaryLink>
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader>Register</ModalHeader>
                 <ModalBody>
-                    {(id === 'REGISTER_FAIL') ? <Badge color="warning" style={{ width: "100%" }} className="mb-2">{msg}</Badge> : null}
+                    {(id === "REGISTER_FAIL") ? <Badge color="warning" style={{ width: "100%" }} className="mb-2">{msg}</Badge> : null}
                     <Form onSubmit={onSubmit}>
                         <FormGroup>
                             <Label for="name"></Label>
@@ -95,8 +103,9 @@ const RegisterModal = ({ className }) => {
                             <Label for="Confrim Password"></Label>
                             <Input type="password" name="password2" placeholder="Confirm Password..." className="mb-3" onChange={onChange} />
                             {(errors.password) ? <p className="text-danger">{errors.password}</p> : null}
-
-                            <Button type="submit" color="dark" style={{ marginTop: '2rem' }} block onClick={onSubmit}>Register</Button>
+                            <div>
+                                {isLoading ? <Loader type="ThreeDots" color="#007BFF" /> : <Button type="submit" color="dark" style={{ marginTop: "2rem" }} block onClick={onSubmit}>Register</Button>}
+                            </div>
                         </FormGroup>
                     </Form>
                 </ModalBody>

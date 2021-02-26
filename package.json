@@ -36,7 +36,8 @@
     "twin.macro": "^1.0.0-alpha.7",
     "use-in-view": "^1.0.15",
     "uuid": "^8.3.2",
-    "validator": "^13.1.17"
+    "validator": "^13.1.17",
+     "react-collapsible": "^2.8.3"
   },
   "scripts": {
     "start": "react-scripts start",

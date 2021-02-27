@@ -12,6 +12,7 @@ const DropDown = tw.div`
 `;
 const dropDownText = "text-gray-400"
 const DowndownMenu = () => {
+    const { innerWidth } = window;
     const dispatch = useDispatch();
     const [dropdown, setDropdown] = useState(false);
     const toggle = () => {
@@ -57,7 +58,7 @@ const DowndownMenu = () => {
         });
     }
     return (
-        <>
+        innerWidth > 640 ?
             <DropDown ref={dropDownRef} style={{ marginTop: "-6px" }}>
                 <UncontrolledDropdown nav isOpen={dropdown} onClick={toggle}>
                     <DropdownToggle style={{ display: "contents", paddingTop: "0px" }} tag="span" onClick={toggle} caret>
@@ -74,14 +75,13 @@ const DowndownMenu = () => {
                     </DropdownMenu>
                 </UncontrolledDropdown >
             </DropDown>
-            <MobileNavLinks>
-                <NavLink className={dropDownText} href="/myGenerations">My Generations</NavLink>
-
-                <NavLink className={dropDownText}>My Details</NavLink>
-                <NavLink className={dropDownText} onClick={goToCreatePage}>Add a Movie</NavLink>
-                <NavLink onClick={userLogout} className={dropDownText} href="/">Logout</NavLink>
-            </MobileNavLinks>
-        </>
+            :
+            <>
+                <NavLink href="/myGenerations">My Generations</NavLink>
+                <NavLink >My Details</NavLink>
+                <NavLink onClick={goToCreatePage}>Add a Movie</NavLink>
+                <NavLink onClick={userLogout} href="/">Logout</NavLink>
+            </>
     );
 }
 

@@ -103,9 +103,6 @@ const HomePageWithImage = () => {
               <a href={secondaryActionUrl} className="action primaryAction">
                 {secondaryActionText}
               </a>
-
-
-
             </Actions>
           </Content>
         </LeftColumn>

@@ -10,8 +10,11 @@ import DowndownMenu from "../../dropdown/DropdownMenu";
 import logo from "../../images/cineGuestion/logo.png";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../../homepage.css";
+import { logout } from "actions/authActions";
+import { logOutMovies } from "actions/movieActions";
+import { useHistory } from "react-router";
 //90% of this code is from template
 const Header = tw.header`
   flex justify-between items-center
@@ -74,13 +77,16 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
    * If you manipulate links here, all the styling on the links is already done for you. If you pass links yourself though, you are responsible for styling the links or use the helper styled components that are defined here (NavLink)
    */
   const { isAuthenticated } = useSelector(state => state.auth);
-
+  const dispatch = useDispatch();
+  const history = useHistory();
   let isAuthenticatedNavLink = [];
   if (isAuthenticated) {
     isAuthenticatedNavLink.push(<DowndownMenu key={"drodown"} />);
   } else {
     isAuthenticatedNavLink.push(<LoginModal key="login" />, <RegisterModal key="register" />);
   }
+
+
   const defaultLinks = [
     <NavLinks key={1}>
       <NavLink href="/playlists/trending/now">Trending</NavLink>

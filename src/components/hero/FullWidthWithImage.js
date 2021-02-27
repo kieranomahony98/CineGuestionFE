@@ -97,7 +97,7 @@ const HomePageWithImage = () => {
             <Paragraph>{description}</Paragraph>
             <Actions>
               {primaryActionText}
-              <a href="/movies/indie/get/all" className="action secondaryAction mr-2">
+              <a href="/movies/indie/get/all" className="action secondaryAction mr-2 mb-2">
                 Community Movies
               </a>
               <a href={secondaryActionUrl} className="action primaryAction">

@@ -60,7 +60,7 @@ const DowndownMenu = () => {
         <>
             <DropDown ref={dropDownRef} style={{ marginTop: "-6px" }}>
                 <UncontrolledDropdown nav isOpen={dropdown} onClick={toggle}>
-                    <DropdownToggle style={{ display: "inline-block", paddingTop: "0px" }} tag="span" onClick={toggle} caret>
+                    <DropdownToggle style={{ display: "contents", paddingTop: "0px" }} tag="span" onClick={toggle} caret>
                         <NavLink>
                             My Account
                     </NavLink>

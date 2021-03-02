@@ -44,6 +44,7 @@ const DowndownMenu = () => {
         dispatch(logout());
 
     }
+
     const goToCreatePage = () => {
         if (isAuthenticated) {
             history.push({
@@ -51,6 +52,7 @@ const DowndownMenu = () => {
             });
         }
     }
+
     const goToMoviesPage = () => {
 
         history.push({
@@ -62,7 +64,7 @@ const DowndownMenu = () => {
         innerWidth > 640 ?
             <DropDown ref={dropDownRef} style={{ marginTop: "-6px" }}>
                 <UncontrolledDropdown nav isOpen={dropdown} onClick={toggle}>
-                    <DropdownToggle style={{ display: "inherits", paddingTop: "0px" }} tag="span" onClick={toggle} caret>
+                    <DropdownToggle style={{ display: "inherit", paddingTop: "0px" }} tag="span" onClick={toggle} caret>
                         <NavLink>
                             My Account
                     </NavLink>

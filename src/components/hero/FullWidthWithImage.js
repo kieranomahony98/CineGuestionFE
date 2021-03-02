@@ -92,7 +92,7 @@ const HomePageWithImage = () => {
     <Container>
       <TwoColumn>
         <LeftColumn>
-          <StyledHeader links={navLinks} collapseBreakpointClass="sm" className={{ display: "inherit" }} />
+          <StyledHeader links={navLinks} collapseBreakpointClass="sm" style={{ display: "inherit" }} />
           <Content>
             <Heading>{heading}</Heading>
             <Paragraph>{description}</Paragraph>

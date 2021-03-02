@@ -9,9 +9,6 @@ import RegisterModal from "components/auth/RegisterModal.js";
 
 const StyledHeader = styled(Header)`
   ${tw`justify-between`}
-  .dis{
-    inherit
-  }
   ${LogoLink} {
     ${tw`mr-8 pb-0`}
   }
@@ -95,7 +92,7 @@ const HomePageWithImage = () => {
     <Container>
       <TwoColumn>
         <LeftColumn>
-          <StyledHeader links={navLinks} collapseBreakpointClass="sm" />
+          <StyledHeader links={navLinks} collapseBreakpointClass="sm" className={{ display: "inherit" }} />
           <Content>
             <Heading>{heading}</Heading>
             <Paragraph>{description}</Paragraph>

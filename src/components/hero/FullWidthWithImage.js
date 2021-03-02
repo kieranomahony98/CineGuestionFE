@@ -22,9 +22,10 @@ const Container = tw.div`relative -mx-8 -mt-8`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row bg-gray-100`;
 const LeftColumn = tw.div`ml-8 mr-8 xl:pl-10 py-8`;
 //image licesning is free to use source:
+
 const RightColumn = styled.div`
   background-image: url("https://images.unsplash.com/photo-1580247817119-c6cb496270a4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80");
-  ${tw`bg-green-500 bg-cover bg-center xl:ml-10 h-96 lg:h-auto lg:w-1/2 lg:flex-1`}
+  ${tw`bg-green-500 bg-cover bg-center xl:ml-24 h-96 lg:h-auto lg:w-1/2 lg:flex-1`}
 `;
 
 const Content = tw.div`mt-24 lg:mt-24 lg:mb-24 flex flex-col sm:items-center lg:items-stretch`;

@@ -10,7 +10,6 @@ export default () => (
     <Hero />
     <Features />
     <SliderCard />
-
     <FAQ />
     <Footer />
   </AnimationRevealPage>

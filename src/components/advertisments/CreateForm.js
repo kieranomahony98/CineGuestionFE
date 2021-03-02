@@ -12,8 +12,10 @@ import { Form, Input, Row, Col, Container, ModalBody, Button, Badge } from "reac
 import { HighlightedText } from "components/playlists/playlists";
 import MovieCard from "components/cards/card";
 import { useSelector } from "react-redux";
-import { PrimaryButton } from "components/misc/Buttons";
+import stockImage from "images/stock-photo.jpeg";
 import { useHistory, useParams } from "react-router";
+import Loader from "react-loader-spinner";
+
 
 const LogoLink = tw.a``;
 const LogoImage = tw.img`h-12 mx-auto`;
@@ -53,6 +55,7 @@ export default ({
     const [isRadioChecked, setIsRadioChecked] = useState(false);
     const [isAddressValid, setIsAddressValid] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [loadingIcon, setLoadingIcon] = useState(false);
     const [movie, setMovie] = useState({});
     const [errors, setErrors] = useState({
         movieTitle: "",
@@ -110,6 +113,7 @@ export default ({
     }
 
     const submit = (e) => {
+        setLoadingIcon(loadingIcon => !loadingIcon);
         e.preventDefault();
 
         const { isValid, validation } = validateMovie(movieDetails);
@@ -136,10 +140,15 @@ export default ({
                             moviePlaybackPath: "",
                             movieGenres: ""
                         }));
-                        setSuccess(success => !success);
                         clearForm();
+                        history.push({
+                            pathname: `/movies/indie/get/user/${user.id}`
+                        });
+                    } else {
+                        setLoadingIcon(loadingIcon => !loadingIcon);
                     }
                 }).catch((err) => {
+                    setLoadingIcon(loadingIcon => !loadingIcon);
                     throw err;
                 });
         } else {
@@ -151,19 +160,24 @@ export default ({
             console.log(movie);
             updateMovieInDatabse(movieBody, token)
                 .then((movie) => {
-                    setMovieDetails(() => ({
-                        movieTitle: "",
-                        movieGenres: "",
-                        movieReleaseYear: "",
-                        movieCredits: "",
-                        movieDescription: "",
-                        movieImagePath: "",
-                        moviePlaybackPath: "",
+                    if (movie) {
+                        setMovieDetails(() => ({
+                            movieTitle: "",
+                            movieGenres: "",
+                            movieReleaseYear: "",
+                            movieCredits: "",
+                            movieDescription: "",
+                            movieImagePath: "",
+                            moviePlaybackPath: "",
 
-                    }));
-                    setSuccess(success => !success);
-                    clearForm();
-
+                        }));
+                        clearForm();
+                        history.push({
+                            pathname: `/movies/indie/get/user/${user.id}`
+                        });
+                    } else {
+                        setLoadingIcon((loadingIcon) => !loadingIcon);
+                    }
                 });
         }
 
@@ -173,6 +187,7 @@ export default ({
             input => (input.value = "")
         );
     }
+
     return (
         <Container className="mt-3">
             <Row className="justify-content-center">
@@ -205,26 +220,33 @@ export default ({
 
                         <Row><Col md="10" sm="8"><Input type="text" name="movieImagePath" placeholder="Movie Image URL" className="mb-2" defaultValue={movieDetails.movieImagePath} onChange={updateMovieDetails} />    </Col> <Col sm="1"><MoviePopover isOpen={imagePopover} toggle={() => imageToggle()} title="Movie Image" target="movieImg" body="Please enter the URL of image source for your movie, this is optional so if there is none we will put in a placeholder for you" /></Col></Row>
 
-                        <Row><Col md="10" sm="8"><Input type="text" name="moviePlaybackPath" placeholder="Movie Playback URL" className="mb-2" defaultValue={movieDetails.moviePlaybackPath} onChange={updateMovieDetails} /> </Col> <Col sm="1"><MoviePopover isOpen={playbackPopover} toggle={() => playBackToggle()} title="Movie Playback" target="playback" body="Please enter the URL where the movie is uploaded, make sure to grab the 'embed' link under share rather then the link in your web browser. Please note, as of now we only accept youtube uploads." /></Col></Row>
+                        <Row><Col md="10" sm="8"><Input type="text" name="moviePlaybackPath" placeholder="Movie Playback URL" className="mb-2" defaultValue={movieDetails.moviePlaybackPath} onChange={updateMovieDetails} /> </Col> <Col sm="1"><MoviePopover isOpen={playbackPopover} toggle={() => playBackToggle()} title="Movie Playback" target="playback" body="Please enter the URL where the movie is uploaded, make sure to grab the 'embed' link under share rather then the link in your web browser. Please note, as of now we only accept youtube uploads. If you need further help with this, please visit here: https://wpexplorer-themes.com/total/docs/get-embed-urllink-youtube-video" /></Col></Row>
                         <Row><Badge color="warning" className="mb-1">{errors.moviePlaybackPath}</Badge></Row>
+                        {loadingIcon ?
+                            <Row className="justify-content-center">
+                                <Loader type="ThreeDots" color="blue" />
+                            </Row>
+                            :
+                            <SubmitButton type="submit">
+                                <SubmitButtonIcon className="icon" />
+                                <span className="text">{movieId ? "Update Movie" : submitButtonText}</span>
+                            </SubmitButton>
+                        }
 
-                        <SubmitButton type="submit">
-                            <SubmitButtonIcon className="icon" />
-                            <span className="text">{movieId ? "Update Movie" : submitButtonText}</span>
-                        </SubmitButton>
+
                     </Form>
                 </Col>
                 <Col className="mt-6" md="4" lg="6">
                     {/* <Heading>Preview</Heading> */}
                     <SubmitButton onClick={radioToggle} className="mt-2" > <span className="text">{!isRadioChecked ? "See Movie Card" : "See Movie Modal"}</span></SubmitButton>
                     {(isRadioChecked) ?
-                        <MovieCard title={movieDetails.movieTitle} img={movieDetails.movieImagePath} notRoute={true} />
+                        <MovieCard title={movieDetails.movieTitle} img={movieDetails.movieImagePath ? `${movieDetails.movieImagePath}` : stockImage} notRoute={true} />
                         :
                         <ModalBody className="modalBody" style={{ marginLeft: "0%" }}>
                             <div className="modalImage mb-3">
                                 {
                                     (isAddressValid) ?
-                                        <iframe width="100%" height="100%" src={movieDetails.moviePlaybackPath} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} /> : <img src={`${movieDetails.movieImagePath}`} style={{ maxHeight: "200px", maxWidth: "200px" }} className="modalImage" />
+                                        <iframe width="100%" height="100%" src={movieDetails.moviePlaybackPath} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} /> : <img src={movieDetails.movieImagePath ? `${movieDetails.movieImagePath}` : stockImage} style={{ maxHeight: "200px", maxWidth: "200px" }} className="modalImage" />
                                 }
                             </div>
                             <div className="modalDesc">
@@ -313,7 +335,12 @@ async function updateMovieInDatabse(movieDetails, token) {
     if (token) {
         config.headers["x-auth-token"] = token;
         return await axios.post(`${route}/api/movies/indie/user/movie/update`, body, config)
-            .then((movie) => movie)
+            .then((res) => {
+                if (res.status === 200) {
+                    return true;
+                }
+                return false
+            })
             .catch((err) => false);
     }
 

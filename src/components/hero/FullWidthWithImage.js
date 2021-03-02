@@ -66,7 +66,7 @@ const HomePageWithImage = () => {
   }
 
   const navLinks = [
-    <NavLinks key={1}>
+    <NavLinks key={1} style={{ display: "inherit" }}>
       <NavLink href="/playlists/trending/now">Trending</NavLink>
       <NavLink href="/movies/discussions">Discuss</NavLink>
       <NavLink href="/Generate">Generate</NavLink>

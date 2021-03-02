@@ -21,7 +21,7 @@ const Header = tw.header`
   max-w-screen-xl mx-auto
 `;
 
-export const NavLinks = tw.div`contents`;
+export const NavLinks = tw.div``;
 
 /* hocus: stands for "on hover or focus"
  * hocus:bg-primary-700 will apply the bg-primary-700 class on hover or focus
@@ -87,7 +87,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
 
 
   const defaultLinks = [
-    <NavLinks key={1}>
+    <NavLinks key={1} style={{ display: "inherit" }}>
       <NavLink href="/playlists/trending/now">Trending</NavLink>
       <NavLink href="/movies/discussions">Discuss</NavLink>
       <NavLink href="/Generate">Generate</NavLink>

@@ -9,6 +9,9 @@ import RegisterModal from "components/auth/RegisterModal.js";
 
 const StyledHeader = styled(Header)`
   ${tw`justify-between`}
+  .dis{
+    inherit
+  }
   ${LogoLink} {
     ${tw`mr-8 pb-0`}
   }

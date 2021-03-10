@@ -16,6 +16,7 @@ import { DiscussionLandingPage } from "pages/DiscussionLadingPage";
 import CreateMovieAdvertisment from "pages/CreateMovieAdvertisment";
 import ViewMovieAdvertisments from "pages/ViewMovieAdvertisments";
 import ViewMovieAdvertismentsForUser from "pages/ViewMovieAdvertismentsForSIngleUser";
+import ViewSingleGeneration from "pages/SingleGenerationPage";
 export default function App() {
   useEffect(() => {
     store.dispatch(loadUser());
@@ -58,6 +59,9 @@ export default function App() {
             </Route>
             <Route exact path="/movies/indie/edit/user/:movieId">
               <CreateMovieAdvertisment />
+            </Route>
+            <Route exact path="/movies/generations/single/:generationId">
+              <ViewSingleGeneration />
             </Route>
 
           </Switch>

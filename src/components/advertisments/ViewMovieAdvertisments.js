@@ -7,6 +7,7 @@ import MovieCard from 'components/cards/card';
 import stockImage from "images/stock-photo.jpeg";
 import MovieModal from "components/modal/movieModal";
 import { useParams } from 'react-router';
+import Loader from "react-loader-spinner";
 
 let movie;
 export default ({ isUserMovie }) => {
@@ -54,9 +55,9 @@ export default ({ isUserMovie }) => {
     return (
         <Container>
             {error ? <Row><Badge color="warning">Sorry, we could not get community movies right now, please try again later</Badge></Row> : ""}
-            <Row>
-                {movies}
-            </Row>
+
+            {movies.length === 0 ? <Row className="justify-content-center"> <Loader type="ThreeDots" color="#00BFFF" height={80} width={80} /></Row> : <Row> {movies}          </Row>}
+
             {
                 (openModal) ? <MovieModal toggle={toggle} isUserPage={isUserMovie} movieId={movie._id} isOpen={openModal} moviePlaybackPath={movie.movieDetails.moviePlaybackPath} movieImagePath={movie.movieDetails.movieImagePath} movieTitle={movie.movieDetails.movieTitle} movieDescription={movie.movieDetails.movieDescription} userName={movie.user.userName} moviePopularity={movie.movieDetails.moviePopularity} movieReleaseYear={movie.movieDetails.movieReleaseYear} userId={movie.user.userId} movieCredits={movie.movieDetails.movieCredits} movieGenres={movie.movieDetails.movieGenres} /> : ""
             }
@@ -65,7 +66,6 @@ export default ({ isUserMovie }) => {
 };
 
 async function requestMovies() {
-    console.log('called');
     return axios.get(`${route}/api/movies/indie/get`)
         .then((movies) => {
             return movies.data;

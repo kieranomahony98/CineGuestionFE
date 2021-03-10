@@ -15,3 +15,4 @@ export const MOVIES_LOGOUT = "MOVIES_LOGOUT";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const MOVIE_DISCUSSION = "MOVIE_DISCUSSION"
 export const MOVIE_EDIT = "MOVIE_EDIT";
+export const CHANGE_STATUS = "CHANGE_STATUS";

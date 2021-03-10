@@ -42,7 +42,6 @@ const DowndownMenu = () => {
     const userLogout = () => {
         dispatch(logOutMovies());
         dispatch(logout());
-
     }
 
     const goToCreatePage = () => {

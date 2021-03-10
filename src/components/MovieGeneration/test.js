@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -16,6 +16,7 @@ import MovieModal from 'components/modal/movieModal'
 import MovieCard from '../cards/card';
 import { MoviePopover } from "components/popover/popover";
 import MovieRequests from '../../data/MovieRequests';
+import SocialMediaButtons from "components/Share/ShareButtons";
 import { moviePopoverText } from "helpers/PopoverText";
 import "../../MovieGeneration.css";
 import { useSelector } from 'react-redux';
@@ -73,6 +74,7 @@ export default () => {
     const popoverToggle = () => {
         setPopover(popover => !popover);
     }
+    const [shareButtons, setShareButtons] = useState("");
 
     const { token } = useSelector(state => state.auth);
     const toggle = () => setModal(!openModal);
@@ -81,11 +83,17 @@ export default () => {
         setSpinnerVisibility(true);
         movieCards = await MovieRequests(token, surveyResults)
             .then(({ moviesDom, isRevised }) => {
+                if (moviesDom.id) {
+                    setShareButtons(() => moviesDom.id);
+                }
                 moviePopoverText(moviesDom.movieSearchCriteria)
                     .then((text) => {
                         setPopoverText(popOverText => ({ ...popOverText, title: "Generation Detials", body: text.body }));
-                    })
+                    }).catch((err) => {
+                        setPopoverText((popOverText) => ({ ...popOverText, title: "Generation Details", body: "Enjoy the best selected movies to fit your search criteria" }));
+                    });
                 if (isRevised) setIsRevised(() => true);
+
                 return moviesDom.movies.map((m, index) => {
                     const { movieImagePath, movieTitle, movieDescription, moviePopularity } = m;
                     return <MovieCard md="4" xs="6" title={movieTitle} img={movieImagePath} rating={moviePopularity} desc={movieDescription} onClick={() => { movie = m; setModal(() => true) }} key={index} />
@@ -191,7 +199,6 @@ export default () => {
         setSurveyResults(() => ({}));
     }
     const increment = (e) => {
-        console.log(e);
         const slideNo = (slideCount === 1 && e === "right") ? 5 : (slideCount === 5 && e === "left") ? 1 : (e === "left") ? slideCount + 1 : slideCount - 1;
         setSlideCount(() => slideNo);
 
@@ -200,9 +207,12 @@ export default () => {
     return (
         <Container>
             <Row>
-                <MoviePopover toggle={popoverToggle} target="movieQuestionaire" isOpen={popover} title={popOverText.title} body={popOverText.body} />
-                {isRevised ? <HighlightedText className="mx-auto">Youre query was altered to guarantee movie responses!</HighlightedText> : ''}
+                <Col><MoviePopover toggle={popoverToggle} target="movieQuestionaire" isOpen={popover} title={popOverText.title} body={popOverText.body} /></Col>
+                <Col>{isRevised ? <HighlightedText className="mx-auto">Youre query was altered to guarantee movie responses!</HighlightedText> : ''}</Col>
+                {/* <Col>{shareButtons ? <SocialMediaButtons generationId={shareButtons} /> : ""}</Col> */}
+
             </Row>
+
             {(carouselVisible) ?
                 <>
                     <Row className="justify-content-center">

@@ -1,14 +1,11 @@
 import { convertToTextGeneration } from "./convertGenres";
 export async function moviePopoverText({ with_genres, with_keywords, sort_by, primary_release_year }, isConverted = null) {
     try {
-
-
         if (!isConverted) {
             const convertedValues = await convertToTextGeneration({ with_genres, with_keywords });
             with_genres = convertedValues.with_genres;
             with_keywords = convertedValues.with_keywords;
         }
-
 
         let body = (with_genres) ? "This curation is a selection of " : (with_keywords) ? "This curation includes many aspects of film, " : "This curation delivers the most hot and popular movies right now!";
 

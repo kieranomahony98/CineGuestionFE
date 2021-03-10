@@ -18,8 +18,14 @@ async function requestMovies(token = null, MovieGenerationModel) {
     return axios.post(`${route}/api/movies/movieGeneration`, body, config)
         .then((res) => {
             if (res.status === 200) {
+                console.log(res);
                 return {
-                    moviesDom: res.data.formattedMovies,
+                    moviesDom: {
+                        id: res.data._id,
+                        movies: res.data.movies,
+                        movieSearchCriteria: res.data.movieSearchCriteria,
+                        movieGenerationDate: res.data.movieGenerationDate
+                    },
                     isRevised: res.data.isRevised
                 };
             }

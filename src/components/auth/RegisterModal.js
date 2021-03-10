@@ -48,7 +48,6 @@ const RegisterModal = ({ className }) => {
                 if (isAuthenticated) {
                     setModal(() => !modal);
                     setIsLogginIn(() => false);
-
                 }
             }
             setIsLogginIn(() => false);

@@ -5,8 +5,11 @@ import Features from "components/features/ThreeColSimple.js";
 import SliderCard from "../components/cards/ThreeColSlider";
 import FAQ from "components/faqs/SimpleWithSideImage.js";
 import Footer from "components/footers/MiniCenteredFooter.js";
+import Notification from "components/loginInRegisterNotification/Notification";
 export default () => (
+
   <AnimationRevealPage>
+    <Notification />
     <Hero />
     <Features />
     <SliderCard />

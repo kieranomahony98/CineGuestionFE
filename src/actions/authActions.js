@@ -1,6 +1,6 @@
 import axios from "axios";
 import route from "data/Routes";
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS } from "../actions/types";
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, CHANGE_STATUS } from "../actions/types";
 import { returnErrors, clearErrors, loginErrors } from "./errorActions";
 import { loadMovies } from "./movieActions";
 
@@ -89,6 +89,10 @@ export const register = ({ name, email, password, userName }) => (dispatch) => {
                 type: REGISTER_FAIL
             });
         });
+}
+
+export const changeBadgeStatus = () => (dispatch) => {
+    dispatch({ type: CHANGE_STATUS });
 }
 
 

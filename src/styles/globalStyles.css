@@ -1,4 +1,5 @@
 /* Below animations are fore modal created using React-Modal */
+/*this file is from the template, please refer to the read me file */
 .ReactModal__Overlay {
     transition: transform 300ms ease-in-out;
     transition-delay: 100ms;

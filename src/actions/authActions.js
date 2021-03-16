@@ -4,7 +4,7 @@ import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, UPDATE_DETAILS, L
 import { returnErrors, clearErrors, loginErrors } from "./errorActions";
 import { loadMovies } from "./movieActions";
 
-
+//https://www.youtube.com/watch?v=93p3LxR9xfM&t=3236s&ab_channel=TraversyMedia this youtube video helped me build the outline of this file
 //Check token & load user
 export const loadUser = () => (dispatch, getState) => {
     //user loading

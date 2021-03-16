@@ -7,6 +7,7 @@ import DowndownMenu from "../../dropdown/DropdownMenu";
 import { useSelector } from "react-redux";
 import RegisterModal from "components/auth/RegisterModal.js";
 import Notification from "components/loginInRegisterNotification/Notification";
+//this file is from the template, please refer to the read me file.
 const StyledHeader = styled(Header)`
   ${tw`justify-between`}
   ${LogoLink} {

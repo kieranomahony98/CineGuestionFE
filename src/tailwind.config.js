@@ -1,3 +1,4 @@
+//this is from the template, pleaes refer to the read me.
 module.exports = {
   prefix: "",
   important: false,

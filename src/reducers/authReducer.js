@@ -1,4 +1,5 @@
 import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, UPDATE_FAIL, LOGOUT_SUCCESS, MOVIES_LOADED, CHANGE_STATUS, UPDATE_DETAILS } from "../actions/types";
+//https://www.youtube.com/watch?v=93p3LxR9xfM&t=3236s&ab_channel=TraversyMedia this youtube video helped me build the outline of this file
 
 const initialState = {
     token: localStorage.getItem("token"),

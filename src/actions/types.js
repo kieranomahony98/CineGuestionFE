@@ -1,3 +1,4 @@
+//https://www.youtube.com/watch?v=93p3LxR9xfM&t=3236s&ab_channel=TraversyMedia this youtube video helped me build the outline of this file
 
 export const USER_LOADING = "USER_LOADING"
 export const USER_LOADED = "USER_LOADED";

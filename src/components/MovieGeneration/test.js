@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
 import { ReactComponent as ChevronLeftIcon } from "feather-icons/dist/icons/chevron-left.svg";
 import { ReactComponent as ChevronRightIcon } from "feather-icons/dist/icons/chevron-right.svg";
@@ -20,13 +19,10 @@ import SocialMediaButtons from "components/Share/ShareButtons";
 import { moviePopoverText } from "helpers/PopoverText";
 import "../../MovieGeneration.css";
 import { useSelector } from 'react-redux';
+//styled components,tw componets and their usage are from the template, please refer to the template.
 const HighlightedText = tw.h6`text-primary-500`;
 
 
-const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
-// all the tailwind stuff inside here is from template, however im learning as I go
-const HeadingWithControl = tw.div`flex flex-col items-center sm:items-stretch sm:flex-row justify-between`;
-const Heading = tw(SectionHeading)``;
 const Controls = tw.div`flex items-center`;
 const ControlButton = styled(PrimaryButtonBase)`
   ${tw`mt-4 sm:mt-0 first:ml-0 ml-6 rounded-full p-2`}
@@ -47,7 +43,6 @@ const QuestionSlider = styled(Slider)`
     ${tw`h-auto flex justify-center mb-1 border sm:rounded-xl  border-gray-400 mr-2 ml-2`}
   }
 `;
-// const Slide = tw.div`sm:border max-w-sm sm:rounded-4xl relative focus:outline-none border-4 border-gray-500`
 
 let movieCards, movie;
 function ArrowBack({ onClick }) {

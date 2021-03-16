@@ -6,10 +6,10 @@ import { convertGenresForChart, dateFormatter, filterMatcher, keywordGraphMatche
 import Loader from "react-loader-spinner";
 import { Button, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Row } from "reactstrap";
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import "../../css/Charts.css";
+
 export default () => {
     let sDate = new Date()
     sDate = new Date(sDate.getTime() - (7 * 86400000))
@@ -106,6 +106,7 @@ export default () => {
     }
     return (
         <Container>
+            <Row className="justify-content-center">{errors ? <p>Error recieving chart data, please try again later</p> : ""}</Row>
             <Row className="justify-content-center">
                 <Dropdown isOpen={dropDownToggle} toggle={toggle}>
                     <DropdownToggle caret>

@@ -9,7 +9,7 @@ import SupportIconImage from "images/support-icon.svg";
 import ShieldIconImage from "images/shield-icon.svg";
 import CustomizeIconImage from "images/customize-icon.svg";
 import { ReactComponent as SvgDecoratorBlob3 } from "images/svg-decorator-blob-3.svg";
-
+//This file is from the template, please refer to the read me file.
 const Heading = tw(SectionHeading)``;
 const Subheading = tw(SubheadingBase)`text-center mb-3`;
 const Description = tw(SectionDescription)`text-center mx-auto`;

@@ -8,10 +8,6 @@ export default function ({ name, email, currentPassowrd, password, password2, us
     currentPassowrd = !isEmpty(currentPassowrd) ? currentPassowrd : "";
     userName = !isEmpty(userName) ? userName : "";
 
-
-
-
-
     return {
         updateUserValidation,
         isValid: isEmpty(updateUserValidation)

@@ -13,10 +13,9 @@ import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 import { useDispatch, useSelector } from "react-redux";
 import "../../homepage.css";
 
-import Notification from "components/loginInRegisterNotification/Notification";
 
 import { useHistory } from "react-router";
-//90% of this code is from template
+//This file is from the template, please refer to the read me file.
 const Header = tw.header`
   flex justify-between items-center
   max-w-screen-xl mx-auto

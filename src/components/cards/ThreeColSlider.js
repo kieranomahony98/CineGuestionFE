@@ -10,20 +10,12 @@ import weeklyPlaylist from "../../images/cineGuestion/weeklyPlaylist.png";
 import monthlyPlaylist from "../../images/cineGuestion/monthlyPlaylist.png";
 import allTimePlaylist from "../../images/cineGuestion/allTimePlaylist.png";
 import { useSelector } from "react-redux";
-
+//This file comes from the template, please refer to the read me file
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
 
 const HeadingWithControl = tw.div`flex flex-col items-center sm:items-stretch sm:flex-row justify-between`;
 const Heading = tw(SectionHeading)``;
-// const ControlButton = styled(PrimaryButtonBase)`
-//   ${tw`mt-4 sm:mt-0 first:ml-0 ml-6 rounded-full p-2`}
-//   svg {
-//     ${tw`w-6 h-6`}
-//   }
-// `;
-// const PrevButton = tw(ControlButton)``;
-// const NextButton = tw(ControlButton)``;
 
 const CardSlider = styled(Slider)`
   ${tw`mt-16`}
@@ -44,14 +36,6 @@ const CardImage = styled.div(props => [
 const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
 const TitleReviewContainer = tw.div`flex flex-col sm:flex-row sm:justify-between sm:items-center`;
 const Title = tw.h5`text-2xl font-bold`;
-
-// const RatingsInfo = styled.div`
-//   ${tw`flex items-center sm:ml-4 mt-2 sm:mt-0`}
-//   svg {
-//     ${tw`w-6 h-6 text-yellow-500 fill-current`}
-//   }
-// `;
-// const Rating = tw.span`ml-2 font-bold`;
 
 const Description = tw.p`text-sm leading-loose mt-2 sm:mt-4`;
 

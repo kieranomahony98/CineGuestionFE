@@ -6,7 +6,7 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import { SectionHeading, Subheading as SubheadingBase } from "components/misc/Headings.js";
 import { ReactComponent as PlusIcon } from "feather-icons/dist/icons/plus.svg";
 import { ReactComponent as MinusIcon } from "feather-icons/dist/icons/minus.svg";
-
+//this file is from the template, please refer to the read me file.
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
 

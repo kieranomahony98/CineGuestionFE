@@ -12,7 +12,6 @@ export const Confirm = ({ deleteComment, toggleConfirm }) => {
                 message="Are you sure you want to delete this comment?"
                 buttons={
                     [
-
                         {
                             label: "Cancel",
                             onClick: toggleConfirm

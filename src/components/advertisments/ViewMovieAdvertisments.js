@@ -12,8 +12,6 @@ import Loader from "react-loader-spinner";
 let movie;
 export default ({ isUserMovie }) => {
     const { userId } = useParams();
-    const { user } = useSelector(state => state.auth);
-
     const [movies, setMovies] = useState([]);
     const [error, setErrors] = useState(false);
     const [openModal, setOpenModal] = useState(false);

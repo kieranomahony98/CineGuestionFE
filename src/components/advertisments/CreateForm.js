@@ -273,7 +273,7 @@ export default ({
 
 function verifyYoutubeAddress(clientUrl) {
     if (clientUrl != undefined || clientUrl != '') {
-
+        //https://stackoverflow.com/questions/19377262/regex-for-youtube-url regex from here
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
         const match = clientUrl.match(regExp);
         if (match && match[2].length == 11) {

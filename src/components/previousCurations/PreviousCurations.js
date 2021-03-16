@@ -11,8 +11,8 @@ import { moviePopoverText } from "helpers/PopoverText";
 import { MoviePopover } from "components/popover/popover";
 import { convertToTextGeneration } from "helpers/convertGenres";
 import { useHistory } from "react-router";
+//tw component is from the template, please refer to the read me file.
 const HighlightedText = tw.span`text-primary-500`;
-const route = "https://image.tmdb.org/t/p/original";
 let movie;
 
 const PreviousCurations = () => {

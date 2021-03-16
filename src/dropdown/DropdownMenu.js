@@ -7,6 +7,7 @@ import { NavLink, MobileNavLinks } from "../components/headers/light";
 import "../css/dropdown.css";
 import tw from "twin.macro";
 import { useHistory } from "react-router";
+//tw componet is from the template, please refer to the read me file.
 const DropDown = tw.div`
     hidden lg:flex flex-1 justify-between items-center
 `;
@@ -70,7 +71,7 @@ const DowndownMenu = () => {
                     <DropdownToggle style={{ display: "inherit", paddingTop: "0px" }} tag="span" onClick={toggle} caret>
                         <NavLink>
                             My Account
-                    </NavLink>
+                        </NavLink>
                     </DropdownToggle>
                     <DropdownMenu>
                         <DropdownItem className={dropDownText} href="/myGenerations">My Generations</DropdownItem>

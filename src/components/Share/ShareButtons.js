@@ -4,7 +4,6 @@ import { FacebookIcon, TwitterIcon, FacebookShareButton, TwitterShareButton } fr
 import { Col, Row } from 'reactstrap';
 
 export default ({ generationId }) => {
-    const { isAuthenticated } = useSelector(state => state.auth);
     const shareUrl = `https://cinegestion.netlify.app/movies/generations/single/${generationId}`;
     return (
         <Col>

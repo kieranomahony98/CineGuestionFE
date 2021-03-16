@@ -8,7 +8,6 @@ import MovieModal from "components/modal/movieModal";
 import { Redirect, useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 export const HighlightedText = tw.span`text-primary-500`;
-const route = "https://image.tmdb.org/t/p/original";
 let movie;
 
 const Playlists = ({ Playlist }) => {

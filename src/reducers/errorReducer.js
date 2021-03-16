@@ -1,4 +1,5 @@
 import { GET_ERRORS, CLEAR_ERRORS, LOGIN_ERROR, UPDATE_FAIL } from "../actions/types";
+//https://www.youtube.com/watch?v=93p3LxR9xfM&t=3236s&ab_channel=TraversyMedia this youtube video helped me build the outline of this file
 
 const intialState = {
     msg: "",

@@ -11,6 +11,7 @@ const MontlyPlaylist = () => {
     return (
         <AnimationRevealPage>
             <Header />
+
             <Playlists Playlist={montlyPlaylist} />
             <Footer />
         </AnimationRevealPage >

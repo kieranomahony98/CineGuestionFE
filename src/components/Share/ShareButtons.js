@@ -19,7 +19,7 @@ export default ({ generationId }) => {
                         </FacebookShareButton>
                     </td>
                     <td>
-                        <TwitterShareButton url={"Check out this movie generation i just made on CineGestion"} title={"CineGestion"}>
+                        <TwitterShareButton url={"Check out this movie generation i just made on CineGestion"} title={""}>
                             <TwitterIcon size={32} round />
                         </TwitterShareButton>
                     </td>

@@ -54,9 +54,7 @@ export default ({
     const [genrePopover, setGenrePopover] = useState(false);
     const [isRadioChecked, setIsRadioChecked] = useState(false);
     const [isAddressValid, setIsAddressValid] = useState(false);
-    const [success, setSuccess] = useState(false);
     const [loadingIcon, setLoadingIcon] = useState(false);
-    const [movie, setMovie] = useState({});
     const [errors, setErrors] = useState({
         movieTitle: "",
         movieReleaseYear: "",
@@ -86,8 +84,7 @@ export default ({
         if (movieId) {
             makeRequest(movieId, token)
                 .then((movie) => {
-                    m = movie
-                    console.log(movie);
+                    m = movie;
                     setMovieDetails(movieDetails => ({ ...movieDetails, ...movie.movieDetails }));
                 }).catch((err) => {
                     throw err;
@@ -117,7 +114,7 @@ export default ({
         e.preventDefault();
 
         const { isValid, validation } = validateMovie(movieDetails);
-
+        console.log(`isValid: ${isValid}`);
         if (!isValid) {
             setErrors(errors => ({ ...errors, ...validation }));
         }
@@ -125,9 +122,12 @@ export default ({
         const verifyLink = verifyYoutubeAddress(movieDetails.moviePlaybackPath);
         if (!verifyLink) setErrors(errors => ({ ...errors, moviePlaybackPath: "Please enter a valid youtube URL, We ask you to use the embed link within the share option" }));
 
-        if (!isValid || !verifyLink) return;
+        if (!isValid | !verifyLink) {
+            setLoadingIcon(loadingIcon => !loadingIcon);
+            return;
+        }
 
-        if (!movieId) {
+        if (!movieId & isValid) {
             addMovieToDatabase(movieDetails, token, user)
                 .then((movieAdded) => {
                     if (movieAdded) {
@@ -151,13 +151,13 @@ export default ({
                     setLoadingIcon(loadingIcon => !loadingIcon);
                     throw err;
                 });
-        } else {
+        } else if (isValid) {
             const movieBody = {
                 _id: m._id,
                 user: m.user,
                 movieDetails
             }
-            console.log(movie);
+
             updateMovieInDatabse(movieBody, token)
                 .then((movie) => {
                     if (movie) {
@@ -181,6 +181,7 @@ export default ({
                 });
         }
 
+
     }
     const clearForm = () => {
         Array.from(document.querySelectorAll("input")).forEach(
@@ -194,7 +195,6 @@ export default ({
                 <LogoLink href={logoLinkUrl}>
                     <LogoImage src={logo} />
                 </LogoLink>
-                {success ? <Badge color="green">Your Movie has successfully been uploaded!</Badge> : ''}
             </Row>
             <Row>
                 <Col md="4" lg="6">
@@ -246,7 +246,7 @@ export default ({
                             <div className="modalImage mb-3">
                                 {
                                     (isAddressValid) ?
-                                        <iframe width="100%" height="100%" src={movieDetails.moviePlaybackPath} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} /> : <img src={movieDetails.movieImagePath ? `${movieDetails.movieImagePath}` : stockImage} style={{ maxHeight: "200px", maxWidth: "200px" }} className="modalImage" />
+                                        <iframe width="100%" height="100%" src={movieDetails.moviePlaybackPath} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} /> : <img src={movieDetails.movieImagePath ? `${movieDetails.movieImagePath}` : stockImage} style={{ maxHeight: "200px", maxWidth: "200px" }} className="modalImage" title="youtubeVideo" />
                                 }
                             </div>
                             <div className="modalDesc">

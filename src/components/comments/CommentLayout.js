@@ -7,14 +7,13 @@ import { useSelector } from "react-redux";
 import route from "data/Routes"
 import { useEffect } from "react";
 import Collapsible from "react-collapsible";
-import { ReactComponent as Minus } from "feather-icons/dist/icons/minus.svg";
 import "css/commentLayout.css";
 
 export const CommentLayout = () => {
     const { movieDiscussion } = useSelector(state => state.movies);
     const [commentText, setCommentText] = useState({ text: "" });
-    const [commentCount, setCommentCount] = useState(-1);
     const [comments, setComments] = useState([]);
+    const [commentCount, setCommentCount] = useState(-1);
     const [errors, setErrors] = useState(false);
     const { token, user, isAuthenticated } = useSelector(state => state.auth);
     useEffect(() => {
@@ -117,6 +116,7 @@ export const CommentLayout = () => {
 
     return (
         <Container className="mt-4">
+            <Row>{commentCount !== -1 ? <p>Total Comments: {commentCount}</p> : ""}</Row>
             <Row>
                 {isAuthenticated ?
                     <>

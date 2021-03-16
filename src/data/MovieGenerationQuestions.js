@@ -188,7 +188,7 @@ const movieGenerationQuestions = [
             },
             {
                 name: "Most Popular",
-                value: "popularity_desc"
+                value: "popularity.desc"
             },
             {
                 name: "Highest User Score",

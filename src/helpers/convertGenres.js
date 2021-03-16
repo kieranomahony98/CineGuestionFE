@@ -47,6 +47,16 @@ async function genreMatcher(genres) {
         throw err;
     }
 }
+export async function convertGenresForChart(genres) {
+    try {
+        const genreObj = await getGenres();
+        return genres.map((genre) => genreObj[genre]);
+    } catch (err) {
+        console.log(`Failed to match genre`);
+        throw err;
+    }
+
+}
 
 async function listMatcher(movieGenres) {
     try {
@@ -107,14 +117,37 @@ async function keywordController(moviekeyword) {
         if (!moviekeyword) {
             return '';
         };
-        const keywords = moviekeyword.split(",");
-        return await keywordMatcher(keywords);
+        return await keywordMatcher(moviekeyword.split(","));
     } catch (err) {
         console.log(`failed to get keywords: ${err.message}`);
         throw err;
     }
 }
 
+export async function keywordGraphMatcher(keywords) {
+    const keywordObj = await getKeywords();
+    return keywords.map((keyword) => keywordObj[keyword]);
+}
+export async function filterMatcher(filters) {
+    const filtersObj = await filetObj();
+    return filters.map((filter) => filtersObj[filter]);
+
+}
+
+export async function dateFormatter(dateList) {
+    return dateList.map((date) => date.split("T")[0]);
+}
+export async function releaseYearFormatter(releaseYearList) {
+    return releaseYearList.map((year) => year === "2020" ? "2020+" : `${year}-${parseInt(year) + 5}`);
+}
+async function filetObj() {
+    return {
+        "revenue.desc": "Revenue Grossers",
+        "popularity.desc": "Most Popular",
+        "vote_average.desc": "Highest User Score",
+        "vote_count.desc": "Most User Controversial"
+    }
+}
 async function companyMatcher(companies) {
     try {
         if (!companies) {

@@ -103,7 +103,7 @@ const RegisterModal = ({ className }) => {
                             <Input type="password" name="password2" placeholder="Confirm Password..." className="mb-3" onChange={onChange} />
                             {(errors.password) ? <p className="text-danger">{errors.password}</p> : null}
                             <div>
-                                {isLoading ? <Loader type="ThreeDots" color="#007BFF" /> : <Button type="submit" color="dark" style={{ marginTop: "2rem" }} block onClick={onSubmit}>Register</Button>}
+                                {isLogginIn ? <Loader type="ThreeDots" color="#007BFF" /> : <Button type="submit" color="dark" style={{ marginTop: "2rem" }} block onClick={onSubmit}>Register</Button>}
                             </div>
                         </FormGroup>
                     </Form>

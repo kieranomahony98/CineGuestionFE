@@ -12,8 +12,9 @@ import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 import { useDispatch, useSelector } from "react-redux";
 import "../../homepage.css";
-import { logout } from "actions/authActions";
-import { logOutMovies } from "actions/movieActions";
+
+import Notification from "components/loginInRegisterNotification/Notification";
+
 import { useHistory } from "react-router";
 //90% of this code is from template
 const Header = tw.header`
@@ -88,12 +89,13 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
 
   const defaultLinks = [
     <NavLinks key={1} style={{ display: "inherit" }}>
-      <NavLink href="/playlists/trending/now">Trending</NavLink>
+      <NavLink data-tut="trending_now" href="/playlists/trending/now" >Trending</NavLink>
       <NavLink href="/movies/discussions">Discuss</NavLink>
       <NavLink href="/Generate">Generate</NavLink>
       {isAuthenticatedNavLink}
     </NavLinks>
   ];
+
 
   const { showNavLinks, animation, toggleNavbar } = useAnimatedNavToggler();
   const collapseBreakpointCss = collapseBreakPointCssMap[collapseBreakpointClass];
@@ -115,6 +117,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
           {logoLink}
           {links}
         </DesktopNavLinks>
+
 
         <MobileNavLinksContainer css={collapseBreakpointCss.mobileNavLinksContainer}>
           {logoLink}

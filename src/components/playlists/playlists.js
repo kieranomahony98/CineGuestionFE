@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row } from "reactstrap";
+import { Container, Row, Badge } from "reactstrap";
 import { MoviePopover } from "../popover/popover";
 import MovieCard from "../cards/card";
 import "../../css/PreviousCurations.css";
@@ -15,11 +15,13 @@ const Playlists = ({ Playlist }) => {
     const { type } = useParams();
     const history = useHistory();
     const { isAuthenticated } = useSelector(state => state.auth);
+    const [errors, setErrors] = useState(false);
     if (type !== "trendingNow" && !isAuthenticated) {
         history.push({
             pathname: "/"
         });
     }
+
     let movieCards;
     const [openModal, setOpenModal] = useState(false);
     const [popoverOpen, setPopoverOpen] = useState(false);
@@ -35,10 +37,13 @@ const Playlists = ({ Playlist }) => {
         movieCards = Playlist.movies.map((m, i) => {
             return <MovieCard md="4" xs="6" key={i} title={m.movieTitle} img={m.movieImagePath} rating={m.moviePopularity} desc={m.movieDescription} onClick={() => { movie = m; setOpenModal(() => true) }} className="mb-3" />
         });
+    } else {
+        setErrors(errors => !errors);
     }
 
     return (
         <Container>
+            {errors ? <Row><Badge color="warning">Sorry, we couldnt get your playlist right now, please try again later</Badge></Row> : ""}
             {(movieCards) ?
                 <>
                     <MoviePopover target="target1" isOpen={popoverOpen} toggle={popoverToggle} body={body} title={type} />

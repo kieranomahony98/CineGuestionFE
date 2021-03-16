@@ -91,6 +91,7 @@ const MovieModal = ({
                         {movieReleaseYear ? <p className="mb-2"><HighlightedText><b>Release Year: </b> </HighlightedText>{movieReleaseYear}</p> : ""}
                         {movieGenres ? <p className="mb-2"><HighlightedText><b>Included Genres:</b> </HighlightedText> {movieGenres}</p> : ""}
                         {movieCredits ? <p className="mb-2"><HighlightedText><b>Credits:</b> </HighlightedText> {movieCredits}</p> : ""}
+                        {!isUserPage && !userName ? <p className="mb-2"><HighlightedText><b>Source:</b> </HighlightedText> TMDB</p> : ""}
                     </div>
                     {!isUserPage ? <PrimaryButton onClick={goToDiscussion}>{userName ? `View More Movies by ${userName}!` : "View Discussion!"}</PrimaryButton> : ""}
                     {editMoviePage ? <Row><Col><PrimaryButton onClick={editMovie}>Update Movie</PrimaryButton></Col><Col><PrimaryButton onClick={deleteMovie}>Delete Movie</PrimaryButton></Col></Row> : ""}

@@ -53,9 +53,13 @@ const DowndownMenu = () => {
     }
 
     const goToMoviesPage = () => {
-
         history.push({
             pathname: `/movies/indie/get/user/${user.id}`
+        });
+    }
+    const goToUpdatePage = () => {
+        history.push({
+            pathname: '/user/update/details'
         });
     }
 
@@ -70,7 +74,7 @@ const DowndownMenu = () => {
                     </DropdownToggle>
                     <DropdownMenu>
                         <DropdownItem className={dropDownText} href="/myGenerations">My Generations</DropdownItem>
-                        <DropdownItem className={dropDownText}>My Details</DropdownItem>
+                        <DropdownItem className={dropDownText} onClick={goToUpdatePage}>My Details</DropdownItem>
                         <DropdownItem className={dropDownText} onClick={goToCreatePage}>Add a Movie</DropdownItem>
                         <DropdownItem className={dropDownText} onClick={goToMoviesPage}>My Movies</DropdownItem>
                         <DropdownItem onClick={userLogout} className={dropDownText} href="/">Logout</DropdownItem>
@@ -80,7 +84,7 @@ const DowndownMenu = () => {
             :
             <>
                 <NavLink href="/myGenerations">My Generations</NavLink>
-                <NavLink >My Details</NavLink>
+                <NavLink onClick={goToUpdatePage} >My Details</NavLink>
                 <NavLink onClick={goToCreatePage}>Add a Movie</NavLink>
                 <NavLink onClick={userLogout} href="/">Logout</NavLink>
             </>

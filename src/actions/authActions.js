@@ -1,6 +1,6 @@
 import axios from "axios";
 import route from "data/Routes";
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, CHANGE_STATUS } from "../actions/types";
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, UPDATE_DETAILS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, CHANGE_STATUS, UPDATE_FAIL } from "../actions/types";
 import { returnErrors, clearErrors, loginErrors } from "./errorActions";
 import { loadMovies } from "./movieActions";
 
@@ -24,12 +24,13 @@ export const loadUser = () => (dispatch, getState) => {
         axios.post(`${route}/api/users/user`, {}, config)
             .then((res) => {
                 dispatch({ type: USER_LOADED, payload: res.data });
+                dispatch(clearErrors())
                 if (!getState().movies.isLoaded) {
                     dispatch(loadMovies());
 
                 }
             }).catch((err) => {
-                dispatch(returnErrors('Network error: failed to load user', 500))
+                dispatch(returnErrors(err.response.data ? err.response.data : "Unknown error: load user failed", err.status ? err.status : 500))
                 dispatch({
                     type: AUTH_ERROR
                 });
@@ -60,7 +61,7 @@ export const login = ({ email, password }) => dispatch => {
             });
             dispatch(loadMovies());
         }).catch((err) => {
-            dispatch(loginErrors(`Internal Server Error`, 500));
+            dispatch(loginErrors(err.response.data ? err.response.data : "Unknown error: Login failed", err.status ? err.status : 500));
             dispatch({
                 type: LOGIN_FAIL
             });
@@ -95,7 +96,32 @@ export const changeBadgeStatus = () => (dispatch) => {
     dispatch({ type: CHANGE_STATUS });
 }
 
+export const updateDetails = (userDetails) => (dispatch, getState) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
+    const token = getState().auth.token;
 
+    if (token) {
+        const body = JSON.stringify({ userDetails })
+        config.headers["x-auth-token"] = token;
+        axios.post(`${route}/api/users/update`, body, config)
+            .then((res) => {
+                if (res.status === 200) {
+                    console.log(res.data);
+                    dispatch({
+                        type: UPDATE_DETAILS,
+                        payload: res.data
+                    });
+                }
+                return res.data;
+            }).catch((err) => {
+                dispatch(returnErrors(err.response.data ? err.response.data : "Failed to update", err.status ? err.status : 500));
+            });
+    }
+}
 export const logout = () => dispatch => {
     dispatch({ type: LOGOUT_SUCCESS });
 }

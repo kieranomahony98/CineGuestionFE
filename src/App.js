@@ -17,6 +17,8 @@ import CreateMovieAdvertisment from "pages/CreateMovieAdvertisment";
 import ViewMovieAdvertisments from "pages/ViewMovieAdvertisments";
 import ViewMovieAdvertismentsForUser from "pages/ViewMovieAdvertismentsForSIngleUser";
 import ViewSingleGeneration from "pages/SingleGenerationPage";
+import GenreChart from "pages/GenreChart";
+import UpdateUser from "pages/UpdateUser";
 export default function App() {
   useEffect(() => {
     store.dispatch(loadUser());
@@ -63,9 +65,13 @@ export default function App() {
             <Route exact path="/movies/generations/single/:generationId">
               <ViewSingleGeneration />
             </Route>
-
+            <Route exact path="/testingChart">
+              <GenreChart />
+            </Route>
+            <Route exact path="/user/update/details">
+              <UpdateUser />
+            </Route>
           </Switch>
-
         </Router>
       </PersistGate>
     </Provider>

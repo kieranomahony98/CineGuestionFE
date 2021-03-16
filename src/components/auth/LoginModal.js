@@ -24,17 +24,6 @@ const LoginModal = () => {
     });
     const { isLoading, isAuthenticated } = useSelector(state => state.auth);
     const { loginError } = useSelector(state => state.error);
-    useEffect(() => {
-        console.log('in useeffect');
-        window.setTimeout(() => {
-            if (modal) {
-                if (isAuthenticated) {
-                    console.log('hi');
-                    setModal(() => !modal);
-                }
-            }
-        }, 3000);
-    }, [isAuthenticated]);
 
     const toggle = () => {
         setErrors(errors => ({

@@ -5,6 +5,7 @@ import Header from "components/headers/light.js";
 import CreateForm from "components/advertisments/CreateForm";
 import { Redirect } from "react-router";
 import { useSelector } from "react-redux";
+import Notification from "components/loginInRegisterNotification/Notification";
 
 export default () => {
     const { isAuthenticated } = useSelector(state => state.auth);
@@ -16,6 +17,7 @@ export default () => {
     return (
         < AnimationRevealPage >
             <Header />
+            <Notification />
             <CreateForm />
         </AnimationRevealPage >
     )

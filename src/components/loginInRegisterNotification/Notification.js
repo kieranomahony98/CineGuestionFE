@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Badge } from "reactstrap";
+import { Alert, Badge } from "reactstrap";
 import { changeBadgeStatus } from "actions/authActions";
 
 export default () => {
@@ -15,6 +15,6 @@ export default () => {
     }, [justLoggedIn, justRegistered]);
 
     return (
-        justLoggedIn | justRegistered ? <Badge color="warning" style={{ width: "100%" }} className="mb-2">{text}</Badge> : ""
+        justLoggedIn | justRegistered ? <Alert color="success" style={{ width: "100%" }} className="mb-2">{text}</Alert> : ""
     );
 }

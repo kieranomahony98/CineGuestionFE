@@ -8,7 +8,6 @@ import { ReactComponent as Back } from "feather-icons/dist/icons/skip-back.svg";
 import route from "data/Routes";
 import axios from "axios"
 import tw from "twin.macro";
-import { findRenderedComponentWithType } from "react-dom/test-utils";
 
 const MovieText = tw.p`sm:text-sm`;
 
@@ -47,7 +46,7 @@ const MovieDetails = () => {
                     <Row className="justify-content-center"><h3>{movie.movieTitle}</h3></Row>
                     <Row className="tm-bg-gray movieImg">
                         <Col style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-                            <img src={`${route}${movie.movieImagePath}`} className="movieImg" />
+                            <img src={`${route}${movie.movieImagePath}`} className="movieImg" alt="movieImg" />
                         </Col>
 
                         <Col className="desc justify-content-center ml-2" style={{ paddingLeft: "0px", paddingRight: "0px" }}>

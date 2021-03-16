@@ -94,7 +94,7 @@ const HomePageWithImage = () => {
         <LeftColumn>
           <StyledHeader links={navLinks} collapseBreakpointClass="sm" style={{ display: "inherit" }} />
           <Content>
-            {/* <Notification /> */}
+            <Notification />
             <Heading>{heading}</Heading>
             <Paragraph>{description}</Paragraph>
             <Actions>

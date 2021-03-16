@@ -209,7 +209,7 @@ export default () => {
             <Row>
                 <Col><MoviePopover toggle={popoverToggle} target="movieQuestionaire" isOpen={popover} title={popOverText.title} body={popOverText.body} /></Col>
                 <Col>{isRevised ? <HighlightedText className="mx-auto">Youre query was altered to guarantee movie responses!</HighlightedText> : ''}</Col>
-                {/* <Col>{shareButtons ? <SocialMediaButtons generationId={shareButtons} /> : ""}</Col> */}
+                <Col>{shareButtons ? <SocialMediaButtons generationId={shareButtons} /> : ""}</Col>
 
             </Row>
 

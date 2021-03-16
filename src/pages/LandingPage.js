@@ -9,7 +9,6 @@ import Notification from "components/loginInRegisterNotification/Notification";
 export default () => (
 
   <AnimationRevealPage>
-    <Notification />
     <Hero />
     <Features />
     <SliderCard />

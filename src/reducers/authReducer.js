@@ -1,4 +1,4 @@
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, LOGOUT_SUCCESS, MOVIES_LOADED, CHANGE_STATUS } from "../actions/types";
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_SUCCESS, REGISTER_FAIL, UPDATE_FAIL, LOGOUT_SUCCESS, MOVIES_LOADED, CHANGE_STATUS, UPDATE_DETAILS } from "../actions/types";
 
 const initialState = {
     token: localStorage.getItem("token"),
@@ -6,7 +6,8 @@ const initialState = {
     isLoading: false,
     user: null,
     justLoggedIn: false,
-    justRegistered: false
+    justRegistered: false,
+    updated: false
 };
 
 export default function (state = initialState, action) {
@@ -24,7 +25,9 @@ export default function (state = initialState, action) {
                 isLoading: false,
                 user: action.payload.user,
                 justLoggedIn: false,
-                justRegistered: false
+                justRegistered: false,
+                updated: false
+
             }
         case LOGIN_SUCCESS:
             localStorage.setItem("token", action.payload.token);
@@ -46,6 +49,12 @@ export default function (state = initialState, action) {
                 user: action.payload.user,
                 justRegistered: true
             }
+        case UPDATE_DETAILS:
+            return {
+                ...state,
+                user: action.payload,
+                updated: true
+            }
         case AUTH_ERROR:
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
@@ -58,13 +67,16 @@ export default function (state = initialState, action) {
                 isLoading: false,
                 user: null,
                 justLoggedIn: false,
-                justRegistered: false
+                justRegistered: false,
+                updated: false
             }
         case CHANGE_STATUS:
             return {
                 ...state,
                 justLoggedIn: false,
-                justRegistered: false
+                justRegistered: false,
+                updated: false
+
             }
         case MOVIES_LOADED:
             return {

@@ -35,7 +35,6 @@ export default ({ isUserMovie }) => {
                 if (!movies) {
                     setErrors(error => !error);
                 }
-
                 setMovies(() => [...filterMovies(movies)]);
 
             });

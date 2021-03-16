@@ -6,13 +6,13 @@ import { CommentLayout } from "components/comments/CommentLayout";
 import MovieDetails from "components/comments/MovieDetails";
 import { Container } from "reactstrap";
 import Discussion from "components/discussions/discussion";
-import Hr from "components/hr/Hr";
+import Notification from "components/loginInRegisterNotification/Notification";
 
 export const DiscussionLandingPage = () => {
 
     return <AnimationRevealPage>
         <Header />
-
+        <Notification />
         <Container>
             <Discussion />
         </Container>

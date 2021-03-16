@@ -2,6 +2,7 @@ import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { Col } from "reactstrap";
+import stockImage from "images/stock-photo.jpeg";
 
 //tw components come from template 
 const Card = tw.div`h-full flex! flex-col border max-w-sm relative focus:outline-none border-2 border-gray-300`;
@@ -32,7 +33,7 @@ const movieCard = ({ title, img, onClick, rating, desc, className, notRoute, md,
 
     <Col xs={`${xs}`} md={`${md}`} className={`${className} mb-3`}>
       <Card key={title} onClick={onClick}>
-        <CardImage imageSrc={imageRoute} />
+        <CardImage imageSrc={imageRoute ? imageRoute : stockImage} />
         <TextInfo>
           <TitleReviewContainer>
             <Title>{title}</Title>

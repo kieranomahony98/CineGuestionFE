@@ -34,6 +34,9 @@ export default function ({ name, email, password, password2, userName }) {
     if (!Validator.isLength(userName, { min: 5, max: 50 })) {
         registerErrors.userName = "User Name must be between 5 and 50 characters";
     }
+    if (userName.indexOf(" ") >= 0) {
+        registerErrors.userName = "Please have no spaces in your username";
+    }
     return {
         registerErrors,
         isValid: isEmpty(registerErrors)

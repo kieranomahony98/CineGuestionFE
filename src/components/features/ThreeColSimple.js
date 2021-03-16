@@ -53,18 +53,19 @@ export default ({
   cards = [
     {
       imageSrc: ShieldIconImage,
-      title: "Secure",
-      description: "Sensitive data is fully encrypted within our database.",
+      title: "Ethics",
+      description: "We dont make user models so all curations are independent.",
     },
     {
       imageSrc: SupportIconImage,
-      title: "Ethics",
-      description: "We dont make user models so all curations are independent",
+      title: "Data",
+      description: "View what other users are searching for.",
+      url: `/testingChart`
     },
     {
       imageSrc: CustomizeIconImage,
       title: "Personalisation",
-      description: "You have full control over the recommendation system",
+      description: "You have full control over the recommendation system.",
 
     }
   ],

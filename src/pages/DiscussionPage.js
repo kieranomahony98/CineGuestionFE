@@ -5,10 +5,11 @@ import Header from "components/headers/light.js";
 import { CommentLayout } from "components/comments/CommentLayout";
 import MovieDetails from "components/comments/MovieDetails";
 import { Container } from "reactstrap";
-import { useParams } from "react-router-dom";
+import Notification from "components/loginInRegisterNotification/Notification";
 export const DiscussionPage = () => {
     return <AnimationRevealPage>
         <Header />
+        <Notification />
         <Container>
             <MovieDetails />
             <CommentLayout />

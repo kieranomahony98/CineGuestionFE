@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Col } from "reactstrap";
 import stockImage from "images/stock-photo.jpeg";
 
-//All tw and styled components in this page are from the templlate, please refer to the read me file
+//All tw and styled components in this page are from the template, please refer to the read me file
 const Card = tw.div`h-full flex! flex-col border max-w-sm relative focus:outline-none border-2 border-gray-300`;
 const CardImage = styled.div(props => [
   `background-image: url("${props.imageSrc}");`,

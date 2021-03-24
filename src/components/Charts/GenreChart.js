@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import axios from "axios";
-import route from "data/Routes";
 import { convertGenresForChart, dateFormatter, filterMatcher, keywordGraphMatcher, releaseYearFormatter } from "helpers/convertGenres";
 import Loader from "react-loader-spinner";
 import { Button, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Row } from "reactstrap";
@@ -9,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import "../../css/Charts.css";
+import { getRequest } from "axios/axiosHandler";
 
 export default () => {
     let sDate = new Date()
@@ -33,7 +32,7 @@ export default () => {
                             return;
                         });
                 }
-                setErrors(erros => !errors)
+                setErrors(errors => !errors)
             }).catch((err) => {
                 setErrors(errors => !errors);
             });
@@ -42,7 +41,6 @@ export default () => {
         setLoaded(isloaded => !isloaded);
         makeRequest(startDate, endDate, selectedItem.replace(" ", ""))
             .then((data) => {
-                console.log(data);
                 if (data) {
                     switch (selectedItem) {
                         case "Genres":
@@ -57,7 +55,6 @@ export default () => {
                         case "Filters":
                             filterMatcher(data.labels.labels)
                                 .then((convertedLabels) => {
-                                    console.log(convertedLabels);
                                     data.labels = convertedLabels;
                                     setBarData(barData => ({ ...data }));
                                     setLoaded((isloaded) => !isloaded);
@@ -134,10 +131,7 @@ export default () => {
 async function makeRequest(startDate, endDate, chartType) {
     startDate = new Date(startDate).toISOString();
     endDate = new Date(endDate).toISOString();
-    return await axios.get(`${route}/api/data/insights/${startDate}/${endDate}/${chartType}`)
-        .then((res) => {
-            console.log(res);
-            if (res.status !== 200) { return false; }
-            return res.data;
-        }).catch((err) => false);
+    return await getRequest(`/api/data/insights/${startDate}/${endDate}/${chartType}`)
+        .then((data) => data)
+        .catch((err) => false);
 }

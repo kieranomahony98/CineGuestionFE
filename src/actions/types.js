@@ -18,4 +18,3 @@ export const MOVIE_DISCUSSION = "MOVIE_DISCUSSION"
 export const MOVIE_EDIT = "MOVIE_EDIT";
 export const CHANGE_STATUS = "CHANGE_STATUS";
 export const UPDATE_DETAILS = "UPDATE_DETAILS";
-export const UPDATE_FAIL = "UPDATE_FAIL";

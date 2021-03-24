@@ -1,13 +1,11 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import route from "data/Routes";
 import { Container, Badge, Row } from 'reactstrap';
 import MovieCard from 'components/cards/card';
 import stockImage from "images/stock-photo.jpeg";
 import MovieModal from "components/modal/movieModal";
 import { useParams } from 'react-router';
 import Loader from "react-loader-spinner";
+import { getRequest } from 'axios/axiosHandler';
 
 let movie;
 export default ({ isUserMovie }) => {
@@ -20,16 +18,13 @@ export default ({ isUserMovie }) => {
             requestMovies()
                 .then((movies) => {
                     setMovies(() => [...filterMovies(movies)]);
-
                 }).catch((err) => {
-
                     setErrors((error) => !error);
                 });
             return;
         }
         requestMoviesForOneUser(userId)
             .then((movies) => {
-                console.log(movies);
                 if (!movies) {
                     setErrors(error => !error);
                 }
@@ -41,7 +36,6 @@ export default ({ isUserMovie }) => {
 
     const filterMovies = movies => {
         return movies.map((m, i) => {
-            console.log(m.movieDetails.movieTitle);
             return <MovieCard key={i} md="4" xs="6" title={m.movieDetails.movieTitle} img={(m.movieDetails.movieImagePath) ? m.movieDetails.movieImagePath : stockImage} notRoute={true} onClick={() => { movie = m; toggle(); }} className="mb-3" />
         });
     }
@@ -63,17 +57,13 @@ export default ({ isUserMovie }) => {
 };
 
 async function requestMovies() {
-    return axios.get(`${route}/api/movies/indie/get`)
-        .then((movies) => {
-            return movies.data;
-        })
-        .catch((err) => {
-            return false;
-        });
+    return await getRequest("/api/movies/indie/get")
+        .then((data) => data)
+        .catch((err) => false);
 }
 
 async function requestMoviesForOneUser(userId) {
-    return axios.get(`${route}/api/movies/indie/get/${userId}`)
-        .then((res) => res.data)
+    return await getRequest(`/api/movies/indie/get/${userId}`)
+        .then((data) => data)
         .catch((err) => false);
 }

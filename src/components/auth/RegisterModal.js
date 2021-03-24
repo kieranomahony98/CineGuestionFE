@@ -26,7 +26,7 @@ const RegisterModal = ({ className }) => {
     });
 
     const { id, msg } = useSelector(state => state.error);
-    const { isAuthenticated, isLoading } = useSelector(state => state.auth)
+    const { isAuthenticated } = useSelector(state => state.auth)
     const onSubmit = (e) => {
         setIsLogginIn(() => true);
         e.preventDefault();

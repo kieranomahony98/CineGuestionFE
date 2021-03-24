@@ -63,7 +63,6 @@ export const emailValidation = (email) => {
 }
 
 export const passwordValidation = (currentPassowrd, password, password2) => {
-    console.log(currentPassowrd, password2, password);
     currentPassowrd = !isEmpty(currentPassowrd) ? currentPassowrd : "";
     password = !isEmpty(password) ? password : "";
     password = !isEmpty(password2) ? password2 : "";
@@ -83,12 +82,8 @@ export const passwordValidation = (currentPassowrd, password, password2) => {
     if (Validator.isEmpty(currentPassowrd)) {
         errors.currentPassowrd = "Please enter your current password";
     }
-    if (password && password2) {
-        if (!Validator.equals(password, password2)) {
-            console.log("in here")
-
-            errors.password2 = "Passwords do not match";
-        }
+    if (password && password2 && !Validator.equals(password, password2)) {
+        errors.password2 = "Passwords do not match";
     }
 
     return {

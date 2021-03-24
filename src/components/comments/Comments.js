@@ -3,11 +3,11 @@ import "../../css/movieComments.css";
 import { Confirm } from "components/confirm/confirmAlert";
 import { ReactComponent as Down } from "feather-icons/dist/icons/chevrons-down.svg";
 import { ReactComponent as Up } from "feather-icons/dist/icons/chevrons-up.svg";
-import { Container, Button, Form, Input, Row, FormGroup, Label, Col } from 'reactstrap';
+import { Container, Button, Form, Input, Row, Col } from 'reactstrap';
 import { useSelector } from 'react-redux';
 import { ReactComponent as Delete } from "feather-icons/dist/icons/x-circle.svg";
-import axios from 'axios';
-import route from "../../data/Routes";
+
+import { getRequest, postRequest } from 'axios/axiosHandler';
 export const Comments = ({
     comment,
     refresh,
@@ -186,46 +186,31 @@ export const Comments = ({
 }
 
 async function updateCommentApi(commentText, commentId, token) {
+    if (!token) return false;
     const body = {
         commentText,
         commentId
     }
 
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    };
-    if (token) {
-        config.headers["x-auth-token"] = token;
-        axios.post(`${route}/api/movies/comments/update`, JSON.stringify(body), config)
-            .then((updatedComment) => updatedComment)
-            .catch((err) => {
-                console.log(`failed to update commment: ${err.message}`);
-                throw err;
-            })
-    }
+    return await postRequest("/api/movies/comments/update", JSON.stringify(body), token)
+        .then((data) => data)
+        .catch((err) => false);
 }
 
 async function deleteCommentApi(commentId, token, id, commentUserId) {
+    if (!token) return false;
     const config = {
         headers: {
             "Content-type": "application/json"
         }
     };
-    if (token) {
-        config.headers["x-auth-token"] = token;
-        axios.get(`${route}/api/movies/comments/delete/${commentId}/${id}/${commentUserId}`, config)
-            .then((updatedComment) => updatedComment)
-            .catch((err) => {
-                console.log(`failed to update commment: ${err.message}`);
-                throw err;
-            })
-    }
+    getRequest(`/api/movies/comments/delete/${commentId}/${id}/${commentUserId}`, token)
+        .then((data) => data)
+        .catch((err) => false);
 }
 
 async function setCommentScoreApi(commentId, commentScore, token, value, changeFromUpvote, changeFromDownVote) {
-
+    if (!token) return false;
     const config = {
         headers: {
             "Content-type": "application/json"
@@ -239,14 +224,7 @@ async function setCommentScoreApi(commentId, commentScore, token, value, changeF
         changeFromDownVote,
         changeFromUpvote
     }
-
-    if (token) {
-        body["x-auth-token"] = token;
-        axios.post(`${route}/api/movies/comments/set/score`, body, config)
-            .then((updatedComment) => updatedComment)
-            .catch((err) => {
-                console.log(`failed to update commment: ${err.message}`);
-                throw err;
-            })
-    }
+    return await postRequest(`/api/movies/comments/set/score`, body, token)
+        .then((data) => data)
+        .catch((err) => false);
 }

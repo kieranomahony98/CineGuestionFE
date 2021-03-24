@@ -1,43 +1,23 @@
 import { MOVIES_LOADED, MOVIES_LOADING, MOVIES_LOGOUT, MOVIE_DISCUSSION, MOVIE_EDIT } from "./types";
-import axios from "axios";
-import route from "data/Routes";
 import { convertPlayListsText } from "helpers/convertGenres";
+import { getRequest, postRequest } from "axios/axiosHandler";
 export const loadMovies = () => (dispatch, getState) => {
     dispatch({ type: MOVIES_LOADING });
     const token = getState().auth.token;
 
-    const config = {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }
+    if (!token) return null;
 
-    const body = JSON.stringify(
-        {
-            "x-auth-token": token
-        }
-    );
-
-    if (token) {
-        axios.post(`${route}/api/movies/getPlaylists`, body, config)
-            .then((res) => {
-                if (res.status === 200) {
-                    convertPlayListsText(res.data)
-                        .then((playlists) => {
-                            dispatch({ type: MOVIES_LOADED, payload: playlists });
-                        })
-                        .catch((err) => {
-                            throw err;
-                        })
-                } else {
-                    return null;
-                }
-            }).catch((err) => {
-                console.log(`Failed to get movie playlists: ${err.message}`);
-                throw err;
-            });
-    }
+    getRequest("/api/movies/getPlaylists", token)
+        .then((data) => {
+            convertPlayListsText(data)
+                .then((playlists) => {
+                    dispatch({ type: MOVIES_LOADED, payload: playlists });
+                });
+        }).catch((err) => {
+            throw err;
+        })
 }
+
 export const addMovieDiscussion = (movie) => dispatch => {
     dispatch({ type: MOVIE_DISCUSSION, payload: movie });
 
@@ -47,7 +27,7 @@ export const addMovieDiscussion = (movie) => dispatch => {
 
         }
     }
-    axios.post(`${route}/api/movies/discussions/create`, movie, config)
+    postRequest("/api/movies/discussions/create", movie)
 }
 export const addMovieToEdit = (movie, dispatch) => {
     dispatch({ Type: MOVIE_EDIT, payload: movie });

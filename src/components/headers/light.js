@@ -12,10 +12,9 @@ import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 import { useDispatch, useSelector } from "react-redux";
 import "../../homepage.css";
-
-
 import { useHistory } from "react-router";
-//This file is from the template, please refer to the read me file.
+//This whole file is from the template, please refer to the read me file.
+
 const Header = tw.header`
   flex justify-between items-center
   max-w-screen-xl mx-auto

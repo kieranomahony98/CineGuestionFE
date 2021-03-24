@@ -71,7 +71,6 @@ export default () => {
             errorsObj = { ...errors, ...errorsObj }
         }
 
-
         const isValid = isEmpty(errorsObj);
         if (!isValid) {
             setErrors(updateErrors => ({ ...updateErrors, ...errorsObj }));
@@ -97,8 +96,7 @@ export default () => {
                 <FormGroup>
                     <Row>
                         <Label for="email" className="mr-2"> E-Mail: </Label>
-                        <Input onChange={onChange} type="text" defaultValue={userDetails.email} onChange={onChange} id="email" name="email" placeholder="email..." />
-
+                        <Input onChange={onChange} type="text" defaultValue={userDetails.email} id="email" name="email" placeholder="email..." />
                         {updateErrors.email ? <Badge color="warning" className="mb-2">{updateErrors.email} </Badge> : ""}
                     </Row>
                     <Row>

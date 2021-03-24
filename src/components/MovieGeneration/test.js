@@ -19,9 +19,8 @@ import SocialMediaButtons from "components/Share/ShareButtons";
 import { moviePopoverText } from "helpers/PopoverText";
 import "../../MovieGeneration.css";
 import { useSelector } from 'react-redux';
-//styled components,tw componets and their usage are from the template, please refer to the template.
+//styled components,tw componets and their usage are from the template, please refer to the read me for more.
 const HighlightedText = tw.h6`text-primary-500`;
-
 
 const Controls = tw.div`flex items-center`;
 const ControlButton = styled(PrimaryButtonBase)`
@@ -48,10 +47,7 @@ let movieCards, movie;
 function ArrowBack({ onClick }) {
     return <PrevButton onClick={onClick}><ChevronLeftIcon /></PrevButton>
 }
-function ArrowNext({ onClick }) {
-    return <NextButton onClick={onClick}><ChevronRightIcon /></NextButton>
 
-}
 export default () => {
     // useState is used instead of useRef below because we want to re-render when sliderRef becomes available (not null)
     const [sliderRef, setSliderRef] = useState(null);
@@ -98,7 +94,7 @@ export default () => {
             });
         setSpinnerVisibility(false);
     }
-
+    //recieved from template, check out read me for more
     const sliderSettings = {
         arrows: false,
         slidesToShow: 1,
@@ -132,7 +128,6 @@ export default () => {
             }
         }
         setSurveyResults(surveyResults => ({ ...surveyResults, [characteristic]: value }));
-        console.log(surveyResults);
     }
 
     const slides = movieGenerationQuestions.map((movieSlide, i) => {

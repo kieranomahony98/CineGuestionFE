@@ -1,37 +1,24 @@
-import axios from "axios";
-import route from "./Routes";
+import { postRequest } from "axios/axiosHandler";
+
 
 async function requestMovies(token = null, MovieGenerationModel) {
-    const config = {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }
-
     const body = JSON.stringify(
         {
-            MovieGenerationModel,
-            "x-auth-token": token
+            MovieGenerationModel
         }
     );
-
-    return axios.post(`${route}/api/movies/movieGeneration`, body, config)
-        .then((res) => {
-            if (res.status === 200) {
-                console.log(res);
-                return {
-                    moviesDom: {
-                        id: res.data._id,
-                        movies: res.data.movies,
-                        movieSearchCriteria: res.data.movieSearchCriteria,
-                        movieGenerationDate: res.data.movieGenerationDate
-                    },
-                    isRevised: res.data.isRevised
-                };
+    return await postRequest("/api/movies/movieGeneration", body, token)
+        .then((data) => {
+            return {
+                moviesDom: {
+                    id: data._id,
+                    movies: data.movies,
+                    movieSearchCriteria: data.movieSearchCriteria,
+                    movieGenerationDate: data.movieGenerationDate
+                },
+                isRevised: data.isRevised
             }
-        }).catch((err) => {
-            throw err;
-        });
+        }).catch((err) => false);
 }
 
 export default requestMovies;

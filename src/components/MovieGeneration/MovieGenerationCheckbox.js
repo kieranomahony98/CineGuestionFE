@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input } from 'reactstrap';
 import tw from 'twin.macro';
+//description comes from the tempalte check out the read me for more
 export const Description = tw.p`text-sm leading-loose mt-2 mr-2`;
 
 const MovieGenerationCheckbox = ({

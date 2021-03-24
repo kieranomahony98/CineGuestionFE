@@ -1,12 +1,12 @@
-import React from "react";
-import { Modal, ModalHeader, ModalBody, Row, Button, Col } from "reactstrap";
+import React, { useState } from "react";
+import { Modal, ModalHeader, ModalBody, Row, Col, Badge } from "reactstrap";
 import tw from "twin.macro";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addMovieDiscussion, addMovieToEdit } from "actions/movieActions";
-import axios from "axios";
-import Routes from "data/Routes";
+import { addMovieDiscussion } from "actions/movieActions";
+import { postRequest } from "axios/axiosHandler";
+//tw components come from the template, check out the read me for more.
 const PrimaryButton = tw(PrimaryButtonBase)`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
 const HighlightedText = tw.span`text-primary-500`;
 const MovieModal = ({
@@ -26,6 +26,7 @@ const MovieModal = ({
     isUserPage,
     editMoviePage,
 }) => {
+
     const movie = {
         movieId,
         movieImagePath,
@@ -41,8 +42,7 @@ const MovieModal = ({
     const dispatch = useDispatch();
     const history = useHistory();
     const { token, user } = useSelector(state => state.auth);
-    console.log(user);
-    // console.log(userId);
+    const [deletedError, setDeletedError] = useState("");
     if (user && userId === user.id) {
         editMoviePage = true;
         isUserPage = true;
@@ -68,12 +68,14 @@ const MovieModal = ({
         });
     }
     const deleteMovie = () => {
-
         deleteUserMovie({ movieId, userId }, token)
             .then((movie) => {
-                if (movie) {
-                    window.location.reload();
+                if (!movie.isDeleted) {
+                    setDeletedError(() => movie.error);
+                    return;
                 }
+                window.location.reload();
+
             });
     }
 
@@ -86,6 +88,7 @@ const MovieModal = ({
                         {(moviePlaybackPath) ? <iframe height="100%" width="100%" src={moviePlaybackPath} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} /> : <img src={`${route}${movieImagePath}`} style={{ maxHeight: "200px", maxWidth: "200px" }} className="modalImage" alt={movieTitle} />}
                     </div>
                     <div className="modalDesc">
+                        {deletedError ? <Badge color="warning">{deletedError}</Badge> : ""}
                         {movieDescription ? <p className="mb-2"><HighlightedText><b>Movie description: </b></HighlightedText> {movieDescription}</p> : ""}
                         {moviePopularity ? <p className="mb-2"><HighlightedText><b>User rating: </b></HighlightedText>{moviePopularity}</p> : ""}
                         {movieReleaseYear ? <p className="mb-2"><HighlightedText><b>Release Year: </b> </HighlightedText>{movieReleaseYear}</p> : ""}
@@ -102,21 +105,22 @@ const MovieModal = ({
 }
 
 async function deleteUserMovie(movieDetails, token) {
-    const config = {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    };
+    if (!token) return false;
+
     const body = {
         movieDetails
     }
-    if (token) {
-        config.headers["x-auth-token"] = token;
-        return await axios.post(`${Routes}/api/movies/indie/delete`, body, config)
-            .then((deleted) => deleted)
-            .catch((err) => false);
-
-    }
+    return await postRequest("/api/movies/indie/delete", body, token)
+        .then((data) => {
+            return {
+                isDeleted: true
+            }
+        }).catch((err) => {
+            return {
+                isDeleted: false,
+                error: err.response?.data
+            }
+        })
 }
 
 export default MovieModal;

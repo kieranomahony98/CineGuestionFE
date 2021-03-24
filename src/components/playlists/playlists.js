@@ -5,8 +5,9 @@ import MovieCard from "../cards/card";
 import "../../css/PreviousCurations.css";
 import tw from "twin.macro";
 import MovieModal from "components/modal/movieModal";
-import { Redirect, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+//this component comes from the tempalte, check out read me for more
 export const HighlightedText = tw.span`text-primary-500`;
 let movie;
 

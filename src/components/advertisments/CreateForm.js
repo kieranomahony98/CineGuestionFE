@@ -3,19 +3,18 @@ import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import logo from "images/cineGuestion/logo.png";
-import route from "data/Routes";
 import { validateMovie } from "validation/createMovieValidation";
-import axios from "axios";
 import { MoviePopover } from "components/popover/popover"
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
-import { Form, Input, Row, Col, Container, ModalBody, Button, Badge } from "reactstrap";
+import { Form, Input, Row, Col, Container, ModalBody, Badge } from "reactstrap";
 import { HighlightedText } from "components/playlists/playlists";
 import MovieCard from "components/cards/card";
 import { useSelector } from "react-redux";
 import stockImage from "images/stock-photo.jpeg";
 import { useHistory, useParams } from "react-router";
 import Loader from "react-loader-spinner";
-
+import { getRequest, postRequest } from "axios/axiosHandler";
+//all the tw and styled components within this file come from the template, please check out the read me for more
 
 const LogoLink = tw.a``;
 const LogoImage = tw.img`h-12 mx-auto`;
@@ -30,6 +29,7 @@ const SubmitButton = styled.button`
     ${tw`ml-3`}
   }
 `;
+
 let m;
 export default ({
     logoLinkUrl = "#",
@@ -90,7 +90,7 @@ export default ({
                     throw err;
                 });
         }
-    }, []);
+    }, [movieId, token]);
 
     const updateMovieDetails = (e) => {
         const { name, value } = e.target;
@@ -98,7 +98,6 @@ export default ({
             ...movieDetails,
             [name]: value
         }));
-
         if (name === "moviePlaybackPath") {
             const isVerified = verifyYoutubeAddress(value);
             setIsAddressValid(() => isVerified);
@@ -114,7 +113,7 @@ export default ({
         e.preventDefault();
 
         const { isValid, validation } = validateMovie(movieDetails);
-        console.log(`isValid: ${isValid}`);
+
         if (!isValid) {
             setErrors(errors => ({ ...errors, ...validation }));
         }
@@ -246,7 +245,7 @@ export default ({
                             <div className="modalImage mb-3">
                                 {
                                     (isAddressValid) ?
-                                        <iframe width="100%" height="100%" src={movieDetails.moviePlaybackPath} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} /> : <img src={movieDetails.movieImagePath ? `${movieDetails.movieImagePath}` : stockImage} style={{ maxHeight: "200px", maxWidth: "200px" }} className="modalImage" title="youtubeVideo" />
+                                        <iframe title="youtubeVideo" width="100%" height="100%" src={movieDetails.moviePlaybackPath} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} /> : <img alt="moviePicture" src={movieDetails.movieImagePath ? `${movieDetails.movieImagePath}` : stockImage} style={{ maxHeight: "200px", maxWidth: "200px" }} className="modalImage" />
                                 }
                             </div>
                             <div className="modalDesc">
@@ -272,12 +271,12 @@ export default ({
 
 
 function verifyYoutubeAddress(clientUrl) {
-    if (clientUrl != undefined || clientUrl != '') {
+    if (clientUrl !== undefined || clientUrl !== '') {
         //https://stackoverflow.com/questions/19377262/regex-for-youtube-url regex from here
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/;
         const match = clientUrl.match(regExp);
-        if (match && match[2].length == 11) {
-            console.log("afas");
+        if (match && match[2].length === 11) {
+
             return true;
         }
     }
@@ -286,62 +285,36 @@ function verifyYoutubeAddress(clientUrl) {
 
 
 async function addMovieToDatabase(movieObj, token, currentUser) {
-    const config = {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }
+    if (!token) return;
+
     const body = {
         movieObj,
         currentUser
     }
-    console.log(body);
-    if (token) {
-        config.headers["x-auth-token"] = token;
-        return await axios.post(`${route}/api/movies/indie/create`, body, config)
-            .then((res) => res)
-            .catch((err) => {
-                return false;
-            });
-    }
+    return await postRequest("/api/movies/indie/create", body, token)
+        .then((data) => data)
+        .catch((err) => {
+            return false;
+        });
 }
 
 async function makeRequest(movieId, token) {
-    console.log("in function");
-    const config = {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }
+    if (!token) return false;
 
-    if (token) {
-        config.headers["x-auth-token"] = token;
-        return await axios.get(`${route}/api/movies/indie/user/single/movie/${movieId}`, config)
-            .then((movie) => movie.data)
-            .catch((err) => false);
-    }
-    return false;
+    return await getRequest(`/api/movies/indie/user/single/movie/${movieId}`, token)
+        .then((data) => data)
+        .catch((err) => false);
 }
 
 async function updateMovieInDatabse(movieDetails, token) {
-    const config = {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    };
+    if (!token) return false;
+
     const body = {
         movieDetails
     }
-    if (token) {
-        config.headers["x-auth-token"] = token;
-        return await axios.post(`${route}/api/movies/indie/user/movie/update`, body, config)
-            .then((res) => {
-                if (res.status === 200) {
-                    return true;
-                }
-                return false
-            })
-            .catch((err) => false);
-    }
+    return await postRequest("/api/movies/indie/user/movie/update", body, token)
+        .then((data) => true)
+        .catch((err) => false);
+
 
 }

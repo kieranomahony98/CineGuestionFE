@@ -7,7 +7,7 @@ import DowndownMenu from "../../dropdown/DropdownMenu";
 import { useSelector } from "react-redux";
 import RegisterModal from "components/auth/RegisterModal.js";
 import Notification from "components/loginInRegisterNotification/Notification";
-//this file is from the template, please refer to the read me file.
+//this whole  file is from the template, please refer to the read me file.
 const StyledHeader = styled(Header)`
   ${tw`justify-between`}
   ${LogoLink} {
@@ -22,7 +22,7 @@ const NavLink = tw(NavLinkBase)`
 const Container = tw.div`relative -mx-8 -mt-8`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row bg-gray-100`;
 const LeftColumn = tw.div`ml-8 mr-8 xl:pl-10 py-8`;
-//image licesning is free to use source:
+//image licesning is free to use source:https://images.unsplash.com/photo-1580247817119-c6cb496270a4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80
 
 const RightColumn = styled.div`
   background-image: url("https://images.unsplash.com/photo-1580247817119-c6cb496270a4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80");

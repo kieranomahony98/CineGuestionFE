@@ -1,7 +1,6 @@
 import React from "react";
-import ReactConfirmAlert, { confirmAlert } from "react-confirm-alert"
+import ReactConfirmAlert from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { Container } from "reactstrap";
 
 export const Confirm = ({ deleteComment, toggleConfirm }) => {
 
@@ -20,7 +19,6 @@ export const Confirm = ({ deleteComment, toggleConfirm }) => {
                             label: "Delete",
                             onClick: deleteComment
                         }
-
                     ]
                 }
                 closeOnClickOutside={true}

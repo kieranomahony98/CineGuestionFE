@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Button, FormGroup, Form, Input, Label, Modal, ModalBody, ModalHeader, Badge } from "reactstrap";
 import { login } from "../../actions/authActions";
@@ -11,8 +11,6 @@ import Loader from "react-loader-spinner";
 const LoginModal = () => {
     const dispatch = useDispatch();
     const [modal, setModal] = useState(false);
-    const [isLogginIn, setIsLogginIn] = useState(false);
-    const [loaded, setLoaded] = useState(false);
     const [errors, setErrors] = useState({
         name: "",
         password: ""
@@ -22,7 +20,7 @@ const LoginModal = () => {
         email: "",
         password: ""
     });
-    const { isLoading, isAuthenticated } = useSelector(state => state.auth);
+    const { isLoading } = useSelector(state => state.auth);
     const { loginError } = useSelector(state => state.error);
 
     const toggle = () => {
@@ -35,7 +33,7 @@ const LoginModal = () => {
     }
 
     const onSubmit = (e) => {
-        setIsLogginIn(() => true);
+
         e.preventDefault();
 
         const { email, password } = user;
@@ -84,7 +82,7 @@ const LoginModal = () => {
                                 {(errors.password) ? <p className="text-danger">{errors.password}</p> : null}
                             </div>
                             <div>
-                                {isLoading ? <Loader type="ThreeDots" color="#007BFF" style={{ marginLeft: "40%" }} /> : loaded ? <Badge color="warning" style={{ width: "100%" }} className="mb-2">Log in successful</Badge> : <Button type="submit" color="dark" style={{ marginTop: "2rem" }} block>Login</Button>}
+                                {isLoading ? <Loader type="ThreeDots" color="#007BFF" style={{ marginLeft: "40%" }} /> : <Button type="submit" color="dark" style={{ marginTop: "2rem" }} block>Login</Button>}
                             </div>
                         </FormGroup>
                     </Form>

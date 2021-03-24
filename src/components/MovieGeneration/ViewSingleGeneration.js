@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import route from "data/Routes";
-import axios from "axios";
 import { Container, Row } from 'reactstrap';
 import Loader from 'react-loader-spinner';
 import MovieCard from 'components/cards/card';
 import MovieModal from 'components/modal/movieModal';
 import { MoviePopover } from 'components/popover/popover';
 import { moviePopoverText } from 'helpers/PopoverText';
+import { getRequest } from 'axios/axiosHandler';
 
 let movie;
 export default () => {
@@ -69,18 +68,7 @@ export default () => {
 }
 
 async function makeRequest(generationId) {
-    const config = {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }
-    return await axios.get(`${route}/api/movies/generations/single/${generationId}`, config)
-        .then((res) => {
-            if (res.status !== 200) return false;
-            console.log(res);
-            return res.data;
-        })
-        .catch((err) => {
-            return false;
-        })
+    return await getRequest(`/api/movies/generations/single/${generationId}`)
+        .then((data) => data)
+        .catch((err) => false)
 }

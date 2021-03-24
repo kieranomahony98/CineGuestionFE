@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons";
 import { ReactComponent as Video } from "feather-icons/dist/icons/video.svg";
-// import { ReactComponent as StarIcon } from "feather-icons/dist/icons/star.svg";
 import weeklyPlaylist from "../../images/cineGuestion/weeklyPlaylist.png";
 import monthlyPlaylist from "../../images/cineGuestion/monthlyPlaylist.png";
 import allTimePlaylist from "../../images/cineGuestion/allTimePlaylist.png";

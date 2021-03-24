@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Input, Row, Container, Button, Col } from "reactstrap";
 import { Comments } from "./Comments"
-import axios from "axios";
 import { v4 as uuid } from "uuid";
 import { useSelector } from "react-redux";
-import route from "data/Routes"
 import { useEffect } from "react";
 import Collapsible from "react-collapsible";
 import "css/commentLayout.css";
+import { postRequest } from "axios/axiosHandler";
 
 export const CommentLayout = () => {
     const { movieDiscussion } = useSelector(state => state.movies);
@@ -16,6 +15,7 @@ export const CommentLayout = () => {
     const [commentCount, setCommentCount] = useState(-1);
     const [errors, setErrors] = useState(false);
     const { token, user, isAuthenticated } = useSelector(state => state.auth);
+
     useEffect(() => {
         makeRequest(movieDiscussion)
             .then((result) => {
@@ -133,36 +133,14 @@ export const CommentLayout = () => {
 }
 
 async function makeRequest(movie) {
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    };
-    return await axios.post(`${route}/api/movies/comments/getComments`, JSON.stringify(movie), config)
-        .then((comments) => comments.data)
-        .catch((err) => {
-            console.log(err.message);
-            throw err;
-        });
+    return await postRequest("/api/movies/comments/getComments", JSON.stringify(movie))
+        .then((data) => data)
+        .catch((err) => false);
 }
 
 async function addCommentAPI(comment, token) {
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    };
-
-    if (token) {
-        config.headers["x-auth-token"] = token;
-        axios.post(`${route}/api/movies/comments/addComments`, JSON.stringify(comment), config)
-            .then((res) => {
-                if (res.status === 200) return true;
-                return false
-            })
-            .catch((err) => {
-                console.log(err.message);
-                throw err;
-            });
-    }
+    if (!token) return false;
+    return await postRequest("/api/movies/comments/addComments", JSON.stringify(comment), token)
+        .then((data) => true)
+        .catch((err) => false);
 }

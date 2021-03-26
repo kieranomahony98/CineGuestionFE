@@ -1,3 +1,4 @@
+//imported css files are from template
 import "tailwindcss/dist/base.css";
 import "styles/globalStyles.css";
 import React, { useEffect, } from "react";
@@ -20,6 +21,7 @@ import ViewSingleGeneration from "pages/SingleGenerationPage";
 import GenreChart from "pages/GenreChart";
 import UpdateUser from "pages/UpdateUser";
 export default function App() {
+
   useEffect(() => {
     store.dispatch(loadUser());
   });

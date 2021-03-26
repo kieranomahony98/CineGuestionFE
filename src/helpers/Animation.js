@@ -1,4 +1,5 @@
 //not my code, module from npm package was failing to read due to no dist folder had to import it manually.
+//https://www.npmjs.com/package/use-in-view this is the npm package
 import { useEffect, useState } from "react";
 import throttle from "lodash.throttle";
 

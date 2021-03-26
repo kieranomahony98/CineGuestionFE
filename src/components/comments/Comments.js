@@ -199,11 +199,7 @@ async function updateCommentApi(commentText, commentId, token) {
 
 async function deleteCommentApi(commentId, token, id, commentUserId) {
     if (!token) return false;
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    };
+
     getRequest(`/api/movies/comments/delete/${commentId}/${id}/${commentUserId}`, token)
         .then((data) => data)
         .catch((err) => false);
@@ -211,11 +207,6 @@ async function deleteCommentApi(commentId, token, id, commentUserId) {
 
 async function setCommentScoreApi(commentId, commentScore, token, value, changeFromUpvote, changeFromDownVote) {
     if (!token) return false;
-    const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-    };
 
     const body = {
         commentId,

@@ -1,6 +1,7 @@
 import React from "react";
 import tw from "twin.macro";
 //this file is from the template, please refer to the read me file
+
 /* framer-motion and useInView here are used to animate the sections in when we reach them in the viewport
  */
 import { motion } from "framer-motion";

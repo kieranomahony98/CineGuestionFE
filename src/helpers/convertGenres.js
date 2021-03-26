@@ -12,7 +12,7 @@ export async function convertToTextGeneration(movieSearchCriteria) {
         const genreList = (movieSearchCriteria.with_genres) ? await listMatcher(movieSearchCriteria.with_genres.split(",")) : null;
         const keywords = (movieSearchCriteria.with_keywords) ? await keywordController(movieSearchCriteria.with_keywords.toString()) : null;
         const withCompanies = (movieSearchCriteria.with_companies) ? await companyMatcher(movieSearchCriteria.with_companies.split(",")) : null
-        console.log(withCompanies);
+
         const sort_by = (movieSearchCriteria.sort_by) ? await sortByMatcher(movieSearchCriteria.sort_by) : null
         movieSearchCriteria.with_genres = (genreList) ? genreList.toString() : null;
         movieSearchCriteria.with_keywords = (keywords) ? keywords.toString() : null;
